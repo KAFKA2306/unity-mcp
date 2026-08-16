@@ -9,7 +9,7 @@ const seedPath = path.join(websiteRoot, "data", "failures", "records-2026.json")
 const versions = ["3.10.2", "3.10.3", "3.10.4"];
 const rawBase = "https://raw.githubusercontent.com/vrchat-community/creator-docs/main/Docs/releases";
 const publicBase = "https://creators.vrchat.com/releases";
-const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|previously|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist/i;
+const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|previously|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist|match|instead of|now logs you in|behave as if/i;
 
 function plain(markdown) {
   return markdown
