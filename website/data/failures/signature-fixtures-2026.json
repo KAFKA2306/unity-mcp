@@ -1,0 +1,12 @@
+[
+  {"id":"2026-vrchat-sdk-all-pipe-instances-busy","normalized_signature":"all pipe instances are busy"},
+  {"id":"2026-vcc-646-avatar-package-resolve","normalized_signature":"could not resolve package com.vrchat.avatars ~<version>"},
+  {"id":"2026-modular-avatar-1934-destination-array","normalized_signature":"system.argumentexception: destination array was not long enough. check destindex and length, and the array's lower bounds"},
+  {"id":"2026-ndmf-816-manual-bake-copyasset","normalized_signature":"assetdatabase.loadassetatpath<t>() returns null immediately after assetdatabase.copyasset() during manual bake"},
+  {"id":"2026-unity-mcp-1186-bom-execute-code","normalized_signature":"compilation failed: line <n> contains u+feff"},
+  {"id":"2026-alcom-3061-redirectionguard-junction","normalized_signature":"status_untrusted_mount_point / win32 error 448"},
+  {"id":"2026-avatar-optimizer-1697-bool-default","normalized_signature":"avatar optimizer can change behavior of an animator boolean whose default is true. after trace and optimize, an animator boolean parameter configured with default true behaves as though the default were false, changing the intended gimmick state."},
+  {"id":"2026-liltoon-423-audiolink-mask-removed","normalized_signature":"liltoon build-time optimization removes an audiolink vertex mask during ndmf bake. after ndmf apply on play or manual bake, the audiolink vertex mask texture is removed and vertices outside the intended mask also react."},
+  {"id":"2026-gesture-manager-94-recompile-prefab-overwrite","normalized_signature":"gesture manager play mode recompilation can duplicate components and overwrite the prefab. a script recompilation during gesture manager play mode can duplicate physbone and contact receiver components and force-write the prefab so revert cannot undo the damage."},
+  {"id":"2026-textranstool-1101-vram-leak","normalized_signature":"textranstool textureblender leaks vram during repeated ndmf preview updates. changing textureblender settings while using ndmf preview accumulates vram until restarting the editor becomes necessary."}
+]
