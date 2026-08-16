@@ -5,9 +5,11 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "prebuild": "npm run validate:failures",
+    "prebuild": "npm run validate:failures && npm run validate:web-failures",
     "build": "docusaurus build",
     "validate:failures": "node scripts/validate-failures.mjs",
+    "validate:web-failures": "node scripts/collect-web-failures.mjs",
+    "collect:web-failures": "node scripts/collect-web-failures.mjs --live",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
