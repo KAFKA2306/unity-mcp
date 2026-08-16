@@ -3,11 +3,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const websiteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const schemaPath = path.join(websiteRoot, "data", "failures", "schema.json");
-const recordsPath = path.join(websiteRoot, "data", "failures", "records-2026.json");
-const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-const records = JSON.parse(fs.readFileSync(recordsPath, "utf8"));
+const dataRoot = path.join(websiteRoot, "data", "failures");
 const errors = [];
+
+function readJson(name) {
+  return JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8"));
+}
+
+const recordSchema = readJson("schema.json");
+const records = readJson("records-2026.json");
+const sourceSchema = readJson("source-schema.json");
+const sources = readJson("sources.json");
 
 function typeMatches(value, type) {
   if (type === "array") return Array.isArray(value);
@@ -68,23 +74,79 @@ function validate(value, rule, at) {
   }
 }
 
-if (!Array.isArray(records)) {
-  errors.push("records-2026.json: expected a JSON array");
-} else {
-  if (records.length < 10) errors.push(`records-2026.json: expected at least 10 seed records, got ${records.length}`);
-  records.forEach((record, i) => validate(record, schema, `records[${i}]`));
+function validateCollection(items, schema, label, minimum) {
+  if (!Array.isArray(items)) {
+    errors.push(`${label}: expected a JSON array`);
+    return;
+  }
+  if (items.length < minimum) errors.push(`${label}: expected at least ${minimum} entries, got ${items.length}`);
+  items.forEach((item, i) => validate(item, schema, `${label}[${i}]`));
 
   const ids = new Set();
-  for (const record of records) {
-    if (ids.has(record.id)) errors.push(`duplicate id: ${record.id}`);
-    ids.add(record.id);
+  for (const item of items) {
+    if (ids.has(item.id)) errors.push(`${label}: duplicate id ${item.id}`);
+    ids.add(item.id);
+  }
+}
+
+validateCollection(records, recordSchema, "records", 10);
+validateCollection(sources, sourceSchema, "sources", 20);
+
+if (Array.isArray(sources)) {
+  const families = new Set(sources.map((source) => source.source_family));
+  if (families.size < 6) errors.push(`sources: expected at least 6 source families, got ${families.size}`);
+
+  const canonicalUrls = new Set();
+  for (const source of sources) {
+    if (canonicalUrls.has(source.canonical_url)) errors.push(`sources: duplicate canonical URL ${source.canonical_url}`);
+    canonicalUrls.add(source.canonical_url);
   }
 }
 
 if (errors.length) {
-  console.error(`FailureRecord validation failed (${errors.length}):`);
+  console.error(`Failure KB validation failed (${errors.length}):`);
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
 
-console.log(`FailureRecord validation passed: ${records.length} record(s), ${new Set(records.map((r) => r.source_family)).size} source families.`);
+console.log(
+  `Failure KB validation passed: ${records.length} record(s), ${sources.length} source endpoint(s), ` +
+  `${new Set(sources.map((source) => source.source_family)).size} source families.`
+);
+
+async function checkUrl(source) {
+  try {
+    const response = await fetch(source.fetch_url, {
+      method: "GET",
+      redirect: "follow",
+      signal: AbortSignal.timeout(15000),
+      headers: { "user-agent": "unity-mcp-failure-kb-link-check/1.0" }
+    });
+    await response.body?.cancel();
+    if (!response.ok) return `${source.id}: HTTP ${response.status} ${source.fetch_url}`;
+    return null;
+  } catch (error) {
+    return `${source.id}: ${error.name ?? "Error"} ${source.fetch_url}`;
+  }
+}
+
+async function checkSourceLinks() {
+  const pending = sources.filter((source) => source.enabled);
+  const failures = [];
+  const concurrency = 4;
+  for (let i = 0; i < pending.length; i += concurrency) {
+    const batch = pending.slice(i, i + concurrency);
+    const results = await Promise.all(batch.map(checkUrl));
+    failures.push(...results.filter(Boolean));
+  }
+  if (failures.length) {
+    console.error(`Source link check failed (${failures.length}):`);
+    for (const failure of failures) console.error(`- ${failure}`);
+    process.exit(1);
+  }
+  console.log(`Source link check passed: ${pending.length} enabled endpoint(s).`);
+}
+
+if (process.argv.includes("--check-source-links")) {
+  await checkSourceLinks();
+}
