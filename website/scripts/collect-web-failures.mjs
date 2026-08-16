@@ -4,8 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const data = path.join(root, "data", "failures");
-const sources = JSON.parse(fs.readFileSync(path.join(data, "failures", "sources-web.json"), "utf8"));
-const canonical = JSON.parse(fs.readFileSync(path.join(data, "failures", "records-web-2026.json"), "utf8"));
+const sources = JSON.parse(fs.readFileSync(path.join(data, "sources-web.json"), "utf8"));
+const canonical = JSON.parse(fs.readFileSync(path.join(data, "records-web-2026.json"), "utf8"));
 const relevant = /vrchat|vrc|unity|avatar|world|sdk|vcc|modular avatar|udon|physbone|shader/i;
 const failure = /error|fail|failed|failure|crash|broken|missing|cannot|can't|won't|validation|pink|fatal|warning|不具合|エラー|失敗|直し|解決|表示され|消え|起動しない|アップロードでき/i;
 
@@ -62,7 +62,11 @@ async function fetchText(source) {
     signal: AbortSignal.timeout(20000),
     headers: { "user-agent": "unity-mcp-failure-kb-web-collector/1.0" }
   });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`HTTP ${response.status}`);
+    error.httpStatus = response.status;
+    throw error;
+  }
   return response.text();
 }
 
@@ -104,7 +108,8 @@ for (const source of sources) {
       report.push({ source: source.id, status: page.date.startsWith("2026-") ? "success" : "parse_failed", mode: "manual_url", page });
     }
   } catch (error) {
-    report.push({ source: source.id, status: "failed", mode: source.fetch_mode, error: String(error.message ?? error) });
+    const blocked = [401, 403, 429].includes(error.httpStatus);
+    report.push({ source: source.id, status: blocked ? "blocked" : "failed", mode: source.fetch_mode, error: String(error.message ?? error) });
   }
 }
 
