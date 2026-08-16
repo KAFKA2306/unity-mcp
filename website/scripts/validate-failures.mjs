@@ -16,7 +16,10 @@ const recordFiles = fs.readdirSync(dataRoot)
   .sort();
 const records = recordFiles.flatMap((name) => readJson(name));
 const sourceSchema = readJson("source-schema.json");
-const sources = readJson("sources.json");
+const sourceFiles = fs.readdirSync(dataRoot)
+  .filter((name) => /^sources(?:-[a-z0-9-]+)?\.json$/.test(name))
+  .sort();
+const sources = sourceFiles.flatMap((name) => readJson(name));
 
 function typeMatches(value, type) {
   if (type === "array") return Array.isArray(value);
@@ -101,7 +104,8 @@ if (errors.length) {
 
 console.log(
   `Failure KB validation passed: ${records.length} record(s) in ${recordFiles.length} file(s), ` +
-  `${sources.length} source endpoint(s), ${new Set(sources.map((source) => source.source_family)).size} source families.`
+  `${sources.length} source endpoint(s) in ${sourceFiles.length} file(s), ` +
+  `${new Set(sources.map((source) => source.source_family)).size} source families.`
 );
 
 async function checkUrl(source) {
