@@ -16,7 +16,8 @@ export function normalizeSignature(value) {
     .toLowerCase()
     .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/gi, "<guid>")
     .replace(/\b[0-9a-f]{32,64}\b/gi, "<hash>")
-    .replace(/(?:[a-z]:\\|\/)(?:[^\s:]+[\\/])+[^\s:]+/gi, "<path>")
+    .replace(/\b[a-z]:\\(?:[^\\\s:]+\\)*[^\\\s:]+/gi, "<path>")
+    .replace(/(?:\/[^\/\s:]+){2,}/g, "<path>")
     .replace(/\bline\s+\d+\b/gi, "line <n>")
     .replace(/\((\d+),(\d+)\)/g, "(<n>,<n>)")
     .replace(/:\d+(?::\d+)?\b/g, ":<n>")
@@ -39,6 +40,13 @@ function jaccard(a, b) {
   let intersection = 0;
   for (const token of a) if (b.has(token)) intersection += 1;
   return intersection / (a.size + b.size - intersection);
+}
+
+function sharedStrongToken(a, b) {
+  for (const token of a) {
+    if (token.length >= 8 && !token.startsWith("<") && b.has(token)) return token;
+  }
+  return null;
 }
 
 function packageNames(record) {
@@ -83,13 +91,22 @@ export function buildCandidates(records) {
       if (!compatible(records[i], records[j])) continue;
 
       if (a.basis === "error_signature" && b.basis === "error_signature" && a.normalized_signature === b.normalized_signature) {
-        exact.push({ ids: [a.id, b.id], normalized_signature: a.normalized_signature });
+        exact.push({ ids: [a.id, b.id], normalized_signature: a.normalized_signature, action: "candidate_only" });
         continue;
       }
 
-      const score = jaccard(tokens(a.normalized_signature), tokens(b.normalized_signature));
-      if (score >= 0.55) {
-        similar.push({ ids: [a.id, b.id], score: Number(score.toFixed(3)), bases: [a.basis, b.basis] });
+      const aTokens = tokens(a.normalized_signature);
+      const bTokens = tokens(b.normalized_signature);
+      const score = jaccard(aTokens, bTokens);
+      const strong = sharedStrongToken(aTokens, bTokens);
+      if (score >= 0.55 || (strong && score >= 0.08)) {
+        similar.push({
+          ids: [a.id, b.id],
+          score: Number(score.toFixed(3)),
+          reason: score >= 0.55 ? "token_similarity" : `shared_strong_token:${strong}`,
+          bases: [a.basis, b.basis],
+          action: "candidate_only"
+        });
       }
     }
   }
@@ -115,9 +132,17 @@ function selfTest() {
   const guidA = normalizeSignature("Missing object 123e4567-e89b-12d3-a456-426614174000 in v1.2.3");
   const guidB = normalizeSignature("Missing object 223e4567-e89b-12d3-a456-426614174999 in v9.9.9");
   if (guidA !== guidB) throw new Error("GUID/version normalization failed");
+  if (!normalizeSignature("CS0246: Missing Foo").includes("cs0246")) throw new Error("stable compiler error code was removed");
 
-  const cs = normalizeSignature("CS0246: The type or namespace name Foo could not be found");
-  if (!cs.includes("cs0246")) throw new Error("stable compiler error code was removed");
+  const synthetic = [
+    { id:"a", error_signature: variants[0], title:"a", symptom:"a", component:"test", stage:"compile", source_family:"x", packages:[] },
+    { id:"b", error_signature: variants[1], title:"b", symptom:"b", component:"test", stage:"compile", source_family:"y", packages:[] },
+    { id:"c", error_signature:"unknown", title:"Object disappears when tagged EditorOnly", symptom:"EditorOnly object is omitted from build", component:"tags", stage:"build / runtime", source_family:"x", packages:[] },
+    { id:"d", error_signature:"unknown", title:"Clothing missing because EditorOnly", symptom:"Clothing tagged EditorOnly is absent after build", component:"other", stage:"build / runtime", source_family:"y", packages:[] }
+  ];
+  const candidates = buildCandidates(synthetic);
+  if (candidates.exact.length !== 1) throw new Error("exact duplicate classification self-test failed");
+  if (!candidates.similar.some((item) => item.ids.includes("c") && item.ids.includes("d"))) throw new Error("similar candidate self-test failed");
 }
 
 selfTest();
@@ -127,9 +152,18 @@ if (result.projected.length < 90) throw new Error(`expected >=90 projected recor
 if (new Set(result.projected.map((item) => item.id)).size !== result.projected.length) throw new Error("duplicate projected record id");
 if (result.projected.some((item) => !item.normalized_signature)) throw new Error("empty normalized signature");
 
-const seedIds = new Set(JSON.parse(fs.readFileSync(path.join(dataRoot, "records-2026.json"), "utf8")).map((record) => record.id));
-const seedProjection = result.projected.filter((item) => seedIds.has(item.id));
-if (seedProjection.length !== 10) throw new Error(`expected 10 seed projections, got ${seedProjection.length}`);
+const fixtures = JSON.parse(fs.readFileSync(path.join(dataRoot, "signature-fixtures-2026.json"), "utf8"));
+if (fixtures.length !== 10) throw new Error(`expected 10 signature fixtures, got ${fixtures.length}`);
+const byId = new Map(result.projected.map((item) => [item.id, item]));
+for (const fixture of fixtures) {
+  const actual = byId.get(fixture.id)?.normalized_signature;
+  if (actual !== fixture.normalized_signature) throw new Error(`signature fixture drift for ${fixture.id}: ${JSON.stringify(actual)}`);
+}
+
+const editorOnlyPair = ["2026-note-editoronly-avatar-parts-disappear", "2026-note-editoronly-clothes-missing-runtime"];
+if (!result.similar.some((item) => editorOnlyPair.every((id) => item.ids.includes(id)))) {
+  throw new Error("expected EditorOnly field reports to appear as a similar candidate pair");
+}
 
 const output = {
   generated_from_records: records.length,
@@ -142,5 +176,5 @@ const output = {
 if (process.argv.includes("--json")) {
   process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);
 } else {
-  console.log(JSON.stringify({ records: records.length, exact_candidates: result.exact.length, similar_candidates: result.similar.length, seed_projections: seedProjection.length }, null, 2));
+  console.log(JSON.stringify({ records: records.length, exact_candidates: result.exact.length, similar_candidates: result.similar.length, signature_fixtures: fixtures.length }, null, 2));
 }
