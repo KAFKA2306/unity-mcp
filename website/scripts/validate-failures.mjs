@@ -11,7 +11,10 @@ function readJson(name) {
 }
 
 const recordSchema = readJson("schema.json");
-const records = readJson("records-2026.json");
+const recordFiles = fs.readdirSync(dataRoot)
+  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
+  .sort();
+const records = recordFiles.flatMap((name) => readJson(name));
 const sourceSchema = readJson("source-schema.json");
 const sources = readJson("sources.json");
 
@@ -26,18 +29,13 @@ function validate(value, rule, at) {
     errors.push(`${at}: expected ${rule.type}`);
     return;
   }
-
-  if (rule.enum && !rule.enum.includes(value)) {
-    errors.push(`${at}: invalid value ${JSON.stringify(value)}`);
-  }
+  if (rule.enum && !rule.enum.includes(value)) errors.push(`${at}: invalid value ${JSON.stringify(value)}`);
 
   if (typeof value === "string") {
     if ((rule.minLength ?? 0) > value.length || value.trim().length === 0) {
       errors.push(`${at}: empty strings are not allowed; use "unknown" when unknown`);
     }
-    if (rule.pattern && !new RegExp(rule.pattern).test(value)) {
-      errors.push(`${at}: does not match ${rule.pattern}`);
-    }
+    if (rule.pattern && !new RegExp(rule.pattern).test(value)) errors.push(`${at}: does not match ${rule.pattern}`);
     if (rule.format === "uri") {
       try {
         const url = new URL(value);
@@ -48,9 +46,7 @@ function validate(value, rule, at) {
     }
     if (rule.format === "date") {
       const parsed = new Date(`${value}T00:00:00Z`);
-      if (Number.isNaN(parsed.valueOf()) || parsed.toISOString().slice(0, 10) !== value) {
-        errors.push(`${at}: invalid calendar date`);
-      }
+      if (Number.isNaN(parsed.valueOf()) || parsed.toISOString().slice(0, 10) !== value) errors.push(`${at}: invalid calendar date`);
     }
   }
 
@@ -60,13 +56,9 @@ function validate(value, rule, at) {
   }
 
   if (value !== null && typeof value === "object" && !Array.isArray(value)) {
-    for (const key of rule.required ?? []) {
-      if (!(key in value)) errors.push(`${at}: missing required field ${key}`);
-    }
+    for (const key of rule.required ?? []) if (!(key in value)) errors.push(`${at}: missing required field ${key}`);
     if (rule.additionalProperties === false) {
-      for (const key of Object.keys(value)) {
-        if (!(key in (rule.properties ?? {}))) errors.push(`${at}: unexpected field ${key}`);
-      }
+      for (const key of Object.keys(value)) if (!(key in (rule.properties ?? {}))) errors.push(`${at}: unexpected field ${key}`);
     }
     for (const [key, childRule] of Object.entries(rule.properties ?? {})) {
       if (key in value) validate(value[key], childRule, `${at}.${key}`);
@@ -81,7 +73,6 @@ function validateCollection(items, schema, label, minimum) {
   }
   if (items.length < minimum) errors.push(`${label}: expected at least ${minimum} entries, got ${items.length}`);
   items.forEach((item, i) => validate(item, schema, `${label}[${i}]`));
-
   const ids = new Set();
   for (const item of items) {
     if (ids.has(item.id)) errors.push(`${label}: duplicate id ${item.id}`);
@@ -95,7 +86,6 @@ validateCollection(sources, sourceSchema, "sources", 20);
 if (Array.isArray(sources)) {
   const families = new Set(sources.map((source) => source.source_family));
   if (families.size < 6) errors.push(`sources: expected at least 6 source families, got ${families.size}`);
-
   const canonicalUrls = new Set();
   for (const source of sources) {
     if (canonicalUrls.has(source.canonical_url)) errors.push(`sources: duplicate canonical URL ${source.canonical_url}`);
@@ -110,8 +100,8 @@ if (errors.length) {
 }
 
 console.log(
-  `Failure KB validation passed: ${records.length} record(s), ${sources.length} source endpoint(s), ` +
-  `${new Set(sources.map((source) => source.source_family)).size} source families.`
+  `Failure KB validation passed: ${records.length} record(s) in ${recordFiles.length} file(s), ` +
+  `${sources.length} source endpoint(s), ${new Set(sources.map((source) => source.source_family)).size} source families.`
 );
 
 async function checkUrl(source) {
@@ -135,8 +125,7 @@ async function checkSourceLinks() {
   const failures = [];
   const concurrency = 4;
   for (let i = 0; i < pending.length; i += concurrency) {
-    const batch = pending.slice(i, i + concurrency);
-    const results = await Promise.all(batch.map(checkUrl));
+    const results = await Promise.all(pending.slice(i, i + concurrency).map(checkUrl));
     failures.push(...results.filter(Boolean));
   }
   if (failures.length) {
@@ -147,6 +136,4 @@ async function checkSourceLinks() {
   console.log(`Source link check passed: ${pending.length} enabled endpoint(s).`);
 }
 
-if (process.argv.includes("--check-source-links")) {
-  await checkSourceLinks();
-}
+if (process.argv.includes("--check-source-links")) await checkSourceLinks();
