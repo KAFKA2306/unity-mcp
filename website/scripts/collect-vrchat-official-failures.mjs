@@ -9,19 +9,14 @@ const seedPath = path.join(websiteRoot, "data", "failures", "records-2026.json")
 const versions = ["3.10.2", "3.10.3", "3.10.4"];
 const rawBase = "https://raw.githubusercontent.com/vrchat-community/creator-docs/main/Docs/releases";
 const publicBase = "https://creators.vrchat.com/releases";
-const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist|match|instead of|now logs you in|behave as if/i;
+const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist|match|now logs you in|behave as if/i;
 
 function plain(markdown) {
-  return markdown
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
-    .replace(/[`*_~]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  return markdown.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1").replace(/[`*_~]/g, "").replace(/\s+/g, " ").trim();
 }
 
 function frontmatter(markdown, key) {
-  const match = markdown.match(new RegExp(`^${key}:\\s*([^\\n]+)$`, "m"));
-  return match?.[1]?.trim().replace(/^['\"]|['\"]$/g, "") ?? "unknown";
+  return markdown.match(new RegExp(`^${key}:\\s*([^\\n]+)$`, "m"))?.[1]?.trim().replace(/^['\"]|['\"]$/g, "") ?? "unknown";
 }
 
 function componentFor(text) {
@@ -52,11 +47,6 @@ function errorSignature(text) {
   return quoted && /error|exception/i.test(text) ? quoted[1] : "unknown";
 }
 
-function idFor(version, text) {
-  const hash = crypto.createHash("sha256").update(text).digest("hex").slice(0, 12);
-  return `2026-vrchat-sdk-${version.replaceAll(".", "-")}-${hash}`;
-}
-
 function extractRelease(markdown, version) {
   const date = frontmatter(markdown, "date");
   const sourceUrl = `${publicBase}/release-${version.replaceAll(".", "-")}/`;
@@ -71,14 +61,14 @@ function extractRelease(markdown, version) {
     }
     const bullet = line.match(/^\s*-\s+(.+)/)?.[1] ?? null;
     if (!mode || !bullet) continue;
-
     const text = plain(bullet);
     if (mode === "fixed" && !failureSignal.test(text)) continue;
 
     const signature = errorSignature(text);
     const known = mode === "known";
+    const hash = crypto.createHash("sha256").update(text).digest("hex").slice(0, 12);
     candidates.push({
-      id: idFor(version, text),
+      id: `2026-vrchat-sdk-${version.replaceAll(".", "-")}-${hash}`,
       title: text.length > 180 ? `${text.slice(0, 177)}...` : text,
       date,
       date_kind: "published",
@@ -94,13 +84,9 @@ function extractRelease(markdown, version) {
       error_signature: signature,
       symptom: text,
       trigger: "unknown",
-      root_cause: /This is a Unity issue/i.test(text)
-        ? "Unity issue; the VRChat release note does not identify the underlying Unity defect."
-        : "unknown",
+      root_cause: /This is a Unity issue/i.test(text) ? "Unity issue; the VRChat release note does not identify the underlying Unity defect." : "unknown",
       solution: known ? "unknown" : `Fixed in VRChat SDK ${version}.`,
-      workaround: /restarting your editor and trying again/i.test(text)
-        ? "Restart the Unity Editor and retry the build."
-        : "unknown",
+      workaround: /restarting your editor and trying again/i.test(text) ? "Restart the Unity Editor and retry the build." : "unknown",
       status: known ? (/restarting your editor and trying again/i.test(text) ? "workaround" : "unresolved") : "resolved",
       tags: ["vrchat", "sdk", "official-release"]
     });
@@ -109,10 +95,7 @@ function extractRelease(markdown, version) {
 }
 
 async function fetchText(url) {
-  const response = await fetch(url, {
-    signal: AbortSignal.timeout(15000),
-    headers: { "user-agent": "unity-mcp-failure-kb-collector/1.0" }
-  });
+  const response = await fetch(url, { signal: AbortSignal.timeout(15000), headers: { "user-agent": "unity-mcp-failure-kb-collector/1.0" } });
   if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
   return response.text();
 }
@@ -124,24 +107,19 @@ function dedupe(candidates, seeds) {
     const textKey = record.symptom.toLowerCase();
     if (seenText.has(textKey)) return false;
     seenText.add(textKey);
-    if (record.error_signature !== "unknown" && seedSignatures.has(record.error_signature)) return false;
-    return true;
+    return record.error_signature === "unknown" || !seedSignatures.has(record.error_signature);
   });
 }
 
 async function collect() {
   const seeds = JSON.parse(fs.readFileSync(seedPath, "utf8"));
   const candidates = [];
-  for (const version of versions) {
-    const markdown = await fetchText(`${rawBase}/release-${version}.md`);
-    candidates.push(...extractRelease(markdown, version));
-  }
+  for (const version of versions) candidates.push(...extractRelease(await fetchText(`${rawBase}/release-${version}.md`), version));
   return dedupe(candidates, seeds).sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
 }
 
 const records = await collect();
 const serialized = `${JSON.stringify(records, null, 2)}\n`;
-
 if (process.argv.includes("--check")) {
   const current = fs.existsSync(outputPath) ? fs.readFileSync(outputPath, "utf8") : "";
   if (current !== serialized) {
