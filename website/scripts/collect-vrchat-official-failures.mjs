@@ -9,7 +9,7 @@ const seedPath = path.join(websiteRoot, "data", "failures", "records-2026.json")
 const versions = ["3.10.2", "3.10.3", "3.10.4"];
 const rawBase = "https://raw.githubusercontent.com/vrchat-community/creator-docs/main/Docs/releases";
 const publicBase = "https://creators.vrchat.com/releases";
-const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|previously|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist|match|instead of|now logs you in|behave as if/i;
+const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist|match|instead of|now logs you in|behave as if/i;
 
 function plain(markdown) {
   return markdown
@@ -69,9 +69,10 @@ function extractRelease(markdown, version) {
       mode = heading.startsWith("Fixes") ? "fixed" : heading === "Known Issues" ? "known" : null;
       continue;
     }
-    if (!mode || !line.startsWith("- ")) continue;
+    const bullet = line.match(/^\s*-\s+(.+)/)?.[1] ?? null;
+    if (!mode || !bullet) continue;
 
-    const text = plain(line.slice(2));
+    const text = plain(bullet);
     if (mode === "fixed" && !failureSignal.test(text)) continue;
 
     const signature = errorSignature(text);
