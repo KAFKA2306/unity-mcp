@@ -1,39 +1,38 @@
 ---
 id: index
 slug: /getting-started
-title: Overview
-sidebar_label: Overview
-description: AI-driven game development for the Unity Editor via the Model Context Protocol.
+title: はじめに
+sidebar_label: はじめに
+description: Model Context Protocolを介してAIアシスタントからUnity Editorを操作するための概要です。
 ---
 
-# Overview
+# はじめに
 
-MCP for Unity bridges AI assistants — Claude, Codex, VS Code, local LLMs, and more — with the Unity Editor via the [Model Context Protocol](https://modelcontextprotocol.io/introduction). Give your LLM the tools to manage assets, control scenes, edit scripts, run tests, and automate workflows.
+MCP for Unityは、Claude、Codex、VS Code、ローカルLLMなどのAIアシスタントとUnity Editorを[Model Context Protocol](https://modelcontextprotocol.io/introduction)で接続します。アセット管理、シーン操作、スクリプト編集、テスト実行、定型作業の自動化に必要なツールをLLMから利用できます。
 
-![MCP for Unity building a scene](https://raw.githubusercontent.com/CoplayDev/unity-mcp/beta/docs/images/building_scene.gif)
+![MCP for Unityでシーンを構築する例](https://raw.githubusercontent.com/CoplayDev/unity-mcp/beta/docs/images/building_scene.gif)
 
-## What you get
+## できること
 
-- **40+ Unity Editor tools** exposed over MCP — `manage_scene`, `manage_script`, `manage_gameobject`, `manage_material`, `manage_physics`, `run_tests`, and more.
-- **25+ read-only resources** for state introspection — `editor_state`, `gameobject_components`, `project_info`, `unity_instances`, etc.
-- **Auto-configuration** for popular MCP clients — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Cline, Codex, Qwen, Gemini CLI, Copilot CLI, OpenClaw.
-- **Multi-instance support** — drive several Unity Editors from a single session via `set_active_instance`.
-- **Two transports** — HTTP (multi-agent, default) and stdio (single-agent legacy).
+- **40以上のUnity Editorツール**をMCP経由で利用できます。`manage_scene`、`manage_script`、`manage_gameobject`、`manage_material`、`manage_physics`、`run_tests`などを含みます。
+- **25以上の読み取り専用リソース**から状態を確認できます。`editor_state`、`gameobject_components`、`project_info`、`unity_instances`などを含みます。
+- **主要なMCPクライアントを自動設定**できます。Claude Desktop、Claude Code、Cursor、VS Code、Windsurf、Cline、Codex、Qwen、Gemini CLI、Copilot CLI、OpenClawなどに対応します。
+- **複数Unityインスタンス**を1つのセッションから操作できます。`set_active_instance`で対象を切り替えられます。
+- **2つの通信方式**に対応します。HTTPは複数クライアント・複数エージェント向け、stdioは単一クライアント向けです。
 
-## When you'd use it
+## 主な用途
 
-- Prototype scenes and gameplay with natural language ("build a player controller with WASD and a double-jump").
-- Generate and refactor C# scripts with full project context and validation.
-- Automate repetitive editor tasks — bulk asset processing, scene validation, regression testing.
-- Build custom AI-driven editor tools on top of the MCP protocol.
+- 自然言語からシーンやゲームプレイを試作する。
+- プロジェクトの文脈を使ってC#スクリプトを生成・修正し、検証する。
+- アセットの一括処理、シーン検証、回帰テストなど、Unity Editor内の反復作業を自動化する。
+- MCPを基盤に独自のAI連携Editorツールを構築する。
 
-## Next steps
+## 次に読む
 
-- **[Install](./install.md)** — Add the Unity package, install the Python server, and connect your first MCP client.
-- **[Your First Prompt](./first-prompt.md)** — End-to-end "build me a red cube" tutorial.
-- **[Choosing an MCP Client](./clients.md)** — A capability matrix across all supported clients.
-- **Setup Wizard** *(coming soon)* — Walk through the first-run experience.
+- **[インストール](./install.md)** — Unity packageとPython serverを導入し、最初のMCPクライアントを接続します。
+- **[最初のプロンプト](./first-prompt.md)** — 「赤いCubeを作る」までを一通り実行します。
+- **[MCPクライアントを選ぶ](./clients.md)** — 対応クライアントの違いを比較します。
 
 ---
 
-MIT licensed. Sponsored and maintained by [Aura](https://www.tryaura.dev/). Not affiliated with Unity Technologies.
+MITライセンス。上流プロジェクトは[Aura](https://www.tryaura.dev/)の支援・保守によるもので、Unity Technologiesとは提携していません。
