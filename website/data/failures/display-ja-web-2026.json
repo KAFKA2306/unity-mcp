@@ -1,0 +1,179 @@
+{
+  "2026-zenn-avatar-validation-expression-params": {
+    "title": "Expression Parametersが上限を超えるとAvatar validationに失敗する",
+    "symptom": "記事の事例ではAvatarがvalidationを通過できない。",
+    "trigger": "記事例で利用可能なExpression Parametersの容量を超過する。",
+    "root_cause": "記事ではExpression Parametersの使用量超過を原因としている。ただし同じ一般的なmessageには他原因もあり得ると明記している。",
+    "solution": "parameterを減らすか、不要なparameterを消費するModular Avatar itemを削除または無効化する。"
+  },
+  "2026-zenn-sdk-39-id-not-allowed": {
+    "title": "古いSDKで新規Avatarをuploadすると「id is not allowed to be used」で拒否される",
+    "symptom": "新しく作成したAvatarをuploadできない。",
+    "trigger": "記事環境でVRChat SDK 3.9.0未満を使って新規Avatarをuploadする。",
+    "root_cause": "記事では、新規Avatar uploadに必要なVRChat SDK versionを満たしていないことが原因とされている。",
+    "solution": "VCCでVRChat SDK - BaseとVRChat SDK - Avatarsを3.9.0以上へ更新する。"
+  },
+  "2026-zenn-world-layers-collision-matrix": {
+    "title": "LayersとCollision Matrix設定が完了するまでWorldのBuild & Testができない",
+    "symptom": "Build & TestおよびオンラインWorld uploadがブロックされる。",
+    "trigger": "VRChat必須のLayers／Collision Matrix設定を適用していない新規Worldプロジェクトを使用する。",
+    "root_cause": "SDK validationが必須Layers／Collision Matrix設定の不足を検出している。",
+    "solution": "SDKのLayers／Collision Matrix設定actionを実行してから再ビルドする。"
+  },
+  "2026-zenn-xavatar-mtoon10-missing": {
+    "title": "MToon10がないとXWear PackagerでXAvatarをimportできない",
+    "symptom": "model shader依存関係がない状態ではXWear Packager経由のXAvatar importに失敗する。",
+    "trigger": "MToon10がプロジェクトにない状態でVRoid XAvatarをimportする。",
+    "root_cause": "記事ではMToon10 shader依存関係の欠落を原因としている。",
+    "solution": "XAvatar import前にMToon10を含むUniVRM（VRM 1.0）を導入する。"
+  },
+  "2026-zenn-xwear-old-vrcsdk": {
+    "title": "VRChat SDK - Avatarsが古いとXWear Packagerを導入できない",
+    "symptom": "古いAvatar SDKを使うプロジェクトへXWear Packagerを導入できない。",
+    "trigger": "VRChat SDK - Avatars 3.7.1未満の状態でXWear Packagerを導入する。",
+    "root_cause": "記事ではXWear PackagerがVRChat SDK - Avatars 3.7.1以上を要求するとしている。",
+    "solution": "XWear Packager導入前にVCCでVRChat SDK - Avatarsを更新する。"
+  },
+  "2026-note-illegal-byte-sequence-pc-name": {
+    "title": "WindowsのPC名が日本語だとBuild & Publishが「Illegal byte sequence」で失敗する事例",
+    "symptom": "記事環境ではBuild & Publishが完了しない。",
+    "trigger": "日本語のWindows PC／device名を使うと再現したと報告されている。",
+    "root_cause": "報告者の環境では、pathや他のnameを確認しても解決せず、日本語device名の変更で解消した。",
+    "solution": "PC／device名を英数字へ変更してWindowsを再起動し、Build & Publishを再試行する。"
+  },
+  "2026-note-wrong-unity-build-errors": {
+    "title": "非対応Unity versionではVRChat Avatarビルドが失敗し複数errorが出ることがある",
+    "symptom": "VRChatが対応していないUnity versionを使うとビルドできず、複数のerrorが表示されることがある。",
+    "trigger": "記事のtroubleshooting事例でVRChat対応外のUnity versionを使用する。",
+    "root_cause": "記事では非対応Unity versionの使用をこのfailure classの原因としている。",
+    "solution": "記事で検証された2026年VRChat workflowではUnity 2022.3.22f1を使用する。"
+  },
+  "2026-note-pink-avatar-missing-shader": {
+    "title": "必要なshaderがない、または認識されないとAvatarがピンクになる",
+    "symptom": "Avatarやaccessory全体がピンク表示になる。",
+    "trigger": "必要shaderが未導入・削除済み、またはmaterialがUnityで解決できないshaderを参照する。",
+    "root_cause": "記事では必要shaderの欠落または未認識を代表的原因としている。",
+    "solution": "必要なshader（該当する場合はlilToonなど）を導入し、materialが想定shaderを参照しているか確認する。"
+  },
+  "2026-note-editoronly-avatar-parts-disappear": {
+    "title": "GameObjectがEditorOnlyのままだとVRChatでAvatar部品が消える",
+    "symptom": "Unity上では見えるAvatarやaccessoryがVRChatでは消える。",
+    "trigger": "対象GameObjectをEditorOnly tagのままビルドする。",
+    "root_cause": "記事ではEditorOnlyがbuilt Avatarからobjectを除外する原因の1つとして挙げられている。",
+    "solution": "Avatarビルドへ含める必要があるobjectからEditorOnly tagを外す。"
+  },
+  "2026-note-vrm1-not-imported-by-converter": {
+    "title": "記事のworkflowではVRM Converter for VRChatでVRM 1.0を書き出しAvatarへ変換できない",
+    "symptom": "VRMをUnityへdragしても、記事のworkflowでは変換可能なAvatarにならない。",
+    "trigger": "対象converter version向けにVRoid modelをVRM 0.0ではなくVRM 1.0でexportする。",
+    "root_cause": "記事では使用したconverter経路がVRM 1.0へ対応していないことを原因としている。",
+    "solution": "そのworkflowではmodelをVRM 0.0としてexportする。"
+  },
+  "2026-note-vroid-physbone-poor-rating": {
+    "title": "VRoid AvatarでPhysBone指標が高くPerformance Poorが残る事例",
+    "symptom": "単純なVRoid AvatarでもAvatar Optimizer導入後にPhysBone関連warningが複数残り、Poor評価になる。",
+    "trigger": "記事でmaterial数を減らす前のVRoid export設定を使用する。",
+    "root_cause": "報告ではVRoid export時のmaterial数を2へ減らすとその事例のPhysBone関連Poor状態が消えたが、一般的な因果機構までは確定していない。",
+    "solution": "記事で検証されたmaterial削減設定を試しSDK performance reportを再確認する。普遍的なPhysBone修正ではなく事例固有の対処として扱う。"
+  },
+  "2026-note-aao-upload-actualperformancewindow": {
+    "title": "AAO使用時にActualPerformanceWindow未有効だとAvatar uploadに失敗した事例",
+    "symptom": "AAO Trace And Optimize追加後、uploadを押しても成功しない事例が報告されている。",
+    "trigger": "anatawa12のgist packにあるActualPerformanceWindowを有効化せず、記事のworkflowを使用する。",
+    "root_cause": "記事では環境内の相関を報告しているが、一般的な根本原因は確定していない。",
+    "solution": "記事のworkflowではActualPerformanceWindowを有効にして再試行する。事例依存の対処として扱う。",
+    "workaround": "ActualPerformanceWindowを有効にしてuploadを再試行する。"
+  },
+  "2026-note-duplicate-pipeline-manager": {
+    "title": "Pipeline Managerが複数あるとWorld uploadがブロックされる",
+    "symptom": "Scene内に複数のPipeline ManagerがあるためSDKがWorldのbuild／uploadを拒否する。",
+    "trigger": "既にPipeline ManagerがあるSceneへ、sample Pipeline Managerを含むWorld assetをimportする。",
+    "root_cause": "記事ではScene内のPipeline Manager重複を原因としている。",
+    "solution": "SDKのselection actionで全Pipeline Managerを探し、意図しない重複を削除する。"
+  },
+  "2026-note-fatal-project-wont-open": {
+    "title": "FatalError後にVRChat Unityプロジェクトを何度開いても起動できない",
+    "symptom": "通常の復旧を繰り返してもUnityプロジェクトが起動できない状態が続く。",
+    "trigger": "一般的な復旧を試しても解消しないプロジェクト固有のfatal startup状態。",
+    "solution": "最終手段としてcleanなVRChatプロジェクトを作成し、旧Sceneが開けることを確認してSceneをコピーし、asset／toolを段階的に戻して壊れた依存関係を特定する。",
+    "workaround": "正常なScene／assetを保持しながらclean projectから段階的に再構築する。"
+  },
+  "2026-note-bounds-clothes-disappear": {
+    "title": "SkinnedMeshRenderer Boundsが変形後meshを覆わないとposeや視点によって服・髪が消える",
+    "symptom": "Avatarがしゃがんだ時やcamera frustum端付近で、髪や服が突然消える。",
+    "trigger": "変形したmeshが元pose付近に残るBounds boxの外へ移動する。",
+    "root_cause": "記事ではrenderer Boundsが変形後meshを覆わずcullingされることを原因としている。",
+    "solution": "想定pose／視点で変形後meshがBounds内へ収まるようBoundsを調整し確認する。"
+  },
+  "2026-note-editoronly-clothes-missing-runtime": {
+    "title": "服をEditorOnlyのままにするとUnityでは見えてもVRChatビルドから除外される",
+    "symptom": "Unityでは服が見えるが、ビルド後のVRChatでは消える。",
+    "trigger": "衣装objectをEditorOnly tagのままにする。",
+    "root_cause": "記事では衣装objectのEditorOnly tagをこのfailure modeの原因としている。",
+    "solution": "衣装がビルドへ含まれるtagへ変更し、Play Mode／private VRChatで確認する。"
+  },
+  "2026-note-platform-build-clothes-missing": {
+    "title": "PC版では服があるのにmobile版で消える場合はplatform別buildの差異が原因になり得る",
+    "symptom": "PC向けAvatarは正常に服を着ている一方、mobile userからは服が欠けて見える。",
+    "trigger": "mobile／platform別Avatar buildで衣装を省く、EditorOnlyを残すなどPC版との設定差がある。",
+    "root_cause": "記事ではPC版ではなく別platform build側の設定ミスとしてこの症状を整理している。",
+    "solution": "target platform側のHierarchy／tag／parameterを個別確認し、公開前にmobile buildをtestする。"
+  },
+  "2026-qiita-particle-collision-force-disallowed": {
+    "title": "Particle Collision ForceがPickup／Item layerへ作用するとAvatarビルドが拒否される",
+    "symptom": "Particle Systemが保護対象のPickup／Item layerへcollision forceを加えられるためSDKがAvatarを拒否する。",
+    "trigger": "保護layerをParticle Collision対象にし、collider forceを0以外へ設定する。",
+    "root_cause": "SDK validation messageが禁止されたParticle Collision Force設定を直接示している。",
+    "solution": "該当layerをParticle Collision対象から外すかcollider forceを0へ変更し、再ビルドする。"
+  },
+  "2026-ask-cs0246-findmissingscripts": {
+    "title": "FindMissingScripts.csのCS0246はEditor folderへ移動すると解消した事例",
+    "symptom": "custom FindMissingScripts editor utilityでCS0246コンパイルerrorが繰り返し発生する。",
+    "trigger": "editor専用utilityをEditor assembly／folder外へ置き、Editor APIが誤ったcontextでcompileされる。",
+    "root_cause": "forumではeditor utilityの配置場所が誤っていたことを原因として解決している。",
+    "solution": "FindMissingScripts.csをEditor folderへ移動し、editor専用codeとしてcompileさせる。"
+  },
+  "2026-ask-chest-bone-not-specified": {
+    "title": "Avatar upload validationで「Chest bone is not specified」と表示される",
+    "symptom": "HumanoidのChest mappingがないためSDKがAvatar uploadをblockまたはwarning表示する。",
+    "trigger": "Rig／Avatar設定でChest boneがmapされていないHumanoid Avatarを使用する。",
+    "root_cause": "forumではAvatar RigのHumanoid Chest mapping不足を原因としている。",
+    "solution": "modelのRig設定を開いてHumanoid AvatarをConfigureし、Chest boneを正しいskeleton transformへmapする。"
+  },
+  "2026-ask-avatar-missing-body-armature": {
+    "title": "Hierarchy変更後にAvatar buildでBody meshまたはArmature不足が報告される",
+    "symptom": "必要なAvatar body／armature構造が欠落または無効になり、SDKのbuild／uploadに失敗する。",
+    "trigger": "必要なBody／Armature参照を削除・無効化するHierarchy／model変更後にAvatarをビルドする。",
+    "root_cause": "forumではmissing／invalidなAvatar Hierarchyが直接のvalidation failureとして示されている。どの編集が原因かは事例依存。",
+    "solution": "有効なAvatar body／armature Hierarchyを復旧し、Avatar Descriptor／model参照を確認して再ビルドする。"
+  },
+  "2026-ask-gesture-layer-mask": {
+    "title": "Gesture Animatorの先頭layerに有効なmaskがないとSDK buildが中断される",
+    "symptom": "SDK buildがabortされ、Builderが先頭Gesture layerのmask欠落／無効を報告する。",
+    "trigger": "先頭layerに有効なAvatar Maskがないcustom Gesture controller、またはbuild中に消えるtemporary maskを使用する。",
+    "root_cause": "forumではmissing／temporaryなGesture layer Avatar Maskを具体的なvalidation問題としている。temporaryなVRCFury test copyを編集すると不安定さが残るとも指摘されている。",
+    "solution": "元Avatarの先頭Gesture layerへSDK sampleのvrc_HandsOnlyなど永続的で有効なmaskを設定し、temporary build copyのmaskを使わない。"
+  },
+  "2026-ask-avatardynamicssetup-safe-mode": {
+    "title": "Unity Safe ModeでVRChat SDK scriptが読み込まれずAvatarDynamicsSetupが見つからない",
+    "symptom": "AvatarDynamicsSetupが見つからず、プロジェクトがUnity Safe Modeになっている。",
+    "trigger": "compile errorを発生させるassetをimportする。確認済みfollow-upではassetに含まれるUdonSharp scriptがcompile failureを起こしていた。",
+    "root_cause": "報告者は新規projectでimportしたUdonSharp contentがcompile errorの原因だったと報告している。旧projectの完全な原因は未解決。",
+    "solution": "競合・不要なUdonSharp scriptを削除するなどcompile errorを解消し、VRChat SDK assemblyを読み込める状態へ戻す。報告者はclean projectで復旧している。",
+    "workaround": "projectを作り直しassetを選択的に再importして競合packageを特定する。"
+  },
+  "2026-ask-quest-standard-shader": {
+    "title": "Unity Standard shaderはQuest非対応のためAvatar uploadが拒否される",
+    "symptom": "materialが非対応shaderを使用しているためAndroid／Quest向けAvatar buildをuploadできない。",
+    "trigger": "materialにUnity Standard shaderが残ったQuest Avatar variantをビルドする。",
+    "root_cause": "platform validationがQuest／Android非対応shaderを検出している。",
+    "solution": "非対応materialをVRChat Mobile対応shaderへ置換し、Android buildを再validationする。"
+  },
+  "2026-blog-ma-inspector-usersettings": {
+    "title": "ConsoleにerrorがないのにModular Avatar Inspector項目が消え、UserSettings再生成で復旧する事例",
+    "symptom": "Modular Avatar component自体は残るが、通常のInspector設定項目がすべて消える。Consoleには赤errorが表示されない。",
+    "trigger": "同じpackage versionで以前は動作していたprojectにおいて、project固有のEditor state failureとして発生した。正確なtriggerは確定していない。",
+    "solution": "Unityを閉じ、projectのUserSettings folderをrename／backupし、Unityを再起動してUserSettingsを再生成しMA Inspectorが戻ることを確認する。",
+    "workaround": "UserSettingsをbackup後に再生成する。記事ではpackage再導入やLibrary再生成では解決しなかった。"
+  }
+}
