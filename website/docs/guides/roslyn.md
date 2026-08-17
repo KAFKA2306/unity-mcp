@@ -1,54 +1,54 @@
 ---
 id: roslyn
 slug: /guides/roslyn
-title: Roslyn Script Validation (Advanced)
-sidebar_label: Roslyn Validation
-description: Enable strict C# validation that catches undefined namespaces, types, and methods before the script reaches the Unity compiler.
+title: RoslynによるScript検証（上級）
+sidebar_label: Roslyn
+description: Unity compilerへ渡す前に未定義namespace、type、methodを検出する厳密なC#検証を有効化します。
 ---
 
-# Roslyn Script Validation
+# RoslynによるScript検証
 
-By default, MCP for Unity uses a fast structural validator for scripts the LLM generates. For **strict** validation that catches undefined namespaces, types, and methods at write time — without a full Unity compile — install the optional Roslyn DLLs.
+MCP for Unityは既定で、LLMが生成したscriptに対して高速な構造検証を行います。完全なUnity compileを実行せず、書き込み時点で未定義namespace、type、methodまで検出したい場合は、任意機能のRoslyn DLLを導入します。
 
-Most users don't need this. Enable it when:
+多くの用途では不要です。次のような場合に有効化します。
 
-- You're letting the LLM write a lot of unsupervised C# and want stricter feedback loops
-- You're seeing recurring compile errors that survive the structural validator
-- You're building custom tools that depend on accurate symbol resolution
+- LLMへ大量のC#生成を任せ、より厳密なfeedback loopが必要
+- 構造検証を通過したcompile errorが繰り返し発生する
+- symbol resolutionの正確さを必要とするcustom toolを作る
 
-## One-click installer (recommended)
+## 1-click installer（推奨）
 
-1. Open **Window → MCP for Unity**.
-2. Scroll to the **Runtime Code Execution (Roslyn)** section in the Scripts / Validation tab.
-3. Click **Install Roslyn DLLs**.
+1. **Window → MCP for Unity** を開きます。
+2. Scripts / Validation tabの **Runtime Code Execution (Roslyn)** まで移動します。
+3. **Install Roslyn DLLs** を押します。
 
-The installer downloads the required NuGet packages, places the DLLs in `Assets/Plugins/Roslyn/`, and adds `USE_ROSLYN` to Scripting Define Symbols.
+installerは必要なNuGet packageを取得し、DLLを`Assets/Plugins/Roslyn/`へ配置して、Scripting Define Symbolsへ`USE_ROSLYN`を追加します。
 
-You can also trigger it from the menu: **Window → MCP for Unity → Install Roslyn DLLs**.
+**Window → MCP for Unity → Install Roslyn DLLs** からも実行できます。
 
-## Manual install (if the installer isn't available)
+## 手動導入（installerが使えない場合）
 
-1. Install [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity).
-2. Open **Window → NuGet Package Manager**.
-3. Install:
+1. [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)を導入します。
+2. **Window → NuGet Package Manager** を開きます。
+3. 次を導入します。
    - `Microsoft.CodeAnalysis` v5.0
    - `SQLitePCLRaw.core` v3.0.2
    - `SQLitePCLRaw.bundle_e_sqlite3` v3.0.2
-4. Add `USE_ROSLYN` to **Player Settings → Scripting Define Symbols**.
-5. Restart Unity.
+4. **Player Settings → Scripting Define Symbols** に`USE_ROSLYN`を追加します。
+5. Unityを再起動します。
 
-## Manual DLL install (no NuGetForUnity)
+## DLLを直接導入する
 
-1. Download `Microsoft.CodeAnalysis.CSharp.dll` and its dependencies from [NuGet.org](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/).
-2. Place DLLs in `Assets/Plugins/Roslyn/`.
-3. Ensure .NET compatibility settings are correct for your Unity version.
-4. Add `USE_ROSLYN` to Scripting Define Symbols.
-5. Restart Unity.
+1. [NuGet.org](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/)から`Microsoft.CodeAnalysis.CSharp.dll`と依存DLLを取得します。
+2. `Assets/Plugins/Roslyn/`へ配置します。
+3. 使用中のUnity versionに合う.NET互換設定を確認します。
+4. Scripting Define Symbolsへ`USE_ROSLYN`を追加します。
+5. Unityを再起動します。
 
-## Verifying it's active
+## 有効化を確認する
 
-After restart, the MCP for Unity status panel shows **Roslyn: enabled** under the Scripts section. The `validate_script` tool now performs full semantic analysis rather than the structural pass.
+再起動後、MCP for Unityのstatus panelでScripts sectionの **Roslyn: enabled** を確認します。`validate_script`は構造検証ではなくsemantic analysisを実行するようになります。
 
-## Disabling
+## 無効化する
 
-Remove `USE_ROSLYN` from Scripting Define Symbols. The plugin falls back to structural validation; the DLLs can stay in `Assets/Plugins/Roslyn/` or be removed.
+Scripting Define Symbolsから`USE_ROSLYN`を削除します。pluginは構造検証へ戻ります。`Assets/Plugins/Roslyn/`のDLLは残しても削除しても構いません。
