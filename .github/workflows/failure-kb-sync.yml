@@ -72,6 +72,8 @@ jobs:
         id: vrchat
         continue-on-error: true
         working-directory: website
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/collect-vrchat-official-failures.mjs --check
 
       - name: Discover web failure candidates
