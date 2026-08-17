@@ -1,62 +1,62 @@
 ---
 id: first-prompt
 slug: /getting-started/first-prompt
-title: Your First Prompt
-sidebar_label: Your First Prompt
-description: End-to-end walkthrough — from typing a prompt to seeing the result in your Unity scene.
+title: 最初のプロンプト
+sidebar_label: 最初のプロンプト
+description: MCPクライアントから指示を送り、Unityシーンに結果が反映されるまでを一通り確認します。
 ---
 
-# Your First Prompt
+# 最初のプロンプト
 
-You've installed the package and connected a client. Here's what to actually say.
+packageの導入とMCPクライアントの接続が終わったら、実際にUnityを操作します。
 
-## Prerequisites
+## 前提条件
 
-- [Install](./install) is complete
-- The MCP for Unity status panel reads `Connected`
-- Your scene is open in the Unity Editor (any scene will do — even an empty one)
+- [インストール](./install)が完了している
+- MCP for Unityのstatus panelが `Connected` になっている
+- Unity Editorで何らかのsceneが開かれている。空sceneでも構いません
 
-## The prompt
+## プロンプト
 
-In your MCP client (Claude Desktop, Cursor, etc.), say:
+Claude Desktop、CursorなどのMCPクライアントから次のように指示します。
 
-> Create a red, blue, and yellow cube in the current scene, spaced one unit apart on the X axis.
+> 現在のシーンに赤・青・黄のCubeを作り、X軸方向に1 unitずつ離して配置してください。
 
-The assistant should:
+AIアシスタントは概ね次の処理を行います。
 
-1. Call `manage_scene` (or `find_gameobjects`) to inspect the active scene
-2. Call `manage_gameobject` three times to create cubes
-3. Call `manage_material` to create or assign colored materials
-4. Call `manage_components` to attach the material to each cube's MeshRenderer
+1. `manage_scene` または `find_gameobjects` で現在のsceneを確認する
+2. `manage_gameobject` を3回呼び、Cubeを作成する
+3. `manage_material` で色付きmaterialを作成または割り当てる
+4. `manage_components` で各CubeのMeshRendererへmaterialを設定する
 
-Total round trip is usually 5–15 seconds depending on your network and the client.
+## Unityで確認する
 
-## What you should see in Unity
+**Hierarchy** に3つのCubeが追加されます。Scene viewへ切り替えると、横に並んだCubeを確認できます。materialが正しく設定されていれば赤、青、黄で表示されます。
 
-Three cubes appear in the **Hierarchy** panel. Switch to the Scene view to see them laid out. If the materials are correct, they'll render red, blue, and yellow.
+Cubeは作られたのにmaterialが灰色の場合、URP / HDRPのshader選択が合っていない可能性があります。例えば次のように明示します。
 
-If the cubes appear but materials are missing (gray), your project may be using URP/HDRP — the LLM should detect this from `manage_graphics` but sometimes guesses Standard. Tell it explicitly: *"This project uses URP, please use the URP/Lit shader."*
+> このプロジェクトはURPです。URP/Lit shaderを使ってください。
 
-## Stretching it
+## 続けて試す
 
-Try escalating prompts in the same session:
+同じセッションで指示を追加できます。
 
-> Add a directional light if there isn't one, and a perspective camera positioned at (0, 2, -5) looking at the cubes.
+> Directional Lightが無ければ追加し、(0, 2, -5) にPerspective Cameraを置いてCubeを見る向きにしてください。
 
-> Write a C# script that makes the red cube oscillate up and down by 0.5 units, attach it to the red cube, and enter Play mode.
+> 赤いCubeを上下0.5 unitの幅で往復させるC# scriptを書き、そのCubeへ追加してPlay Modeに入ってください。
 
-> Run all tests in EditMode and report which ones fail.
+> EditModeの全テストを実行し、失敗したテストを報告してください。
 
-Each of these uses a different tool group — `core` for objects/scripts, `core` again for editor mode control, `testing` for test runs (you may need to activate the `testing` group first; see [Tool Groups](/guides/tool-groups)).
+これらは異なるツール群を使用します。objectやscript操作は`core`、Editor状態の操作も`core`、テスト実行は`testing`です。必要に応じて`testing` groupを有効化してください。詳細は[ツールグループ](/guides/tool-groups)を参照します。
 
-## When something goes wrong
+## うまく動かない場合
 
-- **"I couldn't find any Unity instance"** — the server isn't reachable. Check the status panel.
-- **"Multiple Unity instances detected"** — you have more than one Editor open. See [Multi-Instance Routing](/guides/multi-instance).
-- **Tool calls succeed but nothing happens in the scene** — your client may be in dry-run mode, or you might have hit an MCP visibility toggle for the relevant tool. Ask the assistant to call `manage_tools` action `list_groups`.
+- **`I couldn't find any Unity instance`** — serverからUnityへ到達できていません。status panelを確認します。
+- **`Multiple Unity instances detected`** — 複数のEditorが開いています。[複数Unityインスタンス](/guides/multi-instance)を参照します。
+- **tool callは成功するがsceneが変化しない** — 対象tool groupが非表示になっている可能性があります。AIアシスタントに `manage_tools` の `list_groups` を呼ぶよう指示し、利用可能なgroupを確認します。
 
-## What to read next
+## 次に読む
 
-- [Choosing an MCP Client](./clients) — capability differences across clients
-- [Tool Groups](/guides/tool-groups) — enabling vfx, animation, ui, testing, etc.
-- [Tool reference](/reference/tools) — every available tool with parameters
+- [MCPクライアントを選ぶ](./clients) — クライアントごとの機能差
+- [ツールグループ](/guides/tool-groups) — vfx、animation、ui、testingなどの有効化
+- [ツールリファレンス](/reference/tools) — 利用可能なtoolとparameter

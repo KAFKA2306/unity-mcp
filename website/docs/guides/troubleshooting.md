@@ -1,25 +1,27 @@
 ---
 id: troubleshooting
 slug: /guides/troubleshooting
-title: Common Setup Problems
-sidebar_label: Troubleshooting / FAQ
-description: Real-world fixes for the issues people actually hit — macOS dyld errors, WSL2 bridging, DLL version conflicts, and per-client FAQs.
+title: よくあるセットアップ問題
+sidebar_label: トラブルシューティング / FAQ
+description: macOS dyld、WSL2接続、DLL version conflict、client別FAQなど、実際に起きる問題の対処方法です。
 ---
 
-# Common Setup Problems
+# よくあるセットアップ問題
 
-## macOS: Claude CLI fails to start (dyld ICU library not loaded)
+## macOS: Claude CLIが起動しない（dyld ICU library not loaded）
 
-**Symptoms:**
-- MCP for Unity error: *"Failed to start Claude CLI. dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.71.dylib …"*
-- Running `claude` in Terminal fails with missing `libicui18n.xx.dylib`.
+**症状**
 
-**Cause:**
-Homebrew Node (or the `claude` binary) was linked against an ICU version that's no longer installed; dyld can't find that dylib.
+- MCP for Unityで `Failed to start Claude CLI. dyld: Library not loaded: ...` が表示される
+- Terminalで`claude`を実行しても`libicui18n.xx.dylib`不足で失敗する
 
-**Fix options (pick one):**
+**原因**
 
-**Reinstall Homebrew Node** (relinks to current ICU), then reinstall CLI:
+Homebrew Nodeまたは`claude` binaryが、現在は導入されていないICU versionへlinkされており、dyldがdylibを見つけられません。
+
+**対処方法**
+
+Homebrew Nodeを再導入し、現在のICUへlinkし直します。
 
 ```bash
 brew update
@@ -28,7 +30,7 @@ npm uninstall -g @anthropic-ai/claude-code
 npm install -g @anthropic-ai/claude-code
 ```
 
-**Use NVM Node** (avoids Homebrew ICU churn):
+またはNVM Nodeを使います。
 
 ```bash
 nvm install --lts
@@ -37,147 +39,144 @@ npm install -g @anthropic-ai/claude-code
 # Unity MCP → Claude Code → Choose Claude Location → ~/.nvm/versions/node/<ver>/bin/claude
 ```
 
-**Use the native installer** (puts `claude` in a stable path):
+公式installerも利用できます。
 
 ```bash
-# macOS / Linux
 curl -fsSL https://claude.ai/install.sh | bash
-# Unity MCP → Claude Code → Choose Claude Location → /opt/homebrew/bin/claude or ~/.local/bin/claude
 ```
 
-**After fixing:** in MCP for Unity (Claude Code section), click **"Choose Claude Location"** and select the working `claude` binary, then **Register** again.
+修復後、MCP for UnityのClaude Code sectionで **Choose Claude Location** から動作する`claude` binaryを指定し、再度 **Register** します。
 
 ---
 
-## WSL2: Connecting Claude Code (Linux) to Unity (Windows)
+## WSL2: Linux側Claude CodeからWindows側Unityへ接続する
 
-If you're running Claude Code from WSL2 and Unity on Windows, the MCP server runs on the Windows side but Claude Code needs to reach it from WSL. Here's how to bridge the two.
+Claude CodeをWSL2で、UnityをWindowsで動かす場合、MCP serverはWindows側で起動し、WSL側からそこへHTTP接続します。
 
-*Contributed by [@aollivier82](https://github.com/CoplayDev/unity-mcp/issues/712).*
+### 1. Unity packageを導入する
 
-### 1. Install the Unity package
-
-In Unity Package Manager, add by git URL:
+Unity Package ManagerでGit URLを追加します。
 
 ```text
 https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
 ```
 
-In the MCP for Unity settings, change the port to **8090** (or any free port — the default 8080 can conflict with other services like Tailscale).
+MCP for Unity設定でportを **8090** など空いている番号へ変更できます。8080が別serviceと競合する場合に有効です。
 
-### 2. Install uv on Windows
+### 2. Windowsへuvを導入する
 
-The MCP server requires `uv`. From an admin PowerShell:
+管理者PowerShellで実行します。
 
 ```powershell
 irm https://astral.sh/uv/install.ps1 | iex
 ```
 
-### 3. Set up port forwarding from WSL to Windows
+### 3. WSLからWindowsへport forwardする
 
-WSL2 runs in a separate network namespace, so you need to forward the MCP port. From an admin PowerShell:
+WSL2は別network namespaceで動くため、管理者PowerShellからMCP portを転送します。
 
 ```powershell
 netsh interface portproxy add v4tov4 listenport=8090 listenaddress=0.0.0.0 connectport=8090 connectaddress=127.0.0.1
 ```
 
-Then add a firewall rule to allow it:
+firewall ruleも追加します。
 
 ```powershell
 New-NetFirewallRule -DisplayName "Unity MCP Server" -Direction Inbound -LocalPort 8090 -Protocol TCP -Action Allow
 ```
 
-### 4. Find your WSL host IP
+### 4. WSLから見たWindows host IPを確認する
 
-From inside WSL:
+WSL内で次を実行します。
 
 ```bash
 cat /etc/resolv.conf | grep nameserver | awk '{print $2}'
 ```
 
-This prints the Windows host IP as seen from WSL (e.g. `172.21.48.1`). It's a private address that varies per machine.
+例: `172.21.48.1`
 
-### 5. Add the MCP server to Claude Code
-
-From WSL, using the IP from step 4:
+### 5. Claude CodeへMCP serverを追加する
 
 ```bash
 claude mcp add --transport http UnityMCP http://<YOUR_WSL_HOST_IP>:8090/mcp
 ```
 
-For example:
+例:
 
 ```bash
 claude mcp add --transport http UnityMCP http://172.21.48.1:8090/mcp
 ```
 
-Note: this uses **HTTP transport**, not stdio — since the server is running on the Windows side.
+ここではserverがWindows側で動くため、stdioではなく**HTTP**を使います。
 
-### 6. Verify
+### 6. 確認する
 
-Start Unity, then start Claude Code. You should see `UnityMCP` listed as a connected MCP server. Test it by asking Claude to get your scene info.
+Unityを起動してからClaude Codeを開き、`UnityMCP`がconnected MCP serverとして表示されることを確認します。scene情報を取得するpromptで動作確認できます。
 
-**Notes:**
-- If you restart your machine, the WSL host IP may change. Re-run step 4 and update the MCP config if needed.
-- The port proxy persists across reboots. To remove it later: `netsh interface portproxy delete v4tov4 listenport=8090 listenaddress=0.0.0.0`
-- If the connection fails, make sure Unity is running and the MCP server is started (check the MCP for Unity panel).
+**補足**
 
----
-
-## DLL reference mismatch with Unity AI Assistant package
-
-If you're using **Unity 6.3+** alongside the **Unity AI Assistant** package, you may encounter `System.Collections.Immutable` version conflicts.
-
-*Reported by [@rkroska](https://github.com/CoplayDev/unity-mcp/issues/557).*
-
-**Symptoms:**
-- Compilation errors referencing `System.Collections.Immutable` version mismatches
-- Errors appear after installing MCP for Unity in a project that has the Unity AI Assistant package
-
-**Cause:**
-Unity AI Assistant bundles `System.Collections.Immutable` v10, while MCP for Unity's CodeAnalysis dependency needs v9. Unity's built-in version may be v8. These conflict during assembly resolution.
-
-**Fix options:**
-
-- **Option A (recommended):** If you don't need Unity AI Assistant, remove it via Package Manager. Then install `System.Collections.Immutable` v9.0.0 as a DLL in `Assets/Plugins/`.
-- **Option B:** If you need both packages, install `System.Collections.Immutable` v9.0.0 in `Assets/Plugins/` to satisfy MCP's dependency. The AI Assistant's v10 reference should be forward-compatible.
-
-**Note:** This is a Unity assembly resolution issue, not specific to MCP for Unity. Unity doesn't have a NuGet-style dependency resolver, so DLL version conflicts must be resolved manually.
+- PC再起動後にWSL host IPが変わる場合があります。その場合は手順4を再実行して設定を更新します。
+- port proxyは再起動後も残ります。削除する場合:
+  `netsh interface portproxy delete v4tov4 listenport=8090 listenaddress=0.0.0.0`
+- 接続しない場合、UnityとMCP serverが起動しているかMCP for Unity panelで確認します。
 
 ---
 
-## "No Unity Instances Found"
+## Unity AI Assistant packageとのDLL version不一致
 
-:::tip When in doubt, restart your client
-Clients like Claude Code or JetBrains Rider can get confused if you switch transport modes mid-session. Restart the client so it picks up the new configuration.
+**Unity 6.3以降**と**Unity AI Assistant** packageを併用すると、`System.Collections.Immutable`のversion conflictが発生することがあります。
+
+**症状**
+
+- `System.Collections.Immutable` version mismatchに関するcompile error
+- Unity AI Assistant導入済みprojectへMCP for Unityを追加した後に発生
+
+**原因**
+
+Unity AI Assistant、MCP for UnityのCodeAnalysis依存、Unity組み込み環境が異なる`System.Collections.Immutable` versionを要求し、assembly resolutionで競合します。
+
+**対処**
+
+- Unity AI Assistantが不要ならPackage Managerから削除し、必要な`System.Collections.Immutable` DLLを`Assets/Plugins/`へ配置します。
+- 両方必要な場合は、project内のassembly version requirementを確認して互換versionを`Assets/Plugins/`へ配置します。
+
+これはUnityのassembly resolutionに関する問題で、NuGetのようなdependency resolverがproject全体へ自動適用されないため、DLL conflictを手動で解決する必要があります。
+
+---
+
+## `No Unity Instances Found`
+
+:::tip まずMCPクライアントを再起動
+Claude CodeやJetBrains Riderなどは通信方式をsession中に変えると古い設定を保持することがあります。まずclientを再起動します。
 :::
 
-If restarting doesn't fix it:
-- Check the MCP for Unity status panel — does it say `Connected`?
-- Open `mcpforunity://instances` in your client. If it returns an empty list, the Unity-side bridge isn't running.
-- Try **Window → MCP for Unity → Restart Server**.
+改善しない場合:
+
+- MCP for Unity status panelが`Connected`か確認する
+- `mcpforunity://instances`を読み、空ならUnity側bridgeが動いているか確認する
+- **Window → MCP for Unity → Restart Server** を試す
 
 ---
 
 ## FAQ — Claude Code
 
-**Q: Unity can't find `claude` even though Terminal can.**
-A: macOS apps launched from Finder / Hub don't inherit your shell PATH. In the MCP for Unity window, click **"Choose Claude Location"** and select the absolute path (e.g., `/opt/homebrew/bin/claude` or `~/.nvm/versions/node/<ver>/bin/claude`).
+**Q: Terminalでは`claude`が動くのにUnityから見つからない。**  
+A: macOSのFinder / Hubから起動したappはshellのPATHを引き継がないことがあります。MCP for Unityで **Choose Claude Location** を押し、`/opt/homebrew/bin/claude`や`~/.nvm/versions/node/<ver>/bin/claude`などの絶対pathを指定します。
 
-**Q: I installed via NVM; where is `claude`?**
-A: Typically `~/.nvm/versions/node/<ver>/bin/claude`. The MCP for Unity UI also scans NVM versions and you can browse to it via **"Choose Claude Location"**.
+**Q: NVMで導入した`claude`はどこにある？**  
+A: 通常は`~/.nvm/versions/node/<ver>/bin/claude`です。MCP for Unity側からbrowseして指定できます。
 
-**Q: The Register button says "Claude Not Found".**
-A: Install the CLI or set the path. Click the orange **[HELP]** link in the MCP for Unity window for step-by-step install instructions, then choose the binary location. See also: [Install or Repair Claude Code CLI](/guides/claude-code-cli).
+**Q: Register buttonに`Claude Not Found`と表示される。**  
+A: CLIを導入するかpathを指定します。[Claude Code CLIの導入・修復](/guides/claude-code-cli)も参照してください。
 
 ## FAQ — VS Code
 
-**Q: When I first set up and start the MCP for Unity server in VS Code, I get a failed response that says `Canceled: Canceled`.**
-A: Start a new chat — the bad chat didn't pick up the MCP server configuration.
+**Q: 最初にMCP for Unity serverを起動すると`Canceled: Canceled`と表示される。**  
+A: 新しいchatを開始します。既存chatが新しいMCP server設定を認識していない場合があります。
 
 ![Canceled error screenshot](https://github.com/user-attachments/assets/571e2aeb-c286-4235-ab2b-8285c0db3296)
 
-## FAQ — Cursor / Windsurf / VS Code (Windows uv path)
+## FAQ — Cursor / Windsurf / VS Code（Windowsのuv path）
 
-**Q: My MCP client keeps failing to launch the server even though `uv` is installed.**
-A: Some Windows machines have multiple `uv.exe` locations. Auto-config sometimes picks a less stable path, causing the launch to fail or auto-rewrite on every restart. Use **"Choose UV Install Location"** in the MCP for Unity window and pin the **WinGet Links shim** path (`%LOCALAPPDATA%\Microsoft\WinGet\Links\uv.exe`) — it's stable across uv upgrades.
+**Q: `uv`は入っているのにMCP clientからserverを起動できない。**  
+A: Windows上に複数の`uv.exe`が存在する場合があります。MCP for Unityの **Choose UV Install Location** から、upgrade後もpathが変わりにくいWinGet Links shim（`%LOCALAPPDATA%\Microsoft\WinGet\Links\uv.exe`）を明示指定してください。

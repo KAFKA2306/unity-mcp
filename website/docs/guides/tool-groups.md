@@ -1,80 +1,78 @@
 ---
 id: tool-groups
 slug: /guides/tool-groups
-title: Tool Groups and manage_tools
-sidebar_label: Tool Groups
-description: Per-session visibility for the 47 tools. Activate vfx, animation, ui, testing, etc. only when you need them.
+title: Tool Groupとmanage_tools
+sidebar_label: ツールグループ
+description: 47 toolのセッション単位の可視性を管理し、必要なgroupだけを有効化します。
 ---
 
-# Tool Groups
+# Tool Group
 
-MCP for Unity ships 47 tools, but exposing all of them to the LLM at once balloons the prompt and dilutes routing decisions. So tools are sorted into **groups**, and only `core` is enabled by default.
+MCP for Unityには47 toolがありますが、すべてを常にLLMへ公開するとpromptが大きくなり、tool選択も曖昧になります。そのためtoolを**group**へ分け、既定では`core`だけを有効にします。
 
-## The groups
+## group一覧
 
-| Group | Default | Description |
+| Group | 既定 | 内容 |
 |---|---|---|
-| `core` | enabled | Essential scene, script, asset, and editor tools — always on. |
-| `animation` | off | Animator control, AnimationClip creation. |
-| `ui` | off | UI Toolkit — UXML, USS, UIDocument. |
-| `vfx` | off | VFX Graph, shaders, procedural textures. |
-| `scripting_ext` | off | ScriptableObject management. |
-| `testing` | off | Test runner and async test jobs. |
-| `probuilder` | off | ProBuilder 3D modeling. Requires `com.unity.probuilder` package. |
-| `profiling` | off | Profiler session control, counters, memory snapshots, Frame Debugger. |
-| `docs` | off | Unity API reflection and documentation lookup. |
+| `core` | 有効 | scene、script、asset、Editorの基本tool。常時有効です。 |
+| `animation` | 無効 | Animator操作、AnimationClip作成。 |
+| `ui` | 無効 | UI Toolkit — UXML、USS、UIDocument。 |
+| `vfx` | 無効 | VFX Graph、shader、procedural texture。 |
+| `scripting_ext` | 無効 | ScriptableObject管理。 |
+| `testing` | 無効 | Test runnerと非同期test job。 |
+| `probuilder` | 無効 | ProBuilderによる3D modeling。`com.unity.probuilder` packageが必要です。 |
+| `profiling` | 無効 | Profiler session、counter、memory snapshot、Frame Debugger。 |
+| `docs` | 無効 | Unity API reflectionとdocumentation lookup。 |
 
-## Enabling a group
+## groupを有効化する
 
-Use the `manage_tools` meta-tool from your prompt:
+promptから`manage_tools` meta-toolを使います。
 
-> Activate the `vfx` group so we can author shaders.
+> shaderを作るため`vfx` groupを有効化してください。
 
-The assistant calls:
+AIアシスタントは次を呼びます。
 
 ```
 manage_tools(action="activate", group="vfx")
 ```
 
-After activation, the group's tools appear in the next tool listing and are usable for the remainder of the session.
+有効化すると、そのgroupのtoolが次回以降のtool一覧へ現れ、同じsession中で利用できます。
 
-## Listing what's available
+## 利用可能なgroupを確認する
 
 ```
 manage_tools(action="list_groups")
 ```
 
-Returns every group with its current activation state and tool names.
+各groupの有効状態とtool名を返します。
 
-## Deactivating
+## 無効化する
 
 ```
 manage_tools(action="deactivate", group="vfx")
 ```
 
-Useful when a group's tools are confusing the assistant — e.g., `manage_shader` and `manage_material` both apply to materials in different ways. Disabling the one you're not using keeps the assistant focused.
+使っていないgroupのtoolが選択を迷わせる場合に有効です。例えば`manage_shader`と`manage_material`を同時に必要としない作業では、不要なgroupを隠すことで選択肢を減らせます。
 
-## Other actions
+## その他のaction
 
-- `sync` — refreshes visibility from the Unity Editor's per-tool toggle UI. Use after toggling tools in `Window > MCP for Unity > Tools`.
-- `reset` — restores defaults (only `core` enabled).
+- `sync` — Unity Editor側のtool toggle UIの状態を現在のsessionへ反映します。`Window > MCP for Unity > Tools`で変更した後に使います。
+- `reset` — 既定状態（`core`のみ有効）へ戻します。
 
-## Why this exists
+## この仕組みがある理由
 
-Three reasons:
+1. **promptを小さくする** — visible toolが増えるほど各callで必要なtokenも増えます。
+2. **tool選択を明確にする** — 不要な候補を隠すことで誤ったtoolを選びにくくします。
+3. **package要件を分離する** — `probuilder`のtoolは`com.unity.probuilder`が必要です。未導入環境では既定で隠す方が明確です。
 
-1. **Prompt economy**: each visible tool adds tokens to every assistant call. Hiding what you're not using is real money saved at scale.
-2. **Routing clarity**: when the LLM picks between 47 tools versus the 30 core tools, the wrong-tool rate drops measurably.
-3. **Package hygiene**: tools in `probuilder` only work if `com.unity.probuilder` is installed; hiding them by default avoids confusing errors.
+## server状態とsession状態
 
-## Server vs. session state
+- Unity Editorにはserver側の可視性を制御するtool toggle UI（`Window > MCP for Unity > Tools`）があります。
+- `manage_tools`は**session単位**の可視性を制御します。同じserverに接続していてもMCP sessionごとに異なるgroupを表示できます。
 
-- The Unity Editor maintains a per-tool **toggle UI** (`Window > MCP for Unity > Tools`) that controls server-side visibility.
-- The `manage_tools` meta-tool controls **per-session** visibility — different MCP sessions can see different groups even against the same server.
+`sync`はEditor側のtoggle状態を現在のsessionへ同期します。
 
-`sync` reconciles the two: it pulls the Editor's toggle states into the current session.
+## 関連リファレンス
 
-## Related reference
-
-- [`manage_tools`](/reference/tools/core/manage_tools) — full tool reference
-- [`tool_groups` resource](/reference/resources) — discoverable group catalog
+- [`manage_tools`](/reference/tools/core/manage_tools) — toolの詳細
+- [`tool_groups` resource](/reference/resources) — group catalog

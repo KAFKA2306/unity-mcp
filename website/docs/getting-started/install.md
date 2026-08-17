@@ -1,81 +1,81 @@
 ---
 id: install
 slug: /getting-started/install
-title: Install
-sidebar_label: Install
-description: Add MCP for Unity to your Unity project and connect an MCP client.
+title: インストール
+sidebar_label: インストール
+description: MCP for UnityをUnityプロジェクトへ追加し、MCPクライアントを接続します。
 ---
 
-# Install
+# インストール
 
-Three install paths are supported. Pick one. **Git URL** is the fastest if you just want to try it.
+3つの導入方法があります。まず試すだけなら **Git URL** が最短です。
 
-## Prerequisites
+## 前提条件
 
-- **Unity 2021.3 LTS or newer** — [Download Unity](https://unity.com/download)
-- **Python 3.10+** with [`uv`](https://docs.astral.sh/uv/getting-started/installation/) — the setup wizard guides you through both if missing
-- **An MCP client** — [Claude Desktop](https://claude.ai/download), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Cursor](https://www.cursor.com/), [VS Code Copilot](https://code.visualstudio.com/docs/copilot/overview), [GitHub Copilot CLI](https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli), [Windsurf](https://windsurf.com/), [Cline](https://cline.bot/), [OpenClaw](https://openclaw.ai/), and more
+- **Unity 2021.3 LTS以降** — [Unityをダウンロード](https://unity.com/download)
+- **Python 3.10以降** と [`uv`](https://docs.astral.sh/uv/getting-started/installation/) — 未導入の場合はセットアップウィザードから案内されます
+- **MCPクライアント** — [Claude Desktop](https://claude.ai/download)、[Claude Code](https://docs.anthropic.com/en/docs/claude-code)、[Cursor](https://www.cursor.com/)、[VS Code Copilot](https://code.visualstudio.com/docs/copilot/overview)、[GitHub Copilot CLI](https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli)、[Windsurf](https://windsurf.com/)、[Cline](https://cline.bot/)、[OpenClaw](https://openclaw.ai/)など
 
-## Option 1 — Git URL (fastest)
+## 方法1 — Git URL
 
-In Unity, open **Window → Package Manager**, click the **`+`** button, choose **Add package from git URL...**, and paste:
+Unityで **Window → Package Manager** を開き、**`+`** → **Add package from git URL...** を選び、次のURLを貼り付けます。
 
 ```text
 https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main
 ```
 
-For the latest beta features, use the `beta` branch:
+最新のbeta機能を使う場合は `beta` branchを指定します。
 
 ```text
 https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#beta
 ```
 
-## Option 2 — Unity Asset Store
+## 方法2 — Unity Asset Store
 
-1. Visit [MCP for Unity on the Asset Store](https://assetstore.unity.com/packages/tools/generative-ai/mcp-for-unity-ai-driven-development-329908).
-2. Click **Add to My Assets**.
-3. Import via **Window → Package Manager → My Assets**.
+1. [Asset StoreのMCP for Unity](https://assetstore.unity.com/packages/tools/generative-ai/mcp-for-unity-ai-driven-development-329908)を開きます。
+2. **Add to My Assets** を選びます。
+3. **Window → Package Manager → My Assets** からimportします。
 
-## Option 3 — OpenUPM
+## 方法3 — OpenUPM
 
 ```bash
 openupm add com.coplaydev.unity-mcp
 ```
 
-## Start the server and connect
+## serverを起動して接続する
 
-After import, MCP for Unity opens a **setup wizard** automatically.
+import後、MCP for Unityの**セットアップウィザード**が自動的に開きます。
 
-1. Confirm Python and `uv` are installed — the wizard guides you through both if missing.
-2. Click **Done**. Once dependencies are green, a list of MCP clients detected on your machine appears.
-3. Pick the clients you want to configure and click **Configure Selected**.
+1. Pythonと`uv`が導入済みか確認します。未導入の場合はウィザードの案内に従います。
+2. 依存関係が正常になったら **Done** を押します。PC上で検出されたMCPクライアントの一覧が表示されます。
+3. 設定したいクライアントを選び、**Configure Selected** を押します。
 
-You can return to this UI anytime via **Window → MCP for Unity** to start/stop the server, switch transport (HTTP vs stdio), or reconfigure clients. The status panel reads `Connected` when everything is wired up.
+以後は **Window → MCP for Unity** からserverの起動・停止、通信方式（HTTP / stdio）の切り替え、クライアントの再設定を行えます。接続できるとstatus panelに `Connected` と表示されます。
 
-### First prompt
+### 最初に試すプロンプト
 
-Try one of these in your MCP client:
+MCPクライアントから例えば次のように指示します。
 
-> Create a red, blue, and yellow cube in the current scene.
+> 現在のシーンに赤・青・黄のCubeを作り、X軸方向に1 unitずつ離して配置してください。
 
-> Build a simple player controller with WASD movement and a double-jump.
+> WASD移動と二段ジャンプを持つ簡単なplayer controllerを作ってください。
 
-> List every script in `Assets/Scripts` and tell me which ones reference `Rigidbody`.
+> `Assets/Scripts` 内の全scriptを一覧化し、`Rigidbody`を参照しているものを教えてください。
 
-## Per-client notes
+## クライアントごとの注意点
 
-- **Claude Desktop** only supports stdio. MCP for Unity will silently configure it that way even if you have HTTP selected elsewhere.
-- **Cursor, Antigravity, OpenClaw** still require enabling an MCP toggle or plugin in their own settings after auto-configuration.
-- **OpenClaw** also needs the `openclaw-mcp-bridge` plugin enabled and follows the currently selected MCP for Unity transport.
-- **Claude Code, VS Code, Windsurf, Cline, and the CLI clients** auto-connect after configuration.
+- **Claude Desktop** はstdioのみ対応します。全体設定でHTTPを選んでいても、MCP for UnityはClaude Desktop用にはstdioを設定します。
+- **Cursor、Antigravity、OpenClaw** は自動設定後、各クライアント側でMCPまたはpluginを有効化する必要があります。
+- **OpenClaw** は `openclaw-mcp-bridge` pluginも必要で、MCP for Unityで現在選択されている通信方式に従います。
+- **Claude Code、VS Code、Windsurf、Cline、CLI系クライアント** は設定後に自動接続します。
 
-Detailed per-client setup lives in the [MCP Client Configurators guide](/guides/client-configurators).
+詳細は[MCPクライアント設定ガイド](/guides/client-configurators)を参照してください。
 
-## Manual MCP client configuration
+## MCPクライアントを手動設定する
 
-If auto-configuration doesn't work for your client, add this to your client's MCP config file:
+自動設定が使えない場合は、各クライアントのMCP設定ファイルへ以下を追加します。
 
-### HTTP (default — Cursor, Windsurf, Antigravity, VS Code, Cline, etc.)
+### HTTP（既定 — Cursor、Windsurf、Antigravity、VS Code、Clineなど）
 
 ```json
 {
@@ -100,7 +100,7 @@ If auto-configuration doesn't work for your client, add this to your client's MC
 }
 ```
 
-### Stdio (Claude Desktop, or any client without HTTP)
+### Stdio（Claude Desktop、またはHTTP非対応クライアント）
 
 **macOS / Linux:**
 
@@ -128,12 +128,12 @@ If auto-configuration doesn't work for your client, add this to your client's MC
 }
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-- **Unity Bridge not connecting** — Open **Window → MCP for Unity** and check the status panel. Restart Unity if needed.
-- **Server not starting** — Verify `uv --version` works in your terminal. Check the MCP for Unity log for errors.
-- **Client not connecting** — Confirm the HTTP server is running on `localhost:8080` and the URL in your client config matches.
+- **Unity Bridgeが接続しない** — **Window → MCP for Unity** を開いてstatus panelを確認します。必要ならUnityを再起動します。
+- **serverが起動しない** — terminalで `uv --version` が動作するか確認し、MCP for Unityのlogを確認します。
+- **クライアントが接続しない** — HTTP serverが `localhost:8080` で起動していることと、クライアント設定のURLが一致していることを確認します。
 
-For Cursor / VS Code / Windsurf and Claude Code troubleshooting, see the [GitHub Wiki](https://github.com/CoplayDev/unity-mcp/wiki) *(migrating into this site)*.
+Cursor / VS Code / Windsurf / Claude Codeの詳細なトラブルシューティングは[GitHub Wiki](https://github.com/CoplayDev/unity-mcp/wiki)も参照できます。
 
-Still stuck? [Open an issue](https://github.com/CoplayDev/unity-mcp/issues) or [join Discord](https://discord.gg/y4p8KfzrN4).
+解決しない場合は[KAFKA2306/unity-mcpのIssue](https://github.com/KAFKA2306/unity-mcp/issues)を作成するか、上流コミュニティの[Discord](https://discord.gg/y4p8KfzrN4)を確認してください。

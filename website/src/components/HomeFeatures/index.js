@@ -3,71 +3,107 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
-function getFeatures(toolCount, toolGroupCount) {
+function getFeatures(toolCount, toolGroupCount, ja) {
+  if (ja) {
+    return [
+      {
+        n: '01',
+        kicker: '操作',
+        title: 'Unity Editorを自然言語で操作',
+        body: `シーン、GameObject、スクリプト、アセット、Prefab、マテリアルを自然言語から操作できます。${toolGroupCount}グループ・${toolCount}ツールでUnityの編集操作をMCPクライアントへ公開します。`,
+        href: '/reference/tools',
+        cta: 'ツールを見る',
+      },
+      {
+        n: '02',
+        kicker: 'ルーティング',
+        title: '複数のUnity Editorを1セッションから操作',
+        body: '複数のUnity Editorを同時に開き、1つのMCPセッションから対象を切り替えられます。呼び出し単位のルーティングとクライアント間のセッション分離に対応します。',
+        href: '/guides/multi-instance',
+        cta: 'ルーティングの仕組み',
+      },
+      {
+        n: '03',
+        kicker: '通信',
+        title: 'HTTPとstdioに対応',
+        body: 'マルチエージェント、リモート、共有環境にはHTTP。Claude Desktopのような単一クライアント構成にはstdio。用途に応じて利用できます。',
+        href: '/architecture/transports',
+        cta: 'HTTPとstdioを比較',
+      },
+      {
+        n: '04',
+        kicker: '可視性',
+        title: '必要なツールだけを有効化',
+        body: 'animation、vfx、ui、testing、probuilderなどのツールをセッションごとに必要な時だけ有効化できます。プロンプトを小さく保ち、ルーティングを明確にします。',
+        href: '/guides/tool-groups',
+        cta: 'ツールグループ',
+      },
+      {
+        n: '05',
+        kicker: 'ドキュメント',
+        title: 'レジストリから自動生成',
+        body: 'ツールとリソースのページはPythonの@mcp_for_unity_toolレジストリから生成されます。実装とドキュメントの差分はCIで検出します。',
+        href: '/contributing/docs',
+        cta: 'ドキュメント生成',
+      },
+      {
+        n: '06',
+        kicker: '拡張',
+        title: 'カスタムツールを追加',
+        body: 'C#属性と新しいドメインを追加すると、MCPクライアントから自動的に利用できます。プロジェクト単位・グローバルの両方に対応します。',
+        href: '/guides/custom-tools',
+        cta: 'カスタムツール',
+      },
+    ];
+  }
+
   return [
     {
-      n: '01',
-      kicker: 'CONTROL',
-      title: 'Talk to the Editor.',
+      n: '01', kicker: 'CONTROL', title: 'Talk to the Editor.',
       body: `Drive scenes, GameObjects, scripts, assets, prefabs, and materials with natural language. ${toolCount} tools across ${toolGroupCount} groups expose Unity's editing surface to your MCP client.`,
-      href: '/reference/tools',
-      cta: 'Browse tools',
+      href: '/reference/tools', cta: 'Browse tools',
     },
     {
-      n: '02',
-      kicker: 'ROUTING',
-      title: 'Multiple Editors, one session.',
+      n: '02', kicker: 'ROUTING', title: 'Multiple Editors, one session.',
       body: 'Open several Unity Editors at once and aim a single MCP session at any of them. Per-call routing for cross-project prompts; session isolation across MCP clients.',
-      href: '/guides/multi-instance',
-      cta: 'How routing works',
+      href: '/guides/multi-instance', cta: 'How routing works',
     },
     {
-      n: '03',
-      kicker: 'TRANSPORT',
-      title: 'HTTP or stdio. Your call.',
+      n: '03', kicker: 'TRANSPORT', title: 'HTTP or stdio. Your call.',
       body: 'HTTP for multi-agent, remote-hosted, and shared workflows. Stdio for single-client setups like Claude Desktop. Auto-detected and auto-configured.',
-      href: '/architecture/transports',
-      cta: 'HTTP vs stdio',
+      href: '/architecture/transports', cta: 'HTTP vs stdio',
     },
     {
-      n: '04',
-      kicker: 'VISIBILITY',
-      title: 'Your tools, on demand.',
+      n: '04', kicker: 'VISIBILITY', title: 'Your tools, on demand.',
       body: 'Per-session visibility. Activate animation, vfx, ui, testing, or probuilder tools only when needed. Smaller prompt, sharper routing, lower cost.',
-      href: '/guides/tool-groups',
-      cta: 'Tool groups',
+      href: '/guides/tool-groups', cta: 'Tool groups',
     },
     {
-      n: '05',
-      kicker: 'DOCS',
-      title: 'Generated, never stale.',
+      n: '05', kicker: 'DOCS', title: 'Generated, never stale.',
       body: 'Every tool and resource page is generated from the Python @mcp_for_unity_tool registry. CI fails if the docs drift. Examples you write are preserved across regenerations.',
-      href: '/contributing/docs',
-      cta: 'Docs workflow',
+      href: '/contributing/docs', cta: 'Docs workflow',
     },
     {
-      n: '06',
-      kicker: 'EXTEND',
-      title: 'Plug in custom tools.',
+      n: '06', kicker: 'EXTEND', title: 'Plug in custom tools.',
       body: 'Write a C# attribute, register a new domain. The MCP client picks it up automatically. Project-scoped or global. Full reflection-based dispatch.',
-      href: '/guides/custom-tools',
-      cta: 'Custom tools',
+      href: '/guides/custom-tools', cta: 'Custom tools',
     },
   ];
 }
 
 export default function HomeFeatures() {
-  const { siteConfig } = useDocusaurusContext();
+  const { siteConfig, i18n } = useDocusaurusContext();
   const toolCount = siteConfig.customFields?.toolCount ?? 47;
   const toolGroupCount = siteConfig.customFields?.toolGroupCount ?? 10;
-  const features = getFeatures(toolCount, toolGroupCount);
+  const ja = i18n.currentLocale !== 'en';
+  const features = getFeatures(toolCount, toolGroupCount, ja);
 
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
         <div className={styles.header}>
-          <span className={styles.eyebrow}>// CAPABILITIES</span>
-          <h2 className={styles.title}>What you can do</h2>
+          <span className={styles.eyebrow}>{ja ? '// 機能' : '// CAPABILITIES'}</span>
+          <h2 className={styles.title}>{ja ? 'できること' : 'What you can do'}</h2>
         </div>
         <div className={styles.grid}>
           {features.map((f) => (

@@ -1,111 +1,57 @@
-# Releasing (Maintainers)
+---
+title: リリース手順
+sidebar_label: リリース手順
+description: betaからstable releaseへ進める際のbranch、workflow、確認事項です。
+---
 
-This repo uses a two-branch flow to keep `main` stable for users:
+# リリース手順
 
-- `beta`: integration branch where feature PRs land
-- `main`: stable branch that should match the latest release tag
+このrepositoryは`beta`をintegration branch、`main`をstable branchとして扱います。実際の自動化内容は`.github/workflows/`を正本とし、このページでは運用上の要点だけを示します。
 
-## Release checklist
+## 1. `beta`を`main`へ反映する
 
-### 1) Promote `beta` to `main` via PR
+- base: `main`
+- compare: `beta`
+- 必要なCIがgreenであることを確認する
+- feature PRは`beta`へsquash mergeして構いませんが、`beta → main`のrelease promotionではrelease note履歴を保つためmerge / rebaseを優先します
 
-- Create a PR with:
-  - base: `main`
-  - compare: `beta`
-- Ensure required CI checks are green.
-- Merge the PR.
+## 2. Release workflowを実行する
 
-Release note quality depends on how you merge:
+GitHub ActionsのRelease workflowを`main`から実行し、`patch` / `minor` / `major`を選択します。
 
-- Squash-merging feature PRs into `beta` is OK.
-- Avoid squash-merging the `beta -> main` promotion PR. Prefer a merge commit (or rebase merge) so GitHub can produce better auto-generated release notes.
+workflowは実装に応じてversion bump、PR、tag、GitHub Release、artifact publish、`main → beta`同期などを行います。詳細は現在のworkflow YAMLを確認してください。
 
-### 2) Run the Release workflow (manual)
+## 3. 出力を確認する
 
-- Go to **GitHub → Actions → Release**
-- Click **Run workflow**
-- Select:
-  - `patch`, `minor`, or `major`
-- Run it on branch: `main`
+- `vX.Y.Z` tagが存在する
+- GitHub Releaseが作成されている
+- 設定されているpublish先のartifactが成功している
+- release後に`beta`へversion差分が戻っている
 
-What the workflow does:
+## branch protection
 
-1. Creates a temporary `release/vX.Y.Z` branch with the version bump commit
-2. Opens a PR from that branch into `main`
-3. Auto-merges the PR (or waits for required checks, then merges)
-4. Creates an annotated tag `vX.Y.Z` on the merged commit
-5. Creates a GitHub Release for the tag
-6. Publishes artifacts (Docker / PyPI / MCPB)
-7. Opens a PR to merge `main` back into `beta` (so `beta` gets the bump)
-8. Auto-merges the sync PR
-9. Cleans up the temporary release branch
+release automationはPR経由を前提とします。`main`へ直接pushする例外を増やすより、必要なstatus checkを通したPRをmergeする方が安全です。
 
-### 3) Verify release outputs
+## 失敗時
 
-- Confirm a new tag exists: `vX.Y.Z`
-- Confirm a GitHub Release exists for the tag
-- Confirm artifacts:
-  - Docker image published with version `X.Y.Z`
-  - PyPI package published (if configured)
-  - `unity-mcp-X.Y.Z.mcpb` attached to the GitHub Release
+### tagが既に存在する
 
-## Required repo settings
+同じversionを上書きせず、version計算と既存tagを確認します。
 
-### Branch protection (Rulesets)
+### version bump PRがmergeできない
 
-The release workflow uses PRs instead of direct pushes, so it works with strict branch protection. No bypass actors are required.
+CI failureを修正し、PRを正常化してからreleaseを続行します。tag / artifact作成前なら中断して再実行できます。
 
-Recommended ruleset for `main`:
+### `main → beta`同期でconflictする
 
-- Require PR before merging
-- Allowed merge methods: `merge`, `rebase` (no squash for promotion PRs)
-- Required approvals: `0` (so automated PRs can merge without human review)
-- Optionally require status checks
+release artifactが既に公開済みか確認し、sync PRのconflictだけを解消します。
 
-Recommended ruleset for `beta`:
+### temporary release branchが残る
 
-- Require PR before merging
-- Allowed merge methods: `squash` (for feature PRs)
-- Required approvals: `0` (so the sync PR can auto-merge)
-
-### Enable auto-merge (required)
-
-The workflow uses `gh pr merge --auto` to automatically merge PRs once checks pass.
-
-To enable:
-
-1. Go to **Settings → General**
-2. Scroll to **Pull Requests**
-3. Check **Allow auto-merge**
-
-Without this setting, the workflow will fall back to direct merge attempts, which may fail if branch protection requires checks.
-
-## Failure modes and recovery
-
-### Tag already exists
-
-The workflow fails if the computed tag already exists. Pick a different bump type or investigate why a tag already exists for that version.
-
-### Bump PR fails to merge
-
-If the version bump PR cannot be merged (e.g., required checks fail):
-
-- The workflow will fail before creating a tag.
-- Fix the issue, then either:
-  - Manually merge the PR and create the tag/release, or
-  - Close the PR, delete the `release/vX.Y.Z` branch, and re-run the workflow.
-
-### Sync PR (`main -> beta`) fails
-
-If the sync PR has merge conflicts:
-
-- The workflow will fail after the release is published (artifacts are already out).
-- Manually resolve conflicts in the sync PR and merge it.
-
-### Leftover release branch
-
-If the workflow fails mid-run, a `release/vX.Y.Z` branch may remain. Delete it manually before re-running:
+workflowが途中で停止して不要branchが残った場合だけ削除します。
 
 ```bash
 git push origin --delete release/vX.Y.Z
 ```
+
+古い手順をdocsへ複製しないため、release automationの具体的なstep数やartifact名はworkflow実装を正本とします。

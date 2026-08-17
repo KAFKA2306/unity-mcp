@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
-/**
- * Minimal "copy to clipboard" button. Shows a 1.5s confirmation state
- * after a successful copy. Falls back silently when the Clipboard API
- * isn't available (older browsers, insecure contexts) — the user can
- * still select-and-copy manually.
- */
-export default function CopyButton({ text, label = 'Copy', className }) {
+export default function CopyButton({ text, label, className }) {
+  const { i18n } = useDocusaurusContext();
+  const ja = i18n.currentLocale !== 'en';
+  const effectiveLabel = label ?? (ja ? '内容' : 'content');
   const [copied, setCopied] = useState(false);
-  // Timer ref so rapid repeated clicks don't stack pending resets and
-  // an unmount mid-cooldown doesn't fire setCopied on a dead component.
   const timerRef = useRef(null);
 
   useEffect(() => () => {
@@ -22,7 +18,6 @@ export default function CopyButton({ text, label = 'Copy', className }) {
       if (navigator?.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
       } else {
-        // Legacy fallback
         const ta = document.createElement('textarea');
         ta.value = text;
         ta.setAttribute('readonly', '');
@@ -37,26 +32,28 @@ export default function CopyButton({ text, label = 'Copy', className }) {
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setCopied(false), 1500);
     } catch {
-      // swallow — the user can still select-and-copy the rendered text
+      // The rendered text remains selectable when clipboard access fails.
     }
   };
+
+  const ariaLabel = copied
+    ? (ja ? 'クリップボードにコピーしました' : 'Copied to clipboard')
+    : (ja ? `${effectiveLabel}をクリップボードにコピー` : `Copy ${effectiveLabel} to clipboard`);
 
   return (
     <button
       type="button"
       className={`${styles.copy} ${copied ? styles.copied : ''} ${className ?? ''}`.trim()}
       onClick={onClick}
-      aria-label={copied ? 'Copied to clipboard' : `Copy ${label} to clipboard`}
+      aria-label={ariaLabel}
     >
       <span className={styles.icon} aria-hidden="true">
         {copied ? (
-          /* checkmark */
           <svg viewBox="0 0 16 16" width="13" height="13">
             <path d="M2 8.5 L6.5 13 L14 4" stroke="currentColor" strokeWidth="2"
                   fill="none" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         ) : (
-          /* two overlapping squares — classic copy glyph */
           <svg viewBox="0 0 16 16" width="13" height="13">
             <rect x="4.5" y="4.5" width="9" height="9" rx="1.5"
                   stroke="currentColor" strokeWidth="1.5" fill="none" />
@@ -66,7 +63,7 @@ export default function CopyButton({ text, label = 'Copy', className }) {
           </svg>
         )}
       </span>
-      <span className={styles.label}>{copied ? 'Copied' : 'Copy'}</span>
+      <span className={styles.label}>{copied ? (ja ? 'コピー済み' : 'Copied') : (ja ? 'コピー' : 'Copy')}</span>
     </button>
   );
 }

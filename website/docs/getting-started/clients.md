@@ -1,53 +1,51 @@
 ---
 id: clients
 slug: /getting-started/clients
-title: Choosing an MCP Client
-sidebar_label: Choosing a Client
-description: Capability matrix across every MCP client MCP for Unity auto-configures.
+title: MCPクライアントを選ぶ
+sidebar_label: MCPクライアント
+description: MCP for Unityが自動設定できるMCPクライアントの違いを比較します。
 ---
 
-# Choosing an MCP Client
+# MCPクライアントを選ぶ
 
-MCP for Unity auto-configures every client the package detects on your machine. The differences below decide which one fits your workflow.
+MCP for UnityはPC上で検出した対応クライアントを自動設定できます。用途に合うものを選ぶための主な違いをまとめます。
 
-## Capability matrix
+## 機能比較
 
-| Client | Transport | Auto-config | Streaming reasoning | Free tier | Notes |
+| クライアント | 通信方式 | 自動設定 | Streaming reasoning | 無料枠 | 補足 |
 |---|---|---|---|---|---|
-| **Claude Desktop** | stdio only | yes | yes | yes (rate-limited) | Easiest setup. Stdio is silently chosen even if HTTP is selected globally. |
-| **Claude Code** | HTTP | yes | yes | needs Anthropic plan | First-party. Strong with multi-tool workflows. |
-| **Cursor** | HTTP | yes | yes | partial | Requires an MCP toggle in Cursor's own settings after auto-config. |
-| **VS Code (Copilot)** | HTTP | yes | yes | with Copilot | Configures under `servers` (not `mcpServers`). |
-| **Windsurf** | HTTP | yes | yes | yes | Auto-connects after config. |
-| **Cline** | HTTP | yes | yes | yes | Auto-connects after config. |
-| **GitHub Copilot CLI** | HTTP | yes | yes | with Copilot | Terminal-based agent. |
-| **Codex** | HTTP | yes | yes | with OpenAI | Auto-connects. |
-| **Qwen Code** | HTTP | yes | yes | yes | Auto-connects. |
-| **Gemini CLI** | HTTP | yes | yes | yes | Auto-connects. |
-| **OpenClaw** | HTTP / stdio | yes | yes | yes | Requires `openclaw-mcp-bridge` plugin enabled. Follows MCP for Unity's transport choice. |
-| **Antigravity** | HTTP | yes | yes | varies | Requires an MCP toggle in Antigravity settings. |
+| **Claude Desktop** | stdioのみ | 対応 | 対応 | あり（制限あり） | 導入が簡単。全体でHTTPを選んでいてもClaude Desktopにはstdioが設定されます。 |
+| **Claude Code** | HTTP | 対応 | 対応 | Anthropic planが必要 | 複数toolを使うworkflowに向きます。 |
+| **Cursor** | HTTP | 対応 | 対応 | 一部あり | 自動設定後、Cursor側のMCP設定で有効化が必要です。 |
+| **VS Code (Copilot)** | HTTP | 対応 | 対応 | Copilot契約に依存 | `mcpServers`ではなく`servers`へ設定します。 |
+| **Windsurf** | HTTP | 対応 | 対応 | あり | 設定後に自動接続します。 |
+| **Cline** | HTTP | 対応 | 対応 | あり | 設定後に自動接続します。 |
+| **GitHub Copilot CLI** | HTTP | 対応 | 対応 | Copilot契約に依存 | terminalで利用するagentです。 |
+| **Codex** | HTTP | 対応 | 対応 | OpenAI planに依存 | 自動接続します。 |
+| **Qwen Code** | HTTP | 対応 | 対応 | あり | 自動接続します。 |
+| **Gemini CLI** | HTTP | 対応 | 対応 | あり | 自動接続します。 |
+| **OpenClaw** | HTTP / stdio | 対応 | 対応 | あり | `openclaw-mcp-bridge` pluginが必要です。MCP for Unity側の通信方式に従います。 |
+| **Antigravity** | HTTP | 対応 | 対応 | 提供条件による | Antigravity側でMCPを有効化する必要があります。 |
 
-## How to pick
+## 選び方
 
-- **You want it to just work**: Claude Desktop. Stdio means no port conflicts and no firewall prompts.
-- **You're building a multi-agent or remote workflow**: anything HTTP. Multiple clients can share one Python server; see [Multi-Instance Routing](/guides/multi-instance).
-- **You're already in your IDE**: Cursor, VS Code Copilot, or Cline — keeps you in flow.
-- **You want a terminal**: Claude Code, Copilot CLI, Codex, Gemini CLI, or Qwen Code.
+- **まず簡単に動かしたい**: Claude Desktop。stdioのためport競合やfirewall設定を避けやすい構成です。
+- **複数agentやremote環境で使いたい**: HTTP対応クライアント。複数クライアントで1つのPython serverを共有できます。[複数Unityインスタンス](/guides/multi-instance)も参照してください。
+- **IDE内で完結したい**: Cursor、VS Code Copilot、Cline。
+- **terminal中心で使いたい**: Claude Code、Copilot CLI、Codex、Gemini CLI、Qwen Code。
 
-## Manual configuration
+## 手動設定
 
-If auto-config doesn't run (offline machine, sandboxed install, etc.), copy the snippet under **Manual MCP client configuration** in [Install](./install) into your client's MCP config file.
+offline環境やsandboxなどで自動設定できない場合は、[インストール](./install)の**MCPクライアントを手動設定する**にある設定例をクライアントのMCP設定ファイルへ追加します。
 
-## Per-client toggle locations
+## クライアント側で追加操作が必要なもの
 
-A few clients need an MCP toggle flipped on after the configurator writes their config. Find it here:
+- **Cursor** → Settings → MCP → `unityMCP` serverを有効化
+- **Antigravity** → Settings → MCP servers → 有効化
+- **OpenClaw** → `openclaw-mcp-bridge` pluginを有効化
 
-- **Cursor** → Settings → MCP → enable the `unityMCP` server
-- **Antigravity** → Settings → MCP servers → enable
-- **OpenClaw** → enable the `openclaw-mcp-bridge` plugin
+その他の対応クライアントは、通常は設定後の次回起動から接続します。
 
-Everything else just connects on next launch.
+## package更新後
 
-## When you update the package
-
-Run **Window → MCP for Unity → Configure All Detected Clients** any time. It's safe to re-run — the configurator writes idempotently.
+**Window → MCP for Unity → Configure All Detected Clients** を再実行できます。設定処理は再実行しても同じ結果になるよう設計されています。

@@ -1,116 +1,98 @@
 ---
 id: testing
 slug: /contributing/testing
-title: Testing
-sidebar_label: Testing
-description: How to run Python and Unity tests locally, what CI runs, and how to add new tests.
+title: テスト
+sidebar_label: テスト
+description: Python、Unity、複数Unity versionのテストをlocalとCIで実行する方法です。
 ---
 
-# Testing
+# テスト
 
-Three test suites cover MCP for Unity: Python unit tests, Unity EditMode/PlayMode tests, and a multi-version Unity compile matrix. CI runs all three; you should run the two relevant to your change locally before pushing.
+MCP for Unityには大きく3種類の検証があります。変更した層に対応するものをpush前に実行します。
 
-## Python tests
+## Python test
 
-Location: `Server/tests/`
+場所: `Server/tests/`
 
 ```bash
-# All tests
-cd Server && uv run pytest tests/ -v
+cd Server
+uv run pytest tests/ -v
 
-# Single file
-cd Server && uv run pytest tests/test_manage_material.py -v
+# 1 file
+uv run pytest tests/test_manage_material.py -v
 
-# Single test by name pattern
-cd Server && uv run pytest tests/ -k "test_create_material" -v
+# name pattern
+uv run pytest tests/ -k "test_create_material" -v
 ```
 
-CI workflow: `.github/workflows/python-tests.yml`. Coverage is uploaded to Codecov on every run.
+新しい`manage_<domain>`を追加する場合は、既存testを参考に`Server/tests/test_manage_<domain>.py`を追加します。
 
-### Adding a Python test
+## Unity test
 
-For a new tool `manage_<domain>`, add `Server/tests/test_manage_<domain>.py`. Existing tests are the best template — most are integration-style: they spin up a fake Unity bridge, call the tool, and assert on the dispatched payload.
+場所: `TestProjects/UnityMCPTests/Assets/Tests/`
 
-## Unity tests
+Unityで`TestProjects/UnityMCPTests`を開き、**Window → General → Test Runner**からEditMode / PlayMode testを実行できます。
 
-Location: `TestProjects/UnityMCPTests/Assets/Tests/`
+C# toolを追加した場合は、対応するEditMode testを既存asmdef配下へ追加します。
 
-- **EditMode** (60+ files): tool validation, parser edge cases, scene paging, domain reload resilience, batch execution, AI property matching, scriptable objects, animation, physics, gameobject lifecycle
-- **PlayMode**: basic integration smoke tests
+## local headless harness
 
-To run locally, open `TestProjects/UnityMCPTests` in Unity, then **Window → General → Test Runner**.
-
-CI runs both modes across a multi-Unity matrix via `.github/workflows/unity-tests.yml`.
-
-### Local headless test harness
-
-One command boots a headless Hub-licensed Editor against `TestProjects/UnityMCPTests` and runs the smoke + EditMode + PlayMode legs over the bridge, then tears down:
+CIと同じ入口でbridgeを起動し、smoke / EditMode / PlayModeを実行できます。
 
 ```bash
 python tools/local_harness.py
 ```
 
-This is the same entrypoint CI uses — `.github/workflows/e2e-bridge.yml` collapses its boot/wait/discover/run-smoke shell into this invocation.
-
-Key flags:
-
-- `--legs smoke,editmode,playmode` — subset of legs to run.
-- `--project-path TestProjects/UnityMCPTests` — Unity project to boot (repo-relative or absolute).
-- `--reuse` — attach to an already-resident bridge instead of booting one.
-- `--keep-alive` — leave the Editor running after the legs (no teardown).
-- `--no-warmup` — skip the warm-up import phase.
-
-Exit-code contract: `0` all blocking legs passed, `1` a blocking-leg regression, `2` bridge unreachable / setup failure, `3` project does not compile, `4` no Unity license / Hub seat, `5` Editor binary/version not found.
-
-It needs a Hub-activated Editor locally (no ULF/serial); none of the CI license staging applies.
-
-### Adding a Unity test
-
-Mirror the C# tool you're adding. For `ManageNavigation.cs` in `MCPForUnity/Editor/Tools/`, create `TestProjects/UnityMCPTests/Assets/Tests/EditMode/Editor/ManageNavigationTests.cs`. Use the existing assembly definition (`MCPForUnityTests.Editor.asmdef`) so the suite picks it up automatically.
-
-## Multi-version compile matrix
-
-This is the most common pre-push surprise: code that builds on your Unity version fails on another supported version because of an API rename. The local matrix check prevents that.
+主なoption:
 
 ```bash
-tools/check-unity-versions.sh           # compile-only across installed Unity Hub editors
-tools/check-unity-versions.sh --full    # full EditMode test run on each version
+python tools/local_harness.py --legs smoke,editmode
+python tools/local_harness.py --reuse
+python tools/local_harness.py --keep-alive
+python tools/local_harness.py --no-warmup
 ```
 
-The matrix is `tools/unity-versions.json`. The script discovers Unity installations via Unity Hub's standard locations on macOS, Windows, and Linux.
+exit codeはsetup failure、compile failure、license不足などを区別します。正確なcontractは`tools/local_harness.py`を正本として確認します。
 
-When you touch anything in `MCPForUnity/Runtime/Helpers/Unity*Compat.cs` or any `#if UNITY_*_OR_NEWER` block, run this. The [Unity Compat Shims](/architecture/unity-compat) doc explains the policy.
+## 複数Unity versionのcompile check
 
-## Pre-push hook
+```bash
+tools/check-unity-versions.sh
+tools/check-unity-versions.sh --full
+```
 
-`tools/install-hooks.sh` installs a pre-push hook that runs `check-unity-versions.sh` in compile-only mode when your push touches Unity-relevant paths. One-time setup:
+Windows:
+
+```powershell
+pwsh .\tools\check-unity-versions.ps1
+pwsh .\tools\check-unity-versions.ps1 -Full
+```
+
+matrixは`tools/unity-versions.json`です。compatibility shimや`#if UNITY_*_OR_NEWER`を変更した場合は特に重要です。
+
+## Git hook
 
 ```bash
 tools/install-hooks.sh
 ```
 
-To bypass for a single push: `git push --no-verify`. Use this when you're pushing docs-only or pure Python changes.
+Unity関連pathを変更したpushではversion checkを実行します。またserver tool/resource registryの変更時にはreference docsの再生成も支援します。
 
-## Pre-commit hook (docs reference)
+## generated referenceの検証
 
-The same install script wires a pre-commit hook that regenerates `website/docs/reference/` whenever you stage a change under `Server/src/services/{tools,resources,registry}/`. CI fails if you skip this and the committed reference drifts — see `.github/workflows/docs-generate.yml`.
+```bash
+cd Server
+uv run python ../tools/generate_docs_reference.py
+git diff --exit-code ../website/docs/reference
+```
 
-## Stress / load testing
+CIではgenerated referenceとregistryのdriftを検出します。自動生成範囲は手書きで修正しません。
 
-Two scripts under `tools/`:
+## 主なCI
 
-- `stress_mcp.py` — concurrent MCP tool calls; surfaces middleware contention
-- `stress_editor_state.py` — hammers the `editor_state` resource; surfaces serialization hotspots
+- `python-tests.yml` — Python test
+- `unity-tests.yml` — Unity test / version matrix
+- `docs-deploy.yml` — Docusaurus buildとPages deploy
+- `docs-generate.yml` — generated referenceのdrift check
 
-These are not part of CI; run them when you change transport, middleware, or hot-path serialization.
-
-## What CI actually runs on every PR
-
-| Workflow | Trigger | Duration | What it asserts |
-|---|---|---|---|
-| `python-tests.yml` | `Server/**` changes | ~2 min | `pytest` clean, coverage uploaded |
-| `unity-tests.yml` | `MCPForUnity/**` / `TestProjects/**` changes | ~15 min × N versions | EditMode + PlayMode tests clean across the matrix |
-| `docs-deploy.yml` | `website/**`, `docs/**`, tool/resource registry changes | ~1 min (build) | Docusaurus build succeeds; on push to `beta`, deploys to GitHub Pages |
-| `docs-generate.yml` | same triggers as docs-deploy | ~1 min | Reference docs are not stale; decorator count matches MD count |
-
-Skip-equivalent: if the only files you changed are README, governance, or unrelated metadata, only the relevant subset of these fires.
+workflow名やmatrixは変更される可能性があるため、最終的な正本は`.github/workflows/`と`tools/unity-versions.json`です。

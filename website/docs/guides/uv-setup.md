@@ -1,61 +1,61 @@
 ---
 id: uv-setup
 slug: /guides/uv-setup
-title: Install or Repair uv + Python
-sidebar_label: uv + Python Setup
-description: Install or repair uv and Python — the runtime MCP for Unity needs to launch the Python server from Cursor, VS Code, Windsurf, Rider, and other uv-based clients.
+title: uv + Pythonの導入・修復
+sidebar_label: uv + Python
+description: MCP for UnityのPython serverを起動するために必要なuvとPythonを導入・修復します。
 ---
 
-# Install or Repair uv + Python
+# uv + Pythonの導入・修復
 
-The key to configuring MCP with **Cursor, VS Code, Windsurf, and Rider is [`uv`](https://docs.astral.sh/uv/)**.
+Cursor、VS Code、Windsurf、RiderなどからMCP serverを起動する際の中心になるのが[`uv`](https://docs.astral.sh/uv/)です。
 
-- `uv` is a fast Python package manager used to install and run the Unity MCP Server (`mcp-for-unity`).
-- **How it's used:** your MCP client config points to `command: uvx` with args like `--from mcpforunityserver mcp-for-unity --transport stdio`. The client invokes `uvx` directly to launch the server.
-- **Why it matters:** if `uv` isn't installed or on PATH, Cursor / Windsurf / VS Code can't start the server. The MCP for Unity window will show **"uv Not Found"** until fixed.
-- **Detection / override:** the MCP for Unity window auto-detects `uv` in common locations and on PATH. If not found, use **"Choose UV Install Location"** to navigate to your `uv` binary and save the path.
+- `uv`はUnity MCP Server（`mcp-for-unity`）の導入・実行に使う高速なPython package managerです。
+- MCP client設定では`command: uvx`と、`--from mcpforunityserver mcp-for-unity --transport stdio`のようなargumentを指定します。
+- `uv`が未導入、またはPATH上に無いと、クライアントからserverを起動できません。MCP for Unity windowには **uv Not Found** と表示されます。
+- MCP for Unityは一般的なpathとPATHから`uv`を自動検出します。見つからない場合は **Choose UV Install Location** から`uv` binaryを指定できます。
 
-:::tip When in doubt, restart your client
-Clients like Claude Code or JetBrains Rider can get confused if you switch from `http` to `stdio` (or vice versa). If they say **"No Unity Instances found"**, restart the client so it picks up the new configuration.
+:::tip 通信方式を変えたらクライアントを再起動
+Claude CodeやJetBrains Riderなどは、`http`と`stdio`をsession中に切り替えると以前の設定を保持することがあります。`No Unity Instances found`と表示される場合はクライアントを再起動してください。
 :::
 
-## Requirements
+## 必要なもの
 
-You need **Python 3.10+** and the **`uv`** package manager.
+**Python 3.10以降** と **`uv`** が必要です。
 
-### Verify
+### 確認
 
 ```bash
-python3 --version   # should be 3.10+
-uv --version        # should print a version like "uv 0.x"
+python3 --version   # 3.10+を確認
+uv --version        # "uv 0.x"のようなversionが表示されることを確認
 ```
 
-## Install Python
+## Pythonを導入する
 
 **macOS:**
 
 ```bash
-# Option A: Official installer (recommended)
-# Download from https://www.python.org/downloads/
+# 方法A: 公式installer（推奨）
+# https://www.python.org/downloads/ から取得
 
-# Option B: Homebrew (3.12 is the latest LTS as of writing; 3.10 also works)
+# 方法B: Homebrew
 brew install python@3.12
 ```
 
 **Windows:**
 
 ```powershell
-# Official installer (recommended)
-# Download from https://www.python.org/downloads/windows/
+# 公式installerを推奨
+# https://www.python.org/downloads/windows/
 ```
 
-## Install uv
+## uvを導入する
 
 **macOS / Linux / WSL:**
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-# or Homebrew on macOS
+# macOSではHomebrewも利用可能
 brew install uv
 ```
 
@@ -63,11 +63,11 @@ brew install uv
 
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-# or
+# または
 winget install --id=astral-sh.uv -e
 ```
 
-## Common uv locations
+## よくあるuvの配置先
 
 | OS | Path |
 |---|---|
@@ -75,33 +75,33 @@ winget install --id=astral-sh.uv -e
 | **Linux** | `/usr/local/bin/uv`, `/usr/bin/uv`, `~/.local/bin/uv` |
 | **Windows** | `%LOCALAPPDATA%/Programs/Python/Python3xx/Scripts/uv.exe` |
 
-## MCP for Unity window behavior
+## MCP for Unity windowでの動作
 
-- If `uv` isn't found, the status panel shows a red **"uv Not Found"** with a hint **"Make sure uv is installed! [CLICK]"**.
-- Use **"Choose UV Install Location"** to browse to the `uv` binary. This saves the path and reconfigures automatically.
-- On macOS, Unity launched from Finder may not inherit your PATH. Setting the `uv` location here is the easiest fix.
+- `uv`が見つからない場合、status panelに赤色で **uv Not Found** と表示されます。
+- **Choose UV Install Location** から`uv` binaryを指定するとpathを保存し、自動的に再設定します。
+- macOSでFinderから起動したUnityがshellのPATHを引き継がない場合、この方法で明示指定するのが簡単です。
 
-## Notes and gotchas
+## 注意点
 
-- **macOS GUI apps don't inherit your shell startup files.** PATH may differ from Terminal. Set `uv` via the MCP window to avoid PATH issues.
-- **Windows vs WSL:** if you installed `uv` inside WSL only, Windows-native Unity can't see it. Install `uv` on Windows, or use the MCP window to point to a Windows `uv.exe`.
-- **Custom locations:** if you installed `uv` somewhere non-standard, the picker path is stored in `UnityMCP.UvPath` and persists across sessions.
+- **macOS GUI appはshell startup fileを引き継ぎません。** TerminalとUnityでPATHが異なることがあります。
+- **WindowsとWSLは別環境です。** WSL内だけに`uv`を導入してもWindows nativeのUnityからは見えません。Windows側にも導入するか、Windowsの`uv.exe`を指定してください。
+- **独自pathへ導入した場合**、pickerで指定したpathは`UnityMCP.UvPath`へ保存されます。
 
-## What the "Repair Python Env" button does
+## Repair Python Env buttonの動作
 
-- Deletes the server's `.venv` and `.python-version` (if present)
-- Runs `uv sync` in the Unity MCP Server `src` directory to rebuild a clean environment
-- Useful after Python upgrades or missing modules
+- serverの`.venv`と`.python-version`が存在すれば削除する
+- Unity MCP Serverの`src` directoryで`uv sync`を実行し、cleanな環境を再構築する
+- Python更新後やmodule不足を修復する際に利用する
 
-## Where the Unity MCP Server is installed
+## Unity MCP Serverの配置先
 
 | OS | Path |
 |---|---|
-| **macOS** | `~/Library/Application Support/UnityMCP/UnityMcpServer/src` (or `~/Library/AppSupport/UnityMCP/UnityMcpServer/src` via symlink) |
+| **macOS** | `~/Library/Application Support/UnityMCP/UnityMcpServer/src`（またはsymlink経由の`~/Library/AppSupport/UnityMCP/UnityMcpServer/src`） |
 | **Windows** | `%USERPROFILE%/AppData/Local/UnityMCP/UnityMcpServer/src` |
 | **Linux** | `~/.local/share/UnityMCP/UnityMcpServer/src` |
 
-## Manual repair / run
+## 手動修復・実行
 
 ```bash
 cd <UnityMcpServer/src>

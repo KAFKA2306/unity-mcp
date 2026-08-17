@@ -1,126 +1,108 @@
 ---
 id: multi-instance
 slug: /guides/multi-instance
-title: Multi-Instance Routing
-sidebar_label: Multi-Instance Routing
-description: Drive several Unity Editors from a single MCP session with set_active_instance and per-call routing.
+title: 複数Unityインスタンスのルーティング
+sidebar_label: 複数Unityインスタンス
+description: set_active_instanceとcall単位の指定で、1つのMCP sessionから複数のUnity Editorを操作します。
 ---
 
-# Multi-Instance Routing
+# 複数Unityインスタンスのルーティング
 
-You can have several Unity Editors open at once and aim a single MCP session at any of them.
+複数のUnity Editorを同時に開き、1つのMCP sessionから操作対象を切り替えられます。
 
-## When this comes up
+## 主な用途
 
-- You're refactoring a shared package and need to test the same change in two projects
-- You're comparing behavior between Unity LTS and Unity 6
-- You have a runtime project + a tooling project both connected
-- You're driving a CI fixture project alongside your day-to-day work
+- 共通packageを変更し、2つのprojectで同じ変更を検証する
+- Unity LTSとUnity 6の挙動を比較する
+- runtime projectとtooling projectを同時に接続する
+- 普段のprojectとCI fixture projectを並行して扱う
 
-## How instances are identified
+## instanceの識別方法
 
-Each connected Unity Editor advertises a stable ID of the form `Name@hash`, where:
+接続したUnity Editorは`Name@hash`形式の安定したIDを通知します。
 
-- `Name` is the project's `productName` from Player Settings
-- `hash` is a stable 8-character hash derived from the project path
+- `Name` — Player Settingsのproject `productName`
+- `hash` — project pathから計算した安定した8文字hash
 
-Example: `MyGame@a1b2c3d4`.
+例: `MyGame@a1b2c3d4`
 
-You can also reference an instance by:
+次の指定方法も利用できます。
 
-- **Hash prefix** (e.g. `a1b` if it's unambiguous)
-- **Port number** — stdio transport only
+- **hash prefix** — 例: 他と重複しなければ`a1b`
+- **port number** — stdio通信のみ
 
-## Discovering instances
+## instanceを確認する
 
-Read the resource:
+次のresourceを読み取ります。
 
 > `mcpforunity://instances`
 
-It returns the list of currently connected Editors with their `Name@hash`, project path, transport, and port. Most MCP clients expose this as the `unity_instances` resource.
+現在接続中のEditorについて、`Name@hash`、project path、transport、portを返します。多くのMCP clientでは`unity_instances` resourceとして表示されます。
 
-## Setting the active instance for the session
+## sessionのactive instanceを設定する
 
 ```
 set_active_instance(instance="MyGame@a1b2c3d4")
 ```
 
-Once set, **every subsequent tool call** in the session routes to that instance until you change it. This is the most common pattern: choose once, then prompt normally.
+設定後は、変更するまで**同じsession内の後続tool call**がそのinstanceへ送られます。通常は最初に1回選び、その後は普通にpromptを続けます。
 
-You can also use:
+次の指定も可能です。
 
 ```
 set_active_instance(instance="a1b")         # hash prefix
-set_active_instance(instance="6401")        # port number (stdio only)
+set_active_instance(instance="6401")        # port number（stdioのみ）
 ```
 
-## Routing a single call without changing the session default
+## session既定値を変えず1 callだけ別instanceへ送る
 
-Pass `unity_instance` on the individual tool call:
+個別tool callに`unity_instance`を渡します。
 
 ```
 manage_scene(action="get_hierarchy", unity_instance="MyGame@a1b2c3d4")
 ```
 
-This is useful for comparing two projects in the same prompt — e.g., "Read the same script from both projects and tell me what differs."
+「2つのprojectから同じscriptを読み、差分を比較する」のようなpromptで有効です。`set_active_instance`と同様、`Name@hash`、hash prefix、stdioではport numberを使用できます。
 
-The server accepts the same value formats as `set_active_instance`: `Name@hash`, hash prefix, or (stdio) port number.
+## active instance未設定時
 
-## What happens with no active instance
+- **Unity Editorが1つだけ接続** → 自動的にそのinstanceを使用します。
+- **複数Editorが接続しactive未設定** → 利用可能なinstance一覧を含むerrorになります。`set_active_instance`後に再実行します。
 
-- **One Unity Editor connected** → it's used automatically.
-- **Multiple Editors connected and no active set** → the server errors with the available instance list. Call `set_active_instance` and retry.
+## HTTPとstdioの違い
 
-## HTTP vs stdio differences
+- **HTTP** — instance状態はMCP session（`MCP-Session-Id`）単位です。同じPython serverへ接続した複数clientが、それぞれ別のEditorを選べます。
+- **stdio** — clientごとにPython processが分かれるためport numberの省略指定も使え、session keyはsubprocessごとのUUIDです。
 
-- **HTTP**: instance state is keyed by the MCP session (`MCP-Session-Id`), so two MCP clients can target different Editors at the same time on the same Python server.
-- **Stdio**: port-number shorthand works because there's a separate Python process per client, and the session key is a per-subprocess UUID. HTTP shares one process and uses `Name@hash` exclusively.
+routingのkeyはsessionです。client idそのものではありません。
 
-The session is the *only* key. It is deliberately not the client id — see the routing contract for why.
+## 複数agentから1つのEditorを操作する場合
 
-## Running several agents against one Editor
+routingは「どのEditorへ送るか」を決めます。複数agentが同じEditorへ同時にcallする場合、Unity側は1 commandずつ実行します。受信loopは各commandの完了を待ってから次のframeを読むため、同時callは重ならずqueueされます。
 
-Routing decides *which* Editor a call reaches. It says nothing about what happens when several agents
-reach the same one at once, which is the other half of the multi-agent story.
+高負荷時は通常よりlatencyが伸びます。batchにしてもUnity側の処理throughput自体は大きく増えません。
 
-A single Editor executes one command at a time. Unity's receive loop awaits each command to completion
-before reading the next frame off the socket, so concurrent calls queue rather than overlap. Under a
-four-agent write load, cheap reads that normally take ~5 s stretched to ~17 s while another agent was
-churning the hierarchy, and recovered within a cycle or two once it stopped. Batching calls does not
-help: throughput stayed flat at roughly 2–3 seconds per call whether five or ten were issued together.
-
-Expect spurious "instance not found" errors. Resolving an instance runs before the call is dispatched,
-and a domain reload briefly empties the registry while the Editor re-registers, so calls landing in
-that window fail with:
+またdomain reload中はinstance registryが一時的に空になり、次のようなerrorが出ることがあります。
 
 ```
 Instance 'MyGame@a1b2c3d4' not found. Available: none.
 Read mcpforunity://instances for current sessions.
 ```
 
-`Available: none` is misleading. The Editor is usually alive and serving other calls a second or two
-either side. These failures are clean, because the call never reached Unity — nothing was applied.
+この場合、Editor自体は生きており、再登録の短いwindowにcallが重なっただけのことがあります。instance解決時点で失敗したcallはUnityへ届いていないため、副作用は発生していません。
 
-**Retrying is not free.** There is no idempotency key, so the server cannot tell a retry from a fresh
-command, and neither can Unity. Whether a failed command is safe to retry depends on how far it got:
+**ただしretryは常に安全ではありません。** idempotency keyは無いため、timeoutしたcommandがUnity側で既に実行中だった場合、同じcommandを再送すると二重適用になる可能性があります。
 
-| Where the command was when the server gave up | Effect | Safe to retry |
+| serverが失敗と判断した時点 | 影響 | retry |
 |---|---|---|
-| Not yet dispatched (instance resolution failed) | None | Yes |
-| Queued, never started (connection torn down) | None | Yes |
-| Already executing in Unity, exceeded the timeout | **Applied** — late result is discarded | No, applies twice |
+| dispatch前（instance解決失敗） | なし | 安全 |
+| queue中で未実行（connection切断） | なし | 安全 |
+| Unityで実行開始後にtimeout | **適用済み**。遅れて返った結果は破棄される | そのまま再実行しない |
 
-The last row is the one to watch. The command runs to completion and its result is dropped, so the
-caller is told it failed while the effect landed. It needs a command that exceeds the 30 second budget
-*after* Unity has begun executing it, which ordinary tool calls do not approach — but `execute_code`,
-long imports and test runs can. Treat `hint: "retry"` on those as "check before retrying", not
-"retry blindly".
+通常のtool callは30秒budgetへ近づきませんが、`execute_code`、長いimport、test実行では注意が必要です。`hint: "retry"`があっても、状態を確認してから再実行してください。
 
-None of this degraded the Editor itself. Four agents issuing 527 calls over eleven minutes left it
-alive and responsive, with memory growth proportional to the work done and flat thereafter.
+## 関連リファレンス
 
-## Related reference
-
-- [`set_active_instance`](/reference/tools/core/set_active_instance) — full tool reference
-- [`unity_instances` resource](/reference/resources) — discovery surface
-- [Instance Routing](/architecture/instance-routing) — the routing contract and its rationale
+- [`set_active_instance`](/reference/tools/core/set_active_instance) — tool詳細
+- [`unity_instances` resource](/reference/resources) — instance discovery
+- [インスタンスルーティング](/architecture/instance-routing) — routing contract

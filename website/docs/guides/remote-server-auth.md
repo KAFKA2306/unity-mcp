@@ -1,49 +1,42 @@
-# Remote Server API Key Authentication
+---
+title: リモートServerのAPI Key認証
+sidebar_label: リモートサーバー認証
+description: shared remote serviceとしてMCP for Unityを運用する場合のAPI key認証とsession分離を設定します。
+---
 
-When running the MCP for Unity server as a shared remote service, API key authentication ensures that only authorized users can access the server and that each user's Unity sessions are isolated from one another.
+# リモートServerのAPI Key認証
 
-This guide covers how to configure, deploy, and use the feature.
+MCP for Unity serverを共有remote serviceとして公開する場合、API keyで利用者を認証し、userごとにUnity sessionを分離できます。
 
-## Prerequisites
+## 前提条件
 
-### External Auth Service
+### 外部認証service
 
-You need an external HTTP endpoint that validates API keys. The server delegates all key validation to this endpoint rather than managing keys itself.
+API keyの検証はMCP server自身ではなく、外部HTTP endpointへ委譲します。endpointは次を満たす必要があります。
 
-The endpoint must:
+- `POST`を受ける
+- body: `{"api_key":"<key>"}`
+- keyの有効性と安定した`user_id`をJSONで返す
+- MCP serverからnetwork到達できる
 
-- Accept `POST` requests with a JSON body: `{"api_key": "<key>"}`
-- Return a JSON response indicating validity and the associated user identity
-- Be reachable from the MCP server over the network
+### HTTP transport
 
-See [Validation Contract](#validation-contract) for the full request/response specification.
+API key認証は`--transport http`でのみ利用できます。stdio modeには影響しません。
 
-### Transport Mode
+## server設定
 
-API key authentication is only available when running with HTTP transport (`--transport http`). It has no effect in stdio mode.
+| Argument | Environment variable | 既定 | 内容 |
+|---|---|---|---|
+| `--http-remote-hosted` | `UNITY_MCP_HTTP_REMOTE_HOSTED` | `false` | remote-hosted modeを有効化 |
+| `--api-key-validation-url URL` | `UNITY_MCP_API_KEY_VALIDATION_URL` | なし | key検証endpoint。remote-hostedでは必須 |
+| `--api-key-login-url URL` | `UNITY_MCP_API_KEY_LOGIN_URL` | なし | key発行・管理画面URL |
+| `--api-key-cache-ttl SECONDS` | `UNITY_MCP_API_KEY_CACHE_TTL` | `300` | 検証済みkeyのcache秒数 |
+| `--api-key-service-token-header HEADER` | `UNITY_MCP_API_KEY_SERVICE_TOKEN_HEADER` | なし | auth serviceへ送るservice-token header名 |
+| `--api-key-service-token TOKEN` | `UNITY_MCP_API_KEY_SERVICE_TOKEN` | なし | server-to-server認証token |
 
-## Server Configuration
+remote-hostedを有効にしてvalidation URLが無い場合、serverはstartup時にerrorで終了します。
 
-### CLI Arguments
-
-| Argument | Environment Variable | Default | Description |
-| -------- | -------------------- | ------- | ----------- |
-| `--http-remote-hosted` | `UNITY_MCP_HTTP_REMOTE_HOSTED` | `false` | Enable remote-hosted mode. Requires API key auth. |
-| `--api-key-validation-url URL` | `UNITY_MCP_API_KEY_VALIDATION_URL` | None | External endpoint to validate API keys (required). |
-| `--api-key-login-url URL` | `UNITY_MCP_API_KEY_LOGIN_URL` | None | URL where users can obtain or manage API keys. |
-| `--api-key-cache-ttl SECONDS` | `UNITY_MCP_API_KEY_CACHE_TTL` | `300` | How long validated keys are cached (seconds). |
-| `--api-key-service-token-header HEADER` | `UNITY_MCP_API_KEY_SERVICE_TOKEN_HEADER` | None | Header name for server-to-auth-service authentication. |
-| `--api-key-service-token TOKEN` | `UNITY_MCP_API_KEY_SERVICE_TOKEN` | None | Token value sent to the auth service for server authentication. |
-
-Environment variables take effect when the corresponding CLI argument is not provided. For boolean flags, set the env var to `true`, `1`, or `yes`.
-
-### Startup Validation
-
-The server validates its configuration at startup:
-
-- If `--http-remote-hosted` is set but `--api-key-validation-url` is not provided (and the env var is also unset), the server logs an error and exits with code 1.
-
-### Example
+### 起動例
 
 ```bash
 python -m src.main \
@@ -56,7 +49,7 @@ python -m src.main \
   --api-key-cache-ttl 120
 ```
 
-Or using environment variables:
+environment variableでも設定できます。
 
 ```bash
 export UNITY_MCP_TRANSPORT=http
@@ -65,39 +58,34 @@ export UNITY_MCP_HTTP_PORT=8080
 export UNITY_MCP_HTTP_REMOTE_HOSTED=true
 export UNITY_MCP_API_KEY_VALIDATION_URL=https://auth.example.com/api/validate-key
 export UNITY_MCP_API_KEY_LOGIN_URL=https://app.example.com/api-keys
-
 python -m src.main
 ```
 
-### Service Token (Optional)
+## service token
 
-If your auth service requires the MCP server to authenticate itself (server-to-server auth), configure a service token:
+auth service側もMCP serverを認証する場合はserver-to-server tokenを設定します。
 
 ```bash
 --api-key-service-token-header X-Service-Token \
 --api-key-service-token "your-server-secret"
 ```
 
-This adds the specified header to every validation request sent to the auth endpoint.
+validation endpointを外部から直接乱用されにくくするため、利用できる場合は設定を推奨します。
 
-We strongly recommend using this feature because it ensures that the entity requesting validation is the MCP server itself, not an imposter.
+## Unity plugin側
 
-## Unity Plugin Setup
+remote serverへ接続するuserはUnity Editorで次を設定します。
 
-When connecting to a remote-hosted server, Unity users need to provide their API key:
+1. **MCP for Unity** windowを開く
+2. connection modeにHTTP Remoteを選ぶ
+3. API Key fieldへkeyを入力する
+4. 必要なら **Get API Key** からlogin URLを開く
 
-1. Open the MCP for Unity window in the Unity Editor.
-2. Select HTTP Remote as the connection mode.
-3. Enter the API key in the API Key field. The key is stored in `EditorPrefs` (per-machine, not source-controlled).
-4. Click **Get API Key** to open the login URL in a browser if you need a new key. This fetches the URL from the server's `/api/auth/login-url` endpoint.
+keyは`EditorPrefs`へmachine単位で保存され、source controlには入りません。
 
-The API key is a one-time entry per machine. It persists across Unity sessions until explicitly cleared.
+## MCP client設定
 
-## MCP Client Configuration
-
-When an API key is configured, the Unity plugin's MCP client configurators automatically include the `X-API-Key` header in generated configuration files.
-
-Example generated config for **Cursor** (`~/.cursor/mcp.json`):
+API keyが設定されると、対応configuratorは`X-API-Key` headerを生成configへ追加します。
 
 ```json
 {
@@ -112,62 +100,54 @@ Example generated config for **Cursor** (`~/.cursor/mcp.json`):
 }
 ```
 
-Example for **Claude Code** (CLI):
+Claude Code例:
 
 ```bash
 claude mcp add --transport http mcp-for-unity http://remote-server:8080/mcp \
   --header "X-API-Key: <your-api-key>"
 ```
 
-Similar header injection works for VS Code, Windsurf, Cline, and other supported MCP clients.
+## remote-hosted modeで変わる動作
 
-## Behaviour Changes in Remote-Hosted Mode
+### MCP callは認証必須
 
-Enabling `--http-remote-hosted` changes several server behaviours compared to the default local mode:
+`/mcp`へのtool / resource requestは`X-API-Key`が必須です。missing / invalid keyはMCP errorになります。
 
-### Authentication Enforcement
+### WebSocket接続時にも認証する
 
-All MCP tool and resource calls require a valid API key. The `X-API-Key` header must be present on every HTTP request to the `/mcp` endpoint. If the key is missing or invalid, the middleware raises a `RuntimeError` that surfaces as an MCP error response.
+Unity pluginの`/hub/plugin` handshakeでもkeyを検証します。
 
-### WebSocket Auth Gate
+| 状態 | WebSocket close code | 意味 |
+|---|---|---|
+| keyなし | `4401` | API key required |
+| invalid key | `4403` | Invalid API key |
+| auth service障害 | `1013` | Try again later |
+| valid key | 接続成功 | `user_id`をconnection stateへ保存 |
 
-Unity plugins connecting via WebSocket (`/hub/plugin`) are validated during the handshake:
+### userごとにsessionを分離する
 
-| Scenario | WebSocket Close Code | Reason |
-| -------- | -------------------- | ------ |
-| No API key header | `4401` | API key required |
-| Invalid API key | `4403` | Invalid API key |
-| Auth service unavailable | `1013` | Try again later |
-| Valid API key | Connection accepted | user_id stored in connection state |
+userは自分と同じ`user_id`で接続したUnity instanceだけを参照・操作できます。他userのinstanceは一覧にも表示しません。
 
-### Session Isolation
+### instance自動選択を無効化する
 
-Each user can only see and interact with their own Unity instances. When User A calls `set_active_instance` or lists instances, they only see Unity editors that connected with User A's API key. User B's sessions are invisible to User A.
+local modeでは接続instanceが1つなら自動選択しますが、remote-hostedでは明示的に`set_active_instance`を呼びます。候補は`mcpforunity://instances`から取得します。
 
-### Auto-Select Disabled
+### unauthenticated REST routeを無効化する
 
-In local mode, the server automatically selects the sole connected Unity instance. In remote-hosted mode, this auto-selection is disabled. Users must explicitly call `set_active_instance` with a `Name@hash` from the `mcpforunity://instances` resource.
-
-### CLI Routes Disabled
-
-The following REST endpoints are disabled in remote-hosted mode to prevent unauthenticated access:
+remote-hostedでは次を無効化します。
 
 - `POST /api/command`
 - `GET /api/instances`
 - `GET /api/custom-tools`
 
-### Endpoints Always Available
+次は認証に関係なく利用できます。
 
-These endpoints remain accessible regardless of auth:
+- `GET /health`
+- `GET /api/auth/login-url`
 
-| Endpoint | Method | Purpose |
-| -------- | ------ | ------- |
-| `/health` | GET | Health check for load balancers and monitoring |
-| `/api/auth/login-url` | GET | Returns the login URL for API key management |
+## validation contract
 
-## Validation Contract
-
-### Request
+request:
 
 ```http
 POST <api-key-validation-url>
@@ -178,13 +158,7 @@ Content-Type: application/json
 }
 ```
 
-If a service token is configured, an additional header is sent:
-
-```http
-<service-token-header>: <service-token-value>
-```
-
-### Response (Valid Key)
+valid response:
 
 ```json
 {
@@ -194,11 +168,7 @@ If a service token is configured, an additional header is sent:
 }
 ```
 
-- `valid` (bool, required): Must be `true`.
-- `user_id` (string, required): Stable identifier for the user. Used for session isolation.
-- `metadata` (object, optional): Arbitrary metadata stored alongside the validation result.
-
-### Response (Invalid Key)
+invalid response:
 
 ```json
 {
@@ -207,55 +177,29 @@ If a service token is configured, an additional header is sent:
 }
 ```
 
-- `valid` (bool, required): Must be `false`.
-- `error` (string, optional): Human-readable reason.
+HTTP `401`もinvalid keyとして扱います。
 
-### Response (HTTP 401)
+- request timeout: 5秒
+- retry: 1回、100ms backoff
+- error時: deny by default
+- 5xx / timeout / network errorはcacheせず、次回requestで再検証
 
-A `401` status code is also treated as an invalid key (no body parsing required).
+## トラブルシューティング
 
-### Timeouts and Retries
+**全tool callで`API key authentication required`**  
+client configに`X-API-Key`が入っているか、Unity plugin側にkeyを設定したか確認します。
 
-- Request timeout: 5 seconds
-- Retries: 1 (with 100ms backoff)
-- Failure mode: deny by default (treated as invalid on any error)
+**serverがcode 1ですぐ終了する**  
+`--http-remote-hosted`には`--api-key-validation-url`または`UNITY_MCP_API_KEY_VALIDATION_URL`が必要です。
 
-Transient failures (5xx, timeouts, network errors) are **not cached**, so subsequent requests will retry the auth service.
+**WebSocketが4401で閉じる**  
+Unity pluginがAPI keyを送っていません。
 
-## Error Reference
+**WebSocketが1013で閉じる**  
+auth serviceへ到達できません。MCP serverからvalidation URLへのnetwork経路を確認します。
 
-| Context | Condition | Response |
-| ------- | --------- | -------- |
-| MCP tool/resource | Missing API key (remote-hosted) | `RuntimeError` → MCP `isError: true` |
-| MCP tool/resource | Invalid API key | `RuntimeError` → MCP `isError: true` |
-| WebSocket connect | Missing API key | Close `4401` "API key required" |
-| WebSocket connect | Invalid API key | Close `4403` "Invalid API key" |
-| WebSocket connect | Auth service down | Close `1013` "Try again later" |
-| `/api/auth/login-url` | Login URL not configured | HTTP `404` with admin guidance message |
-| Server startup | Remote-hosted without validation URL | `SystemExit(1)` |
+**自分のUnity instanceが見えない**  
+Unity pluginとMCP clientが同じ`user_id`へ解決されるAPI keyを使用しているか確認します。
 
-## Troubleshooting
-
-### "API key authentication required" error on every tool call
-
-The server is in remote-hosted mode but no API key is being sent. Ensure the MCP client configuration includes the `X-API-Key` header, or set it in the Unity plugin's connection settings.
-
-### Server exits immediately with code 1
-
-The `--http-remote-hosted` flag requires `--api-key-validation-url`. Provide the URL via CLI argument or `UNITY_MCP_API_KEY_VALIDATION_URL` environment variable.
-
-### WebSocket connection closes with 4401
-
-The Unity plugin is not sending an API key. Enter the key in the MCP for Unity window's connection settings.
-
-### WebSocket connection closes with 1013
-
-The external auth service is unreachable. Check network connectivity between the MCP server and the validation URL. The Unity plugin can retry the connection.
-
-### User cannot see their Unity instance
-
-Session isolation is active. The Unity editor and the MCP client must use API keys that resolve to the same `user_id`. Verify that the Unity plugin's WebSocket connection and the MCP client's HTTP requests use the same API key.
-
-### Stale auth after key rotation
-
-Validated keys are cached for `--api-key-cache-ttl` seconds (default: 300). After rotating or revoking a key, there is a delay equal to the TTL before the old key stops working. Lower the TTL for faster revocation at the cost of more frequent validation requests.
+**key revoke後もしばらく通る**  
+検証済みkeyは`--api-key-cache-ttl`秒cacheされます。より早いrevokeが必要ならTTLを短くします。

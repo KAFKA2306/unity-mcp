@@ -62,7 +62,7 @@ const copyByLocale = {
   ja: {
     all: "すべて",
     records: "2026年の記録",
-    sourceFamilies: "情報源ファミリー",
+    sourceFamilies: "情報源の種類",
     resolved: "解決済み",
     workarounds: "回避策あり",
     unresolved: "未解決",
@@ -87,6 +87,7 @@ const copyByLocale = {
     related: "同一・類似シグネチャ",
     exact: "完全一致",
     similar: "類似",
+    unknown: "不明",
     statusLabels: {
       resolved: "解決済み",
       workaround: "回避策あり",
@@ -94,6 +95,34 @@ const copyByLocale = {
       unknown: "不明",
     },
   },
+};
+
+const japaneseStages = {
+  setup: "セットアップ",
+  launch: "起動",
+  import: "インポート",
+  compile: "コンパイル",
+  build: "ビルド",
+  upload: "アップロード",
+  validation: "検証",
+  runtime: "実行時",
+  "project creation": "プロジェクト作成",
+  "avatar build": "アバタービルド",
+  "manual bake": "手動Bake",
+  "code execution": "コード実行",
+  "launch / package resolution": "起動 / パッケージ解決",
+  "avatar optimization": "アバター最適化",
+  "build optimization": "ビルド最適化",
+  "play mode / recompilation": "Play Mode / 再コンパイル",
+  "package install": "パッケージ導入",
+  "avatar import": "アバターインポート",
+  "build / validation": "ビルド / 検証",
+  "build / upload": "ビルド / アップロード",
+  "performance validation": "パフォーマンス検証",
+  "world upload validation": "ワールドアップロード検証",
+  "project launch": "プロジェクト起動",
+  "runtime rendering": "実行時レンダリング",
+  "optimization / runtime": "最適化 / 実行時",
 };
 
 function values(key) {
@@ -191,14 +220,24 @@ function matches(record, filters) {
   return true;
 }
 
-function Select({ label, name, value, options, onChange, allLabel }) {
+function displayValue(value, locale, copy) {
+  if (locale !== "en" && value === "unknown") return copy.unknown;
+  return value;
+}
+
+function displayStage(value, locale) {
+  if (locale === "en") return value;
+  return japaneseStages[value] ?? value;
+}
+
+function Select({ label, name, value, options, onChange, allLabel, optionLabel = (option) => option }) {
   return (
     <label className={styles.field}>
       <span>{label}</span>
       <select name={name} value={value} onChange={onChange}>
         <option value="">{allLabel}</option>
         {options.map((option) => (
-          <option key={option} value={option}>{option}</option>
+          <option key={option} value={option}>{optionLabel(option)}</option>
         ))}
       </select>
     </label>
@@ -207,7 +246,8 @@ function Select({ label, name, value, options, onChange, allLabel }) {
 
 export default function FailureKB() {
   const { i18n } = useDocusaurusContext();
-  const copy = copyByLocale[i18n.currentLocale] ?? copyByLocale.ja;
+  const locale = i18n.currentLocale;
+  const copy = copyByLocale[locale] ?? copyByLocale.ja;
   const [filters, setFilters] = useState(emptyFilters);
   const [ready, setReady] = useState(false);
 
@@ -258,9 +298,9 @@ export default function FailureKB() {
           />
         </label>
         <Select label={copy.component} name="component" value={filters.component} options={values("component")} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.stage} name="stage" value={filters.stage} options={values("stage")} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.status} name="status" value={filters.status} options={values("status")} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.platform} name="platform" value={filters.platform} options={values("platform")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.stage} name="stage" value={filters.stage} options={values("stage")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayStage(option, locale)} />
+        <Select label={copy.status} name="status" value={filters.status} options={values("status")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => copy.statusLabels[option] ?? option} />
+        <Select label={copy.platform} name="platform" value={filters.platform} options={values("platform")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayValue(option, locale, copy)} />
         <Select label={copy.unity} name="unity" value={filters.unity} options={values("unity_version")} onChange={onChange} allLabel={copy.all} />
         <Select label={copy.vrcsdk} name="vrcsdk" value={filters.vrcsdk} options={values("vrcsdk_version")} onChange={onChange} allLabel={copy.all} />
         <Select label={copy.package} name="package" value={filters.package} options={values("package")} onChange={onChange} allLabel={copy.all} />
@@ -283,11 +323,11 @@ export default function FailureKB() {
               </div>
               <h3>{record.title}</h3>
               {record.error_signature !== "unknown" && <pre className={styles.signature}>{record.error_signature}</pre>}
-              <p>{record.symptom}</p>
+              <p>{displayValue(record.symptom, locale, copy)}</p>
               <div className={styles.chips}>
                 <span>{record.component}</span>
-                <span>{record.stage}</span>
-                {(record.platforms ?? []).map((platform) => <span key={platform}>{platform}</span>)}
+                <span>{displayStage(record.stage, locale)}</span>
+                {(record.platforms ?? []).map((platform) => <span key={platform}>{displayValue(platform, locale, copy)}</span>)}
                 {record.unity_version !== "unknown" && <span>Unity {record.unity_version}</span>}
                 {record.vrcsdk_version !== "unknown" && <span>VRCSDK {record.vrcsdk_version}</span>}
               </div>
@@ -295,12 +335,12 @@ export default function FailureKB() {
               <details className={styles.details}>
                 <summary>{copy.evidence}</summary>
                 <dl>
-                  <dt>{copy.trigger}</dt><dd>{record.trigger}</dd>
-                  <dt>{copy.rootCause}</dt><dd>{record.root_cause}</dd>
-                  <dt>{copy.solution}</dt><dd>{record.solution}</dd>
-                  <dt>{copy.workaround}</dt><dd>{record.workaround}</dd>
+                  <dt>{copy.trigger}</dt><dd>{displayValue(record.trigger, locale, copy)}</dd>
+                  <dt>{copy.rootCause}</dt><dd>{displayValue(record.root_cause, locale, copy)}</dd>
+                  <dt>{copy.solution}</dt><dd>{displayValue(record.solution, locale, copy)}</dd>
+                  <dt>{copy.workaround}</dt><dd>{displayValue(record.workaround, locale, copy)}</dd>
                   <dt>{copy.packages}</dt>
-                  <dd>{(record.packages ?? []).map((item) => `${item.name} ${item.version}`).join(", ")}</dd>
+                  <dd>{(record.packages ?? []).map((item) => `${item.name} ${displayValue(item.version, locale, copy)}`).join(", ")}</dd>
                   <dt>{copy.sources}</dt>
                   <dd>
                     {(record.source_urls ?? []).map((url) => (

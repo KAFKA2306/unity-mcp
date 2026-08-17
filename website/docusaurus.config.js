@@ -10,9 +10,6 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Count MCP client configurators at build time so the homepage stats
-// row stays accurate forever. Falls back to 0 if the directory moves
-// (build still succeeds; the component renders the literal number).
 function countConfigurators() {
   const dir = resolve(__dirname, '..', 'MCPForUnity', 'Editor', 'Clients', 'Configurators');
   if (!existsSync(dir)) return 0;
@@ -59,10 +56,9 @@ const baseUrl = '/unity-mcp/';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'MCP for Unity',
-  tagline: 'AI-driven game development for the Unity Editor',
+  tagline: 'AIアシスタントからUnity Editorを操作するためのModel Context Protocol連携',
   favicon: 'img/favicon.png',
 
-  // Hosted on this repository's GitHub Pages site.
   url: 'https://kafka2306.github.io',
   baseUrl,
 
@@ -71,8 +67,6 @@ const config = {
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
 
-  // Build-time data the homepage components read via siteConfig.customFields.
-  // Keeps stats accurate without a hand-maintained constant.
   customFields: {
     latestVersion,
     toolCount,
@@ -83,8 +77,6 @@ const config = {
 
   onBrokenLinks: 'throw',
 
-  // Typography: Satoshi (Fontshare) for body/headings, JetBrains Mono
-  // (Google Fonts) for code. Loaded via <link> in the document head.
   headTags: [
     {
       tagName: 'link',
@@ -121,10 +113,6 @@ const config = {
   ],
 
   markdown: {
-    // Parse .md as CommonMark (no JSX, no {expression} parsing) and .mdx
-    // as MDX. Auto-generated tool reference pages contain literals like
-    // `{name: value}` and `<T>` in descriptions — MDX would treat those
-    // as JS expressions / JSX tags and refuse to compile.
     format: 'detect',
     hooks: {
       onBrokenMarkdownLinks: 'warn',
@@ -154,7 +142,7 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.js',
-          editUrl: 'https://github.com/CoplayDev/unity-mcp/edit/beta/website/',
+          editUrl: 'https://github.com/KAFKA2306/unity-mcp/edit/beta/website/',
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
         },
@@ -195,7 +183,7 @@ const config = {
       navbar: {
         title: 'MCP for Unity',
         logo: {
-          alt: 'MCP for Unity logo',
+          alt: 'MCP for Unity ロゴ',
           src: 'img/logo-mark.svg',
           srcDark: 'img/logo-mark.svg',
         },
@@ -204,16 +192,16 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'mainSidebar',
             position: 'left',
-            label: 'Docs',
+            label: 'ドキュメント',
           },
           {
             to: '/reference/tools',
-            label: 'Reference',
+            label: 'リファレンス',
             position: 'left',
           },
           {
             to: '/releases',
-            label: 'Releases',
+            label: 'リリース',
             position: 'left',
           },
           {
@@ -221,16 +209,16 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/CoplayDev/unity-mcp',
+            href: 'https://github.com/KAFKA2306/unity-mcp',
             position: 'right',
             className: 'header-icon-link header-github-link',
-            'aria-label': 'GitHub repository',
+            'aria-label': 'GitHubリポジトリ',
           },
           {
             href: 'https://discord.gg/y4p8KfzrN4',
             position: 'right',
             className: 'header-icon-link header-discord-link',
-            'aria-label': 'Discord',
+            'aria-label': 'Discordコミュニティ',
           },
         ],
       },
@@ -238,29 +226,29 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'ドキュメント',
             items: [
-              { label: 'Getting Started', to: '/getting-started' },
-              { label: 'Guides', to: '/guides/cli' },
-              { label: 'Reference', to: '/reference/tools/' },
+              { label: 'はじめに', to: '/getting-started' },
+              { label: 'ガイド', to: '/guides/cli' },
+              { label: 'リファレンス', to: '/reference/tools/' },
             ],
           },
           {
-            title: 'Community',
+            title: 'コミュニティ',
             items: [
               { label: 'Discord', href: 'https://discord.gg/y4p8KfzrN4' },
-              { label: 'GitHub Issues', href: 'https://github.com/CoplayDev/unity-mcp/issues' },
+              { label: 'GitHub Issues', href: 'https://github.com/KAFKA2306/unity-mcp/issues' },
             ],
           },
           {
-            title: 'More',
+            title: 'その他',
             items: [
-              { label: 'GitHub', href: 'https://github.com/CoplayDev/unity-mcp' },
+              { label: 'GitHub', href: 'https://github.com/KAFKA2306/unity-mcp' },
               { label: 'PyPI', href: 'https://pypi.org/p/mcpforunityserver' },
             ],
           },
         ],
-        copyright: `MIT licensed. Sponsored and maintained by <a href="https://www.tryaura.dev/">Aura</a>. Not affiliated with Unity Technologies.`,
+        copyright: `MITライセンス。上流プロジェクトは<a href="https://www.tryaura.dev/">Aura</a>の支援・保守によるものです。Unity Technologiesとは提携していません。`,
       },
       prism: {
         theme: prismThemes.github,

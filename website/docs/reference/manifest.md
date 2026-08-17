@@ -1,37 +1,35 @@
 ---
 id: manifest
 slug: /reference/manifest
-title: manifest.json Reference
+title: manifest.jsonリファレンス
 sidebar_label: manifest.json
-description: The repo-root manifest.json — what it describes, why it ships, and which fields are authoritative for the MCP marketplace bundle.
+description: repository rootのmanifest.jsonが表すMCP package metadataと各fieldの役割です。
 ---
 
-# `manifest.json` Reference
+# `manifest.json`リファレンス
 
-The `manifest.json` at the repo root describes MCP for Unity as a package — independent of Unity's UPM `package.json` (which lives at `MCPForUnity/package.json`). It's used by MCP marketplaces and aggregators to surface the project's metadata, server invocation, and tool catalog.
+repository rootの`manifest.json`は、Unity UPM用`MCPForUnity/package.json`とは別に、MCP marketplace / aggregator向けのpackage metadataを記述します。
 
-If you're adding a new MCP tool, update [the tool registry](/architecture/python-layers) and let CI's drift check fail any stale entry — the generator keeps the docs in sync. The `tools` block in `manifest.json` is a separate, hand-maintained surface (see Notes below).
+## top-level field
 
-## Top-level fields
-
-| Field | Type | Description |
+| Field | Type | 内容 |
 |---|---|---|
-| `manifest_version` | string | Schema version for this manifest (currently `"0.3"`) |
-| `name` | string | Display name shown by aggregators |
-| `version` | string | Semver of the current release |
-| `description` | string | One-line product description |
-| `author.name` | string | Maintainer's display name |
-| `author.url` | string | Maintainer's website |
-| `repository.type` | string | `"git"` |
-| `repository.url` | string | Canonical repo URL |
-| `homepage` | string | Project homepage |
-| `documentation` | string | Docs landing URL |
-| `support` | string | Where to file issues |
-| `icon` | string | Path to a square icon, relative to the manifest |
+| `manifest_version` | string | manifest schema version |
+| `name` | string | 表示名 |
+| `version` | string | release semver |
+| `description` | string | product説明 |
+| `author.name` | string | maintainer表示名 |
+| `author.url` | string | maintainer URL |
+| `repository.type` | string | 通常`git` |
+| `repository.url` | string | canonical repository URL |
+| `homepage` | string | homepage |
+| `documentation` | string | docs landing URL |
+| `support` | string | Issue等のsupport URL |
+| `icon` | string | manifestからの相対icon path |
 
 ## `server`
 
-Tells aggregators how to launch the Python server.
+Python serverの起動方法をaggregatorへ伝えます。
 
 ```json
 "server": {
@@ -45,25 +43,25 @@ Tells aggregators how to launch the Python server.
 }
 ```
 
-- **`type`** — runtime family. Currently always `"python"`.
-- **`entry_point`** — file an aggregator would point a Python interpreter at if it weren't using `uvx`.
-- **`mcp_config.command`** — recommended launch command. `uvx` keeps the dependency tree managed without a global install.
-- **`mcp_config.args`** — invocation arguments. Default transport is `http`; pass `--transport stdio` to switch.
-- **`mcp_config.env`** — environment variables to set before launching (telemetry opt-outs, log levels, etc.).
+- `type` — runtime family
+- `entry_point` — server entry file
+- `mcp_config.command` / `args` — 推奨起動command
+- `mcp_config.env` — 起動時environment variable
 
 ## `tools`
 
-A flat array of `{ name, description }` entries listing every MCP tool the server exposes. Aggregators use it for search and category surfaces without having to introspect the live registry.
+`{name, description}`のflat arrayで、marketplaceがlive serverを起動せずtool catalogを表示するために使います。
 
-This list is hand-maintained for now. The authoritative count and metadata live in the Python tool registry — see the [Tool reference](/reference/tools) for the generated catalog with full parameter docs.
+parameterを含む最も詳しいtool metadataの正本はPython registryです。[Tool reference](/reference/tools)はそこから自動生成されます。
 
-## Notes
+## 他のmanifestとの違い
 
-- `manifest.json` is NOT the Unity UPM manifest. That's `MCPForUnity/package.json` (name: `com.coplaydev.unity-mcp`).
-- The Python PyPI package metadata lives in `Server/pyproject.toml` (name: `mcpforunityserver`).
-- All three — `manifest.json`, `package.json`, `pyproject.toml` — are independent surfaces with overlapping but non-identical fields. A rename touches all three.
-- An MCPB bundle is produced from `manifest.json` via [`tools/generate_mcpb.py`](https://github.com/CoplayDev/unity-mcp/blob/beta/tools/generate_mcpb.py).
+- MCP marketplace: repository root `manifest.json`
+- Unity UPM: `MCPForUnity/package.json`
+- Python package: `Server/pyproject.toml`
 
-## Where it ships
+似たmetadataを持ちますが別surfaceです。versionやrenameを行う場合はそれぞれの役割を確認します。
 
-The current `manifest.json` is at the repo root: [`manifest.json`](https://github.com/CoplayDev/unity-mcp/blob/beta/manifest.json).
+MCPB bundle生成には`tools/generate_mcpb.py`を使用します。
+
+現在のmanifest自体はrepository rootの`manifest.json`を正本として確認してください。
