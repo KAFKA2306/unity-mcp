@@ -1,0 +1,63 @@
+{
+  "2026-vrchat-sdk-all-pipe-instances-busy": {
+    "title": "VRChat SDKビルドが「All pipe instances are busy」で失敗することがある",
+    "symptom": "まれにVRChat SDKのビルドが「All pipe instances are busy」エラーで失敗する。",
+    "trigger": "まれなビルド時条件で発生する。リリースノートには確定的な再現条件は記載されていない。",
+    "root_cause": "Unity側の問題。VRChatのリリースノートでは根本原因は特定されていない。",
+    "workaround": "Unity Editorを再起動してビルドを再試行する。"
+  },
+  "2026-vcc-646-avatar-package-resolve": {
+    "title": "VCCでcom.vrchat.avatars ~3.10.xを解決できずアバタープロジェクトを作成できない",
+    "symptom": "Unity 2022 Avatar Projectの作成直後に失敗し、VCCがVRChat Avatarsパッケージを解決できないと表示する。",
+    "trigger": "VCC 2.4.5で新しいUnity 2022 Avatar Projectを作成する。"
+  },
+  "2026-modular-avatar-1934-destination-array": {
+    "title": "Modular Avatarビルドで「Destination array was not long enough」が発生する",
+    "symptom": "ReactiveObjectPass.GenerateNaNimatedBonesでSystem.ArgumentExceptionが発生し、アバタービルドに失敗する。",
+    "trigger": "報告されたLapwing環境でトグルを作成し、MA Object Toggleで衣装を対象にした後、MA Shape Changerで選択したHairPonyシェイプを削除する。"
+  },
+  "2026-ndmf-816-manual-bake-copyasset": {
+    "title": "NDMF Manual BakeでCopyAsset直後のコピー先アセットを読み込めない",
+    "symptom": "Manual Bake中にCopyAssetはtrueを返すが、直後のLoadAssetAtPathではコピー先がnullになる。同じプラグイン処理はPlay Modeの自動ビルドでは成功する。",
+    "trigger": "Manual Bake中に出力フォルダを作成し、新規アセットをCopyAssetで複製して直後に読み込むNDMF生成パスを実行する。"
+  },
+  "2026-unity-mcp-1186-bom-execute-code": {
+    "title": "MCP for Unityのexecute_codeはUTF-8 BOMで始まるコードをコンパイルできない",
+    "symptom": "execute_codeへ渡した正しいC#でも、先頭にUTF-8 BOM文字があるとCodeDomコンパイルに失敗する。",
+    "trigger": "先頭文字がU+FEFFのC#をexecute_codeへ渡す。",
+    "workaround": "コンパイル前に入力コード先頭のU+FEFFを除去する。"
+  },
+  "2026-alcom-3061-redirectionguard-junction": {
+    "title": "ALCOMの更新後再起動でUnityや子プロセスがNTFSジャンクションをたどれなくなる",
+    "symptom": "アプリ内更新からの再起動後、Unity Package Managerや子のuvプロセスがユーザー作成のNTFSジャンクションをたどれなくなる。",
+    "trigger": "ALCOM 1.1.7から1.1.8へアプリ内更新し、更新処理から再起動されたALCOMからUnityを起動する。",
+    "workaround": "更新処理から再起動されたALCOMを完全終了し、ALCOMを通常起動してからUnityを起動し直す。"
+  },
+  "2026-avatar-optimizer-1697-bool-default": {
+    "title": "Avatar Optimizerが既定値trueのAnimator Booleanの挙動を変えることがある",
+    "symptom": "Trace And Optimize後、既定値trueのAnimator Booleanがfalseとして扱われたように振る舞い、想定したギミック状態が変わる。",
+    "trigger": "既定値trueのBooleanに依存し、Entry Exit to Blend Tree変換の対象になるAnimatorレイヤーを最適化する。",
+    "root_cause": "Entry Exit to Blend Tree最適化が、報告されたBoolean既定値trueの挙動を保持していない。",
+    "workaround": "Trace And Optimizeのデバッグ設定「Skip Entry Exit To Blend Tree」を有効にする。"
+  },
+  "2026-liltoon-423-audiolink-mask-removed": {
+    "title": "lilToonのビルド時最適化でNDMFベイク中にAudioLink頂点マスクが削除される",
+    "symptom": "NDMF Apply on PlayまたはManual Bake後、AudioLinkの頂点マスクテクスチャが削除され、意図したマスク外の頂点まで反応する。",
+    "trigger": "報告されたRim／最上位UVモードと専用頂点マスクを使ったAudioLink設定でNDMFベイクを実行する。",
+    "workaround": "NDMF Apply on Playを無効にするか、報告でマスクが保持された最上位UV Mode「Mask」を使用する。"
+  },
+  "2026-gesture-manager-94-recompile-prefab-overwrite": {
+    "title": "Gesture ManagerのPlay Mode中の再コンパイルでコンポーネント重複とPrefab上書きが起きることがある",
+    "symptom": "Gesture Manager経由のPlay Mode中にスクリプト再コンパイルが起きると、PhysBoneやContact Receiverが重複し、Prefabが強制的に書き換えられてRevertでも戻せなくなることがある。",
+    "trigger": "Gesture ManagerからPlay Modeへ入り、C#スクリプトを変更・保存して再コンパイルを発生させた後、Play Modeを終了する。",
+    "solution": "Issueで修正済みとされたGesture Managerのプレリリース版を使用する。",
+    "workaround": "この検証経路ではUnity標準Play ModeまたはAvatars 3.0 Emulatorを使用する。報告者はそれらでは再現していない。"
+  },
+  "2026-textranstool-1101-vram-leak": {
+    "title": "TexTransTool TextureBlenderがNDMF Previewの反復更新でVRAMをリークする",
+    "symptom": "NDMF Preview中にTextureBlender設定を変更するとVRAM使用量が蓄積し、最終的にEditor再起動が必要になる。",
+    "trigger": "NDMF PreviewでTextureBlenderを繰り返し更新し、プレビュー更新ごとに新しいRenderTextureを割り当てる。",
+    "root_cause": "IssueではaddTexがdisposeされず、プールされたRenderTextureが使用中のままとなって再利用できないことが指摘されている。",
+    "workaround": "Unity Editorを再起動して蓄積したVRAMを解放する。予防的な回避策はIssue本文には記載されていない。"
+  }
+}
