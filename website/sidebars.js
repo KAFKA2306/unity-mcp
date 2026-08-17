@@ -36,6 +36,7 @@ const sidebars = {
         'guides/troubleshooting',
       ],
     },
+    'failures',
     {
       type: 'category',
       label: 'Reference',
