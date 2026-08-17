@@ -1,20 +1,20 @@
 ---
 id: claude-code-cli
 slug: /guides/claude-code-cli
-title: Install or Repair Claude Code CLI
+title: Claude Code CLIの導入・修復
 sidebar_label: Claude Code CLI
-description: Install or repair the Claude Code CLI (claude) so MCP for Unity can launch it.
+description: MCP for Unityから起動できるようClaude Code CLI（claude）を導入または修復します。
 ---
 
-# Install or Repair Claude Code CLI
+# Claude Code CLIの導入・修復
 
-You need the Claude Code CLI (`claude`) available on your system.
+システム上でClaude Code CLI（`claude`）を実行できる必要があります。
 
-:::caution Switching transport requires a restart
-If you change from `http` to `stdio` (or vice versa) in the MCP for Unity window, **restart Claude Code** for it to pick up the change.
+:::caution 通信方式を変えたら再起動が必要
+MCP for Unityのwindowで`http`と`stdio`を切り替えた場合、変更を反映するため**Claude Codeを再起動**してください。
 :::
 
-## Recommended (native installers)
+## 推奨: 公式installer
 
 **macOS / Linux / WSL:**
 
@@ -30,43 +30,43 @@ irm https://claude.ai/install.ps1 | iex
 claude doctor
 ```
 
-## Alternative: npm via NVM (installs under `~/.nvm`)
+## 別案: NVM経由のnpm
 
 ```bash
-# Install / select a Node version
+# Node versionを導入・選択
 nvm install v21.7.1
 nvm use v21.7.1
 
-# Install Claude Code CLI into this Node's global prefix
+# Claude Code CLIをこのNodeのglobal prefixへ導入
 npm install -g @anthropic-ai/claude-code
 
-# Verify it's under NVM
+# NVM配下にあることを確認
 which claude
 claude --version
 ```
 
-## Alternative: npm with system / Homebrew Node
+## 別案: system / Homebrew Nodeのnpm
 
 ```bash
-# If you don't have Node yet (macOS):
+# macOSでNodeが無い場合
 brew install node
 
-# Install Claude Code CLI globally
+# Claude Code CLIをglobalに導入
 npm install -g @anthropic-ai/claude-code
 
-# Verify it's on PATH (typical: /opt/homebrew/bin/claude or /usr/local/bin/claude)
+# PATH上にあることを確認
 which claude
 claude --version
 ```
 
-## macOS PATH gotcha
+## macOSのPATHに注意
 
-On macOS, Unity launched from Finder / Hub may not inherit your shell PATH. If `claude` isn't found:
+FinderやUnity Hubから起動したUnityはshellのPATHを引き継がないことがあります。`claude`が見つからない場合は、次のどちらかを行います。
 
-- **Either** launch Hub from Terminal (so PATH propagates),
-- **or** use the MCP for Unity window's **"Choose Claude Install Location"** to set the absolute path.
+- TerminalからUnity Hubを起動してPATHを引き継ぐ
+- MCP for Unity windowの **Choose Claude Install Location** から`claude`の絶対pathを指定する
 
-## Related troubleshooting
+## 関連するトラブルシューティング
 
-- macOS dyld ICU library errors: see [Common Setup Problems → macOS Claude CLI dyld error](/guides/troubleshooting#macos-claude-cli-fails-to-start-dyld-icu-library-not-loaded)
-- "Claude Not Found" in the Register button: see the FAQ in [Common Setup Problems](/guides/troubleshooting#faq--claude-code)
+- macOSのdyld / ICU library error: [トラブルシューティング](/guides/troubleshooting)を参照
+- Register buttonに`Claude Not Found`と出る場合: 同じく[トラブルシューティング](/guides/troubleshooting)を参照
