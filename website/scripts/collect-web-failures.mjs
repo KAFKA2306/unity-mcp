@@ -20,7 +20,7 @@ const failure = /error|fail|failed|failure|crash|broken|missing|cannot|can't|won
 
 function decode(value = "") {
   return value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
-    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '\"').replace(/&#39;/g, "'")
     .replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
@@ -96,7 +96,7 @@ for (const required of ["rss", "sitemap", "manual_url"]) {
   if (!modes.has(required)) throw new Error(`enabled web source registry missing ${required}`);
 }
 if (canonical.length < 20) throw new Error(`web canonical corpus below 20: ${canonical.length}`);
-if (japaneseCanonical.length < 7) throw new Error(`Japanese web canonical corpus below 7: ${japaneseCanonical.length}`);
+if (japaneseCanonical.length < 12) throw new Error(`Japanese web canonical corpus below 12: ${japaneseCanonical.length}`);
 if (japaneseSources.length < 3) throw new Error(`enabled Japanese web sources below 3: ${japaneseSources.length}`);
 const domains = new Set(canonical.flatMap((record) => record.source_urls).map((url) => new URL(url).hostname));
 if (domains.size < 5) throw new Error(`web canonical corpus requires >=5 domains; got ${domains.size}`);
