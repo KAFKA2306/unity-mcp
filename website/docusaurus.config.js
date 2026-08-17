@@ -132,16 +132,16 @@ const config = {
   },
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'ja'],
+    defaultLocale: 'ja',
+    locales: ['ja', 'en'],
     localeConfigs: {
-      en: {
-        label: 'English',
-        htmlLang: 'en',
-      },
       ja: {
         label: '日本語',
         htmlLang: 'ja-JP',
+      },
+      en: {
+        label: 'English',
+        htmlLang: 'en',
       },
     },
   },
@@ -176,14 +176,11 @@ const config = {
         highlightSearchTermsOnTargetPage: true,
       },
     ],
-    // Redirects: as docs land in M2+, add entries here so external links
-    // pointing at old /docs/*.md paths on GitHub keep working.
     [
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-          // Example pattern (populated as content migrates in M2):
-          // { from: '/docs/guides/CLI_USAGE', to: '/guides/cli' },
+          { from: '/ja/failures', to: '/failures' },
         ],
       },
     ],
