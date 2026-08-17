@@ -13,6 +13,9 @@ const recordFiles = fs.readdirSync(dataRoot).filter((name) => /^records(?:-[a-z0
 const sourceFiles = fs.readdirSync(dataRoot).filter((name) => /^sources(?:-[a-z0-9-]+)?\.json$/.test(name)).sort();
 const records = recordFiles.flatMap((name) => readJson(path.join(dataRoot, name)));
 const sources = sourceFiles.flatMap((name) => readJson(path.join(dataRoot, name)));
+const japaneseWebFile = path.join(dataRoot, "records-web-ja-2026.json");
+const japaneseWebRecords = fs.existsSync(japaneseWebFile) ? readJson(japaneseWebFile) : [];
+const enabledJapaneseSources = sources.filter((source) => source.enabled && (source.languages ?? []).includes("ja"));
 
 function countBy(values) {
   const counts = {};
@@ -80,13 +83,17 @@ if (sourceReportArg >= 0 && process.argv[sourceReportArg + 1] && fs.existsSync(p
   sourceReport = readJson(process.argv[sourceReportArg + 1]);
 }
 
+const sourceLanguages = countBy(sources.flatMap((source) => source.languages ?? []));
 const metrics = {
   generated_at: new Date().toISOString(),
   registered_sources: sources.length,
   enabled_sources: sources.filter((source) => source.enabled).length,
+  enabled_japanese_sources: enabledJapaneseSources.length,
   checked_sources: sourceReport?.report?.length ?? null,
   source_status: sourceReport ? { success: sourceReport.success ?? 0, blocked: sourceReport.blocked ?? 0, failed: sourceReport.failed ?? 0 } : null,
+  source_languages: sourceLanguages,
   canonical_records: records.length,
+  japanese_web_records: japaneseWebRecords.length,
   changes: { new: added, updated, unchanged },
   source_families: countBy(records.map((record) => record.source_family)),
   components: countBy(records.map((record) => record.component)),
@@ -106,6 +113,8 @@ const families = Object.keys(metrics.source_families).length;
 const problems = [];
 if (records.length < 100) problems.push(`canonical record count ${records.length} is below 100`);
 if (families < 6) problems.push(`source family count ${families} is below 6`);
+if (japaneseWebRecords.length < 7) problems.push(`Japanese web record count ${japaneseWebRecords.length} is below 7`);
+if (enabledJapaneseSources.length < 3) problems.push(`enabled Japanese source count ${enabledJapaneseSources.length} is below 3`);
 if (sourceReport && (sourceReport.failed ?? 0) > 0) problems.push(`${sourceReport.failed} source check(s) failed`);
 
 if (process.env.GITHUB_STEP_SUMMARY) {
@@ -113,8 +122,11 @@ if (process.env.GITHUB_STEP_SUMMARY) {
   fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, [
     "## Failure KB coverage", "",
     `- Canonical 2026 records: **${records.length}**`,
+    `- Japanese 2026 web records: **${japaneseWebRecords.length}**`,
     `- Source families represented: **${families}**`,
     `- Registered / enabled sources: **${metrics.registered_sources} / ${metrics.enabled_sources}**`,
+    `- Enabled Japanese sources: **${enabledJapaneseSources.length}**`,
+    `- Source languages: **${Object.entries(sourceLanguages).map(([language, count]) => `${language} ${count}`).join(" / ")}**`,
     `- Source checks: **${source}**`,
     `- Record changes: **${added} new / ${updated} updated / ${unchanged} unchanged**`,
     `- Missing version / error / cause / solution: **${metrics.missing.version} / ${metrics.missing.error} / ${metrics.missing.cause} / ${metrics.missing.solution}**`,
