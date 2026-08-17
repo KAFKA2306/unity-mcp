@@ -1,0 +1,137 @@
+{
+  "2026-vrchat-sdk-3-10-2-0173b6356d5c": {
+    "title": "新規World付属のUdonSharp utility scriptを削除しても勝手に再生成されないようになった",
+    "symptom": "以前は新規Worldプロジェクト付属のUdonSharp utility scriptを削除すると再作成されることがあったが、隣接するdata locatorを残していれば再生成されなくなった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-21de07bd042c": {
+    "title": "Vector3Intなど構造体をkeyにしたDataDictionaryで値取得が失敗することがある問題を修正",
+    "symptom": "Vector3Intのようなデータ構造をkeyにしたDataDictionaryで、値の取得が失敗することがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-26b4d2331f48": {
+    "title": "Prefab Override表示時にVRChat ConstraintsがInspectorへ正しく出ないことがある問題を修正",
+    "symptom": "Prefab Overrideとして表示したVRChat ConstraintsがInspectorへ正しく表示されないことがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-330e3a298e60": {
+    "title": "VRCJson.TryDeserializeFromJson()が不正入力で例外を投げずfalseを返すようになった",
+    "symptom": "deserializeできない入力に対してVRCJson.TryDeserializeFromJson()が例外を投げる可能性があったが、常にfalseを返すようになった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-39b222fe641c": {
+    "title": "PhysBone Collider上で静止するboneが震えるregressionを修正",
+    "symptom": "PhysBone Collider上で静止しているboneが細かくjitterするregressionがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-4b437447bf99": {
+    "title": "platform別overrideがあると別platform向けvalidation messageが出る問題を修正",
+    "symptom": "Avatar／Worldプロジェクトでplatform固有overrideを持つassetがあると、誤ったplatform向けのvalidation messageが生成されることがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-6e7b1fecf2be": {
+    "title": "VRCPickupの「Use Text」がInspectorへ安定して表示されない問題を修正",
+    "symptom": "VRCPickupの「Use Text」Inspector fieldが表示されたり消えたりすることがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-7fa2a98f3669": {
+    "title": "WorldのLibrary削除でdefault sceneやUdonSharp utility scriptの変更が巻き戻る問題を修正",
+    "symptom": "WorldプロジェクトのLibrary folderを削除すると、default world sceneやUdonSharp utility scriptへの変更がSDKによって元へ戻されることがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-819f0ae8b371": {
+    "title": "Authentication画面でEnter／Returnキーからログインできるようになった",
+    "symptom": "usernameとpassword入力後にEnter／Returnキーを押してもログイン操作にならなかったが、キー入力でログインできるようになった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-8d10993cd23e": {
+    "title": "VRCMirrorReflectionが元materialを直接変更しないようになった",
+    "symptom": "VRCMirrorReflectionが元materialを直接変更していたため、Unity primitiveへ追加した際にUnity内蔵default materialまで変更することがあった。現在は編集不可のmaterial instanceを生成する。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-93cc62f7be0b": {
+    "title": "community package使用後にmaterialのVRCFallback tagが誤設定される問題を修正",
+    "symptom": "一部community package使用後にVRCFallback tagが誤って設定され、VRChat内でmaterialが正しく表示されないことがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-d66522225c26": {
+    "title": "Contact Sender／Receiver proxyに対するUtilities.IsValid()判定を修正",
+    "symptom": "VRChat Contact Sender／Receiverのproxy objectをUtilities.IsValid()へ渡した際、proxyが実際に有効かどうかと一致しない結果になることがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-e9151d9aa4c2": {
+    "title": "Constraintの親になっているPhysBone破棄時の内部例外を修正",
+    "symptom": "1つ以上のVRChat Constraintの親であるPhysBoneを破棄すると内部例外が発生することがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-2-fb62d8a28a6b": {
+    "title": "VRCJSON Minify出力に不要なspaceが入る問題を修正",
+    "symptom": "VRCJSONでData List／Data DictionaryをMinify形式へserializeしても不要なspaceが含まれることがあった。",
+    "solution": "VRChat SDK 3.10.2で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-3-271fbd42d6f4": {
+    "title": "VRCRaycastでray miss時にresult transformの向きが逆になる問題を修正",
+    "symptom": "snap on miss設定時、rayが何にも当たらないとresult transformが誤った方向を向くことがあった。",
+    "solution": "VRChat SDK 3.10.3で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-3-7e2c22ca9536": {
+    "title": "Domain Reload無効のSDKプロジェクトでVRCRaycastが正しく動作しない問題を修正",
+    "symptom": "Domain Reloadを無効にしたSDKプロジェクトでVRCRaycastの挙動が正しくないことがあった。",
+    "solution": "VRChat SDK 3.10.3で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-3-b3ff8ee0d310": {
+    "title": "VRCRaycastのDisable On Missを削除",
+    "symptom": "Avatar Animator Parameterで代替できるようになったため、VRCRaycastのDisable On Miss設定は不要となり削除された。",
+    "solution": "VRChat SDK 3.10.3で仕様を整理済み。"
+  },
+  "2026-vrchat-sdk-3-10-3-bdb361d2d0ff": {
+    "title": "Mirror描画timingを2026.1.3 clientと一致させた",
+    "symptom": "Mirror描画をOnWillRenderObjectではなくCamera.onPreCullで行うよう変更し、VRChat 2026.1.3 clientの挙動と一致させた。",
+    "solution": "VRChat SDK 3.10.3で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-3-beae69b62195": {
+    "title": "ClientSim 3.10.2以降でString／Image URL loadingが動かない問題を修正",
+    "symptom": "ClientSimでString URLおよびImage URLのloading機能が3.10.2以降動作しなくなっていた。",
+    "solution": "VRChat SDK 3.10.3で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-23a243709207": {
+    "title": "同一Sceneに複数Avatarがある場合のContact／PhysBone Allow Self・Others挙動を修正",
+    "symptom": "AvatarプロジェクトのPlay Modeで複数Avatarが同一Sceneにある場合、Contacts／PhysBonesのAllow SelfとAllow Othersが各Avatarを別playerとして扱うようになった。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-50637b9f14b4": {
+    "title": "VRCTweenのWorlds SDK統合を修正",
+    "symptom": "VRCTweenとWorlds SDKの統合に問題があった。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-57d031341777": {
+    "title": "特定member数のenumをUdonSharpが誤コンパイルする問題を修正",
+    "symptom": "特定数のmemberを持つenumの使用をUdonSharpが誤ってコンパイルすることがあった。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-8c1b49cbd84f": {
+    "title": "SDKのcapsule表示をtip-to-tipからcenter-to-centerへ修正",
+    "symptom": "SDK内のcapsule表示がtip-to-tipで表現されていたが、正しいcenter-to-center表示へ修正された。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-914bf511a0d7": {
+    "title": "Avatar指のGizmo previewをclient内の形状と一致させた",
+    "symptom": "SDKで表示するAvatar fingerのGizmo previewがclient内の実際の形状と一致しないことがあった。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-b36dc08800aa": {
+    "title": "EditorOnly上のVRCRaycastをAvatar Performance Rankingが誤集計する問題を修正",
+    "symptom": "EditorOnly tagのGameObject上にあるVRCRaycastまでAvatar Performance Rankingへ含まれることがあった。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-b3f26b37752d": {
+    "title": "初回起動時にUDON defineがあると新規Worldのsample sceneを作れないregressionを修正",
+    "symptom": "最初の起動時点でUDON scripting defineが設定されていると、新規Worldプロジェクトにsample sceneが作成されないことがあった。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  },
+  "2026-vrchat-sdk-3-10-4-cb44cb5e23ed": {
+    "title": "VRCPickup追加時にGameObjectをPickup layerへ自動移動する挙動を復旧",
+    "symptom": "VRCPickup componentを追加してもGameObjectがPickup layerへ自動移動しない状態になっていた。",
+    "solution": "VRChat SDK 3.10.4で修正済み。"
+  }
+}
