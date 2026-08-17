@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const data = path.join(root, "data", "failures");
-const sources = JSON.parse(fs.readFileSync(path.join(data, "sources-web.json"), "utf8"));
+const registry = JSON.parse(fs.readFileSync(path.join(data, "sources-web.json"), "utf8"));
+const sources = registry.filter((source) => source.enabled);
 const canonical = JSON.parse(fs.readFileSync(path.join(data, "records-web-2026.json"), "utf8"));
 const relevant = /vrchat|vrc|unity|avatar|world|sdk|vcc|modular avatar|udon|physbone|shader/i;
 const failure = /error|fail|failed|failure|crash|broken|missing|cannot|can't|won't|validation|pink|fatal|warning|不具合|エラー|失敗|直し|解決|表示され|消え|起動しない|アップロードでき/i;
@@ -82,14 +83,14 @@ function selfTest() {
 selfTest();
 const modes = new Set(sources.map((source) => source.fetch_mode));
 for (const required of ["rss", "sitemap", "manual_url"]) {
-  if (!modes.has(required)) throw new Error(`web source registry missing ${required}`);
+  if (!modes.has(required)) throw new Error(`enabled web source registry missing ${required}`);
 }
 if (canonical.length < 20) throw new Error(`web canonical corpus below 20: ${canonical.length}`);
 const domains = new Set(canonical.flatMap((record) => record.source_urls).map((url) => new URL(url).hostname));
 if (domains.size < 5) throw new Error(`web canonical corpus requires >=5 domains; got ${domains.size}`);
 
 if (!process.argv.includes("--live")) {
-  console.log(JSON.stringify({ canonical: canonical.length, domains: domains.size, source_endpoints: sources.length, modes: [...modes] }, null, 2));
+  console.log(JSON.stringify({ canonical: canonical.length, domains: domains.size, registered_source_endpoints: registry.length, enabled_source_endpoints: sources.length, modes: [...modes] }, null, 2));
   process.exit(0);
 }
 
@@ -113,5 +114,5 @@ for (const source of sources) {
   }
 }
 
-console.log(JSON.stringify({ canonical: canonical.length, domains: domains.size, report }, null, 2));
+console.log(JSON.stringify({ canonical: canonical.length, domains: domains.size, registered_source_endpoints: registry.length, enabled_source_endpoints: sources.length, report }, null, 2));
 if (report.some((item) => item.status === "failed" || item.status === "parse_failed")) process.exit(1);

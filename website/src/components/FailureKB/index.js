@@ -62,7 +62,11 @@ function candidatesFor(record) {
   const signature = normalizeSignature(record.error_signature);
   const sourceTokens = tokens(record.error_signature);
   return allRecords
-    .filter((candidate) => candidate.id !== record.id && candidate.error_signature !== "unknown")
+    .filter((candidate) =>
+      candidate.id !== record.id &&
+      candidate.component === record.component &&
+      candidate.error_signature !== "unknown"
+    )
     .map((candidate) => {
       const normalized = normalizeSignature(candidate.error_signature);
       return {
@@ -80,6 +84,7 @@ function searchable(record) {
   return [
     record.title,
     record.error_signature,
+    normalizeSignature(record.error_signature),
     record.symptom,
     record.trigger,
     record.root_cause,
@@ -98,7 +103,9 @@ function searchable(record) {
 
 function matches(record, filters) {
   const query = filters.q.trim().toLowerCase();
-  if (query && !searchable(record).includes(query)) return false;
+  const normalizedQuery = normalizeSignature(filters.q);
+  const text = searchable(record);
+  if (query && !text.includes(query) && !text.includes(normalizedQuery)) return false;
   if (filters.component && record.component !== filters.component) return false;
   if (filters.stage && record.stage !== filters.stage) return false;
   if (filters.status && record.status !== filters.status) return false;
@@ -230,7 +237,7 @@ export default function FailureKB() {
                     <ul>
                       {related.map(({ record: candidate, kind, score }) => (
                         <li key={candidate.id}>
-                          <a href={`#failure-${candidate.id}`}>{candidate.title}</a>
+                          <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{candidate.title}</a>
                           <span>{kind}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
                         </li>
                       ))}

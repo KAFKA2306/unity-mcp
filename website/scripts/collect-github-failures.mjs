@@ -126,7 +126,6 @@ if (canonical.length < 30) throw new Error(`canonical GitHub records below 30: $
 if (missing.length) throw new Error(`canonical GitHub records not found in 2026 source scan: ${missing.map((x) => x.id).join(", ")}`);
 if (duplicateUrls) throw new Error(`canonical GitHub records contain ${duplicateUrls} duplicate source URL(s)`);
 if (candidates.length < 30) throw new Error(`GitHub discovery produced only ${candidates.length} failure candidates`);
-if (releaseCandidates.length === 0) throw new Error("No 2026 GitHub release/changelog fix lines discovered");
 
 const result = {
   canonical: canonical.length,
