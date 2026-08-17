@@ -133,6 +133,7 @@ jobs:
 
       - name: Commit official source updates
         id: canonical_commit
+        if: github.ref == 'refs/heads/beta'
         run: |
           if git diff --quiet -- website/data/failures/records-vrchat-official-2026.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -147,7 +148,7 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Re-deploy docs after canonical update
-        if: steps.canonical_commit.outputs.changed == 'true'
+        if: github.ref == 'refs/heads/beta' && steps.canonical_commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run docs-deploy.yml --ref beta
