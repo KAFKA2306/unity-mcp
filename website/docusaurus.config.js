@@ -248,7 +248,7 @@ const config = {
             ],
           },
         ],
-        copyright: `MITライセンス。<a href="https://www.tryaura.dev/">Aura</a> の支援・保守によるプロジェクトです。Unity Technologiesとは提携していません。`,
+        copyright: `MITライセンス。上流プロジェクトは<a href="https://www.tryaura.dev/">Aura</a>の支援・保守によるものです。Unity Technologiesとは提携していません。`,
       },
       prism: {
         theme: prismThemes.github,
