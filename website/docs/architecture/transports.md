@@ -1,32 +1,27 @@
 ---
 id: transports
 slug: /architecture/transports
-title: Transport Modes
-sidebar_label: Transport Modes
-description: HTTP versus stdio — when to use each, what the trade-offs are, and how multi-agent isolation works.
+title: 通信方式
+sidebar_label: 通信方式
+description: HTTPとstdioの使い分け、session分離、network上の違いを説明します。
 ---
 
-# Transport Modes
+# 通信方式
 
-MCP for Unity supports two transports between the MCP client and the Python server. The choice affects multi-agent capability, configuration shape, and a few subtle behaviors around instance routing.
+MCP clientとPython serverの間は**HTTP**または**stdio**を使用します。選択によって複数client、remote hosting、instance routingの挙動が変わります。
 
-## Quick decision
+## 選び方
 
-| If you want… | Use |
+| 用途 | 推奨 |
 |---|---|
-| Multiple MCP clients sharing one Unity instance | **HTTP** |
-| Multiple Unity instances driven from one client | either |
-| Lowest setup friction | **stdio** (Claude Desktop default) |
-| Remote-hosted server (cloud, Docker) | **HTTP** |
-| Marketplace distribution that can't ship Python | **HTTP** (remote URL) |
+| 複数MCP clientで1つのserverを共有 | **HTTP** |
+| 複数Unity instanceを1 clientから操作 | どちらでも可 |
+| localで最小構成 | **stdio** |
+| remote / container上のserver | **HTTP** |
 
-## HTTP (default)
+## HTTP
 
-**Architecture:** one Python process, one shared WebSocket hub at `/hub/plugin`, multiple MCP clients can connect concurrently. Each client gets a `client_id` and session-keyed state.
-
-**Endpoint:** `http://localhost:8080/mcp`
-
-**MCP client config:**
+1つのPython processに複数のMCP clientが接続し、Unity pluginとは`/hub/plugin` WebSocketで通信します。
 
 ```json
 {
@@ -36,20 +31,18 @@ MCP for Unity supports two transports between the MCP client and the Python serv
 }
 ```
 
-**What you gain:**
-- Multi-agent: Claude Code and Cursor open at the same time, both seeing the same Unity Editor
-- Session isolation: each client's active instance, tool-group visibility, and middleware state are independent
-- Remote hosting: the server can run on a different machine or in a container
+主な特徴:
 
-**What you give up:**
-- Port-number shorthand for `set_active_instance` (HTTP enforces `Name@hash`)
-- A small amount of setup complexity if you bind to LAN — see [Security](https://github.com/CoplayDev/unity-mcp/blob/beta/SECURITY.md)
+- 複数clientを同時接続できる
+- active instance、tool groupなどをMCP session単位で分離できる
+- remote hostingに対応できる
+- instance指定は`Name@hash`を基本とする
 
-## Stdio
+local HTTPは既定でloopbackへbindします。LAN bindやremote URLは明示的なopt-inが必要です。
 
-**Architecture:** the MCP client spawns a dedicated Python process via `stdio`, communicating over stdin/stdout. The Python process talks to Unity over a legacy TCP bridge.
+## stdio
 
-**MCP client config (macOS/Linux):**
+MCP clientが専用Python processを起動し、stdin/stdoutで通信します。
 
 ```json
 {
@@ -62,37 +55,27 @@ MCP for Unity supports two transports between the MCP client and the Python serv
 }
 ```
 
-**What you gain:**
-- Lowest configuration friction; works without HTTP port allocation
-- Port-number shorthand: `set_active_instance(instance="6401")`
-- Claude Desktop only supports stdio — that's why MCP for Unity silently selects stdio when configuring Claude Desktop, even if you have HTTP picked elsewhere
+主な特徴:
 
-**What you give up:**
-- Single-agent: a new MCP client connection replaces the previous one
-- No native session isolation: switching the active Unity instance in one client affects what the next client sees
-- Cannot host remotely
+- HTTP port設定が不要
+- clientごとにprocessが分かれる
+- port numberによるinstance省略指定を利用できる
+- remote hostingには使わない
 
-## What "instance" means in each mode
+Claude Desktopはstdioのみを使うため、全体設定がHTTPでもClaude Desktop向けconfigはstdioになります。
 
-- **HTTP**: instance state is keyed by `client_id` in middleware. Two clients can hold different active instances concurrently against the same Unity Editor pool.
-- **Stdio**: instance state is process-local. Since there's one Python process per client, isolation is implicit — but switching processes loses the old state.
+## instance状態
 
-See [Multi-Instance Routing](/guides/multi-instance) for the routing API.
+- **HTTP** — MCP session単位でactive instanceを保持する
+- **stdio** — process-local stateとして保持する
 
-## Switching transport
+詳細な操作は[複数Unityインスタンス](/guides/multi-instance)を参照してください。
 
-In the Unity Editor: **Window → MCP for Unity → Settings**, pick `HTTP` or `stdio`, click **Configure All Detected Clients**. The configurator rewrites each client's MCP config to match.
+## 切り替え
 
-Claude Desktop is the exception — it's always written as stdio regardless of your selection, because it doesn't support HTTP.
+Unity Editorで **Window → MCP for Unity → Settings** からHTTP / stdioを選び、**Configure All Detected Clients** を実行します。既存MCP clientは再起動して設定を読み直します。
 
-## Network security (HTTP only)
+## 実装箇所
 
-By default, HTTP binds to loopback (`127.0.0.1` / `::1`). Binding to all interfaces (`0.0.0.0` / `::`) requires explicit opt-in: **Advanced Settings → Allow LAN Bind (HTTP Local)**.
-
-Remote endpoints require `https://`. To allow plaintext `http://` for a remote URL, opt in via **Allow Insecure Remote HTTP**. Both guards are fail-closed: if you don't flip the switch, the server refuses the unsafe configuration.
-
-## Where this is implemented
-
-- Python: `Server/src/transport/` (plugin hub, websocket transport, legacy stdio bridge)
-- C#: `MCPForUnity/Editor/Services/` (transport clients, server management, stdio bridge host)
-- v8 migration notes: [/migrations/v8](/migrations/v8) — the architectural story of HTTP arriving
+- Python transport: `Server/src/transport/`
+- C# transport / server management: `MCPForUnity/Editor/Services/`
