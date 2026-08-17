@@ -1,71 +1,64 @@
 ---
 id: python-layers
 slug: /architecture/python-layers
-title: Three-Layer Python Design
-sidebar_label: Three-Layer Python Design
-description: The Python server has three independent surfaces — MCP tools, CLI commands, and resources — that all funnel into the same C# Editor handlers.
+title: Python serverの3つのsurface
+sidebar_label: Pythonレイヤー
+description: MCP tool、CLI command、resourceが同じC# Editor handlerへ接続する構造を説明します。
 ---
 
-# Three-Layer Python Design
+# Python serverの3つのsurface
 
-The Python server (`Server/src/`) exposes three distinct surfaces. They look similar but serve different consumers and are **not auto-generated from each other**.
+`Server/src/`は3種類の外部surfaceを持ちます。利用者とinterfaceが異なるため、1つから他を自動生成するのではなく、同じC# handlerへ別経路で接続します。
 
-| Layer | Where | Framework | Consumer | Transport to Unity |
+| Surface | 場所 | Framework | 利用者 | Unityへの通信 |
 |---|---|---|---|---|
-| **MCP Tools** | `Server/src/services/tools/` | FastMCP (`@mcp_for_unity_tool`) | AI assistants via MCP | WebSocket (`send_with_unity_instance`) |
-| **CLI Commands** | `Server/src/cli/commands/` | Click (`@click.command`) | Developers in a terminal | HTTP (`run_command`) |
-| **Resources** | `Server/src/services/resources/` | FastMCP (`@mcp_for_unity_resource`) | AI assistants, read-only | WebSocket |
+| **MCP Tools** | `Server/src/services/tools/` | FastMCP / `@mcp_for_unity_tool` | AI assistant | WebSocket |
+| **CLI Commands** | `Server/src/cli/commands/` | Click / `@click.command` | terminal user | HTTP |
+| **Resources** | `Server/src/services/resources/` | FastMCP / `@mcp_for_unity_resource` | AI assistant、読み取り専用 | WebSocket |
 
-Both MCP tools and CLI commands eventually call the same C# `HandleCommand` methods inside `MCPForUnity/Editor/Tools/`. Resources are read-only — they observe state without mutating it.
+MCP toolとCLI commandは最終的に`MCPForUnity/Editor/Tools/`のC# `HandleCommand`へ到達します。resourceはstate観測を目的とし、原則として変更操作を行いません。
 
-## Why three layers, not one
+## 3つに分ける理由
 
-Each surface has a different shape of consumer:
+- **MCP tool** — LLMが読むtype / parameter descriptionとsession routingが必要
+- **CLI** — shell向けoption、default、error表示が必要
+- **resource** — 繰り返し読み取りやすい軽量interfaceが必要
 
-- **MCP tools** need rich type annotations (`Annotated[Type, "description"]`) because they're handed to an LLM. The descriptions are the prompt the LLM reads.
-- **CLI commands** need composable flags, shell-friendly defaults, and graceful error messages. Click gives those for free.
-- **Resources** need to be cheap to call repeatedly because the LLM polls them. They use a lighter decorator and skip the routing middleware.
+consumerが違うため、無理に同一interfaceへ寄せるより、domain単位で対称な実装を維持します。
 
-Trying to autogenerate one layer from another erodes the ergonomics of all three. The cost is keeping the three in sync — which is mostly a discipline problem solved by domain symmetry.
+## 新しいdomainを追加する場合
 
-## Domain symmetry
+例えば`manage_navigation`なら、概ね次を追加します。
 
-When you add a new domain (say, `manage_navigation`), you write **three** files:
-
-```
-Server/src/services/tools/manage_navigation.py    # @mcp_for_unity_tool
-Server/src/cli/commands/navigation.py             # @click.command
-MCPForUnity/Editor/Tools/ManageNavigation.cs      # [McpForUnityTool]
+```text
+Server/src/services/tools/manage_navigation.py
+Server/src/cli/commands/navigation.py
+MCPForUnity/Editor/Tools/ManageNavigation.cs
 ```
 
-The Python tool and CLI command both invoke the C# handler — they just take different paths to it.
+MCP tool / CLIは別interfaceですが、同じC# handlerを利用します。
 
-## Tool registration
+## MCP toolの登録
 
-Tools are auto-discovered by walking `Server/src/services/tools/`. Each `.py` file with `@mcp_for_unity_tool`-decorated functions is imported at server startup; the decorator side-effects populate a global registry (`services.registry`). The registry is also what `tools/generate_docs_reference.py` reads to emit the [tool reference](/reference/tools).
+`Server/src/services/tools/`を走査し、`@mcp_for_unity_tool`付きfunctionをserver startup時にregistryへ登録します。このregistryは`tools/generate_docs_reference.py`がtool referenceを生成する際にも使用します。
 
-A tool's `group` parameter controls per-session visibility — see [Tool Groups](/guides/tool-groups). `group=None` means the tool is always visible (server meta-tools like `set_active_instance` and `manage_tools`).
+`group`はsession単位のtool可視性を制御します。詳細は[ツールグループ](/guides/tool-groups)を参照してください。
 
-## Where the layers diverge from "just call the C# handler"
+## surfaceごとの差分
 
-- **MCP tools** add parameter normalization (camelCase → snake_case via `ParamNormalizerMiddleware`), telemetry, and per-session routing.
-- **CLI commands** add `@handle_unity_errors` for terminal-friendly stack traces, and synchronous wrappers around the async core.
-- **Resources** skip middleware entirely — they're meant to be hot-path.
+- MCP tool — parameter normalization、telemetry、session単位instance routing
+- CLI — terminal向けerror処理とasync coreの同期wrapper
+- resource — read-only hot pathとしてmiddlewareを最小化
 
-## Server entry point
+## server entry point
 
-`Server/src/main.py` (~935 lines) is the orchestrator:
+`Server/src/main.py`は概ね次を行います。
 
-1. Builds the FastMCP server
-2. Calls `register_all_tools(mcp)` — auto-discovery
-3. Calls `register_all_resources(mcp)` — same pattern, different decorator
-4. Sets up the WebSocket hub for HTTP transport
-5. Configures middleware (telemetry, normalization, instance routing)
-6. Starts the transport (`http`/`stdio` from `core.config`)
+1. FastMCP serverを構築
+2. toolを登録
+3. resourceを登録
+4. HTTP時のWebSocket hubを準備
+5. middlewareを設定
+6. HTTP / stdio transportを起動
 
-## Where to read more
-
-- Tool/CLI handler shape: `Server/src/services/tools/manage_material.py` is a canonical example
-- Registry: `Server/src/services/registry/tool_registry.py` (~130 LOC, the single source the docs reference generator reads)
-- Transport: `Server/src/transport/` — plugin hub (`plugin_hub.py`), websocket client, legacy stdio bridge
-- C# side: `MCPForUnity/Editor/Tools/ManageMaterial.cs` is the C# half of `manage_material`
+実装を見る場合は`Server/src/services/registry/`、`Server/src/transport/`、`MCPForUnity/Editor/Tools/`を起点にすると追いやすくなります。
