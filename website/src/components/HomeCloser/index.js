@@ -1,36 +1,43 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 
 export default function HomeCloser() {
+  const { i18n } = useDocusaurusContext();
+  const ja = i18n.currentLocale !== 'en';
+
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
         <div className={styles.gridBackdrop} aria-hidden="true" />
 
         <div className={styles.copy}>
-          <span className={styles.eyebrow}>// READY?</span>
-          <h2 className={styles.title}>Get the editor speaking your AI's language.</h2>
+          <span className={styles.eyebrow}>{ja ? '// 始める' : '// READY?'}</span>
+          <h2 className={styles.title}>
+            {ja ? 'AIアシスタントからUnity Editorを操作できる状態にする。' : "Get the editor speaking your AI's language."}
+          </h2>
           <p className={styles.lede}>
-            Install in under a minute. No account, no telemetry by
-            default, no lock-in. Open source under MIT.
+            {ja
+              ? 'アカウント不要。テレメトリは既定で無効。MITライセンスのオープンソースです。'
+              : 'Install in under a minute. No account, no telemetry by default, no lock-in. Open source under MIT.'}
           </p>
         </div>
 
         <div className={styles.actions}>
           <Link className={styles.ctaPrimary} to="/getting-started/install">
-            Install <span aria-hidden="true">↗</span>
+            {ja ? 'インストール' : 'Install'} <span aria-hidden="true">↗</span>
           </Link>
           <Link className={styles.ctaLink} to="/reference/tools">
-            Browse the tool reference <span aria-hidden="true">→</span>
+            {ja ? 'ツールリファレンスを見る' : 'Browse the tool reference'} <span aria-hidden="true">→</span>
           </Link>
           <a
             className={styles.ctaLink}
-            href="https://github.com/CoplayDev/unity-mcp"
+            href="https://github.com/KAFKA2306/unity-mcp"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Star on GitHub <span aria-hidden="true">→</span>
+            {ja ? 'GitHubで見る' : 'View on GitHub'} <span aria-hidden="true">→</span>
           </a>
           <a
             className={styles.ctaLink}
@@ -38,19 +45,18 @@ export default function HomeCloser() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Join Discord <span aria-hidden="true">→</span>
+            {ja ? 'Discordに参加' : 'Join Discord'} <span aria-hidden="true">→</span>
           </a>
         </div>
 
         <div className={styles.cite}>
           <div className={styles.citeHead}>
-            <span className={styles.eyebrow}>// CITATION</span>
+            <span className={styles.eyebrow}>{ja ? '// 引用' : '// CITATION'}</span>
             <span className={styles.citeMeta}>SA Technical Communications ’25 · ACM</span>
           </div>
           <p className={styles.citeBody}>
-            Using MCP for Unity in research? Please cite our paper —
-            <em> MCP-Unity: Protocol-Driven Framework for Interactive
-            3D Authoring</em> (Wu &amp; Barnett, 2025).
+            {ja ? '研究でMCP for Unityを使用する場合は、次の論文を引用してください。' : 'Using MCP for Unity in research? Please cite our paper —'}
+            <em> MCP-Unity: Protocol-Driven Framework for Interactive 3D Authoring</em> (Wu &amp; Barnett, 2025).
           </p>
           <pre className={styles.citeBlock}>
 {`@inproceedings{10.1145/3757376.3771417,
