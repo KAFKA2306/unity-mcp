@@ -5,11 +5,12 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "prebuild": "npm run validate:failures && npm run validate:web-failures && npm run validate:signatures",
+    "prebuild": "npm run validate:failures && npm run validate:web-failures && npm run validate:signatures && npm run validate:taxonomy",
     "build": "docusaurus build",
     "validate:failures": "node scripts/validate-failures.mjs",
     "validate:web-failures": "node scripts/collect-web-failures.mjs",
     "validate:signatures": "node scripts/normalize-failure-signatures.mjs",
+    "validate:taxonomy": "node scripts/classify-failures.mjs",
     "collect:web-failures": "node scripts/collect-web-failures.mjs --live",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
