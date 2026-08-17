@@ -1,65 +1,59 @@
 ---
 id: unity-compat
 slug: /architecture/unity-compat
-title: Unity API Compatibility Shims
-sidebar_label: Unity Compat Shims
-description: How MCP for Unity supports Unity 2021 LTS through 6.x and the CoreCLR 6.8 path without sprinkling version gates across every call site.
+title: Unity API互換shim
+sidebar_label: Unity互換性
+description: Unity 2021.3 LTSから6.xまでのAPI差分を少数のcompatibility shimへ集約する方針です。
 ---
 
-# Unity API Compatibility Shims
+# Unity API互換shim
 
-MCP for Unity targets a wide Unity version range — **2021.3 LTS → Unity 6.x → CoreCLR 6.8**. Unity has renamed, deprecated, and threatened to remove a handful of APIs across that window. Rather than sprinkle `#if UNITY_*_OR_NEWER` at every call site, MCP for Unity routes the friction through a small set of **shims** under `MCPForUnity/Runtime/Helpers/`.
+MCP for Unityは**Unity 2021.3 LTS → Unity 6.x → CoreCLR系の将来path**まで広いversion範囲を扱います。versionごとのrename / deprecationを各call siteへ散らさず、`MCPForUnity/Runtime/Helpers/`の小さなcompatibility shimへ集約します。
 
-## The catalog
+## 主なshim
 
-The canonical list lives in `MCPForUnity/Runtime/Helpers/UnityCompatShims.cs` (an intentionally empty marker class — its XML doc is the source of truth and ships inside the UPM package, so end-users can `F12` into it).
+canonicalなcatalogは`MCPForUnity/Runtime/Helpers/UnityCompatShims.cs`にあります。
 
-| Shim | Wraps | Deprecated / Removed |
-|---|---|---|
-| `UnityFindObjectsCompat` | `Object.FindObjectsOfType` → `FindObjectsByType` | 2023.1 |
-| `UnityObjectIdCompat` | `InstanceID` ↔ `EntityId` | 6000.3 → 6000.6 (CS0619) |
-| `UnityPhysicsCompat` | `Physics{,2D}.autoSyncTransforms`, `autoSimulation` → `simulationMode` | 6000.0 / 2022.2 |
-| `UnityAssembliesCompat` | `AppDomain.GetAssemblies` → `UnityEngine.Assemblies.CurrentAssemblies` | Unity 6.8 CoreCLR |
+| Shim | 対象 |
+|---|---|
+| `UnityFindObjectsCompat` | `Object.FindObjectsOfType` → `FindObjectsByType` |
+| `UnityObjectIdCompat` | `InstanceID` ↔ `EntityId` |
+| `UnityPhysicsCompat` | physics simulation / transform sync API差分 |
+| `UnityAssembliesCompat` | assembly enumeration API差分 |
 
-## When to add a new shim
+## 新しいshimを追加する条件
 
-One of these must be true:
+次のいずれかを目安にします。
 
-1. The API is marked `[Obsolete]` **and** the call site can't simply be deleted, **or**
-2. Three or more call sites need version gating for the same API, **or**
-3. A future Unity version has publicly announced rename or removal of the API.
+1. APIが`[Obsolete]`になり、call site自体は削除できない
+2. 同じversion gateが3箇所以上へ広がる
+3. Unityがrename / removalを公開している
 
-If only one or two call sites are affected and the rename isn't on the roadmap, a localized `#if UNITY_*_OR_NEWER` is fine. Don't pre-shim speculatively.
+1〜2箇所だけの差分ならlocalな`#if UNITY_*_OR_NEWER`で十分です。将来壊れるか不明なAPIまで先回りしてshim化しません。
 
-## What does **not** belong in a shim
+## shimへ入れないもの
 
-- Hot-path engine APIs (`Transform.position`, `Vector3.*`, `GetComponent<T>`) — version gating these is noise, and they don't move
-- APIs Unity has not threatened to break (`Mathf`, `Quaternion`, most of `AssetDatabase`) — adding a shim implies maintenance forever
-- Editor-internal undocumented APIs — those *should* break loudly so the package maintainers notice immediately
+- `Transform.position`、`Vector3.*`、`GetComponent<T>`など安定したhot-path API
+- rename / removal予定が無い一般API
+- undocumentedなEditor internal API。これは壊れた時に明示的に検知できる方が安全です
 
-## The pattern
+## 実装方式
 
-Two implementation styles, picked by what the SDK exposes:
+- **compile-time dispatch** — 新旧APIがtarget SDKで利用できる場合に`#if`で選択
+- **cached reflection** — target外versionや将来削除されるAPIを扱う必要がある場合
 
-- **Static dispatch** (`#if UNITY_*_OR_NEWER`): use when the new API exists in the SDK you compile against. The shim picks the right call site at compile time, with no runtime cost.
-- **Reflection with a cached `MethodInfo` / `PropertyInfo`**: use when the new API is in a version you don't yet target, or when the old API may eventually be removed (CS0619). One reflection lookup at static-init time, then plain delegate invocation forever after.
+call siteからversion判定を隠し、互換処理を1箇所へ閉じ込めることが目的です。
 
-In both cases, **fail-soft**: callers should treat a missing API as a no-op, never throw. This keeps the package compiling and behaving sensibly on every supported Unity version, including ones the maintainer hasn't tested yet.
-
-## Compile-checking across versions locally
-
-`tools/check-unity-versions.sh` runs a compile-only check across the same Unity versions CI runs. The matrix is in `tools/unity-versions.json`.
+## version別compile check
 
 ```bash
-tools/check-unity-versions.sh           # compile-only across installed Unity Hub editors
-tools/check-unity-versions.sh --full    # full EditMode test run
+tools/check-unity-versions.sh
+tools/check-unity-versions.sh --full
 ```
 
-The pre-push hook (installed via `tools/install-hooks.sh`) runs this automatically when your push touches `MCPForUnity/`, `TestProjects/`, or the version matrix.
+version matrixは`tools/unity-versions.json`です。
 
-## Source pointers
+## 実装箇所
 
-- Catalog + policy: `MCPForUnity/Runtime/Helpers/UnityCompatShims.cs`
-- Individual shim files: same directory, named `Unity*Compat.cs`
-- Unity 6.x deprecation list: Unity upgrade guides
-- CoreCLR 6.8 path: [Unity discussion thread](https://discussions.unity.com/t/path-to-coreclr-2026-upgrade-guide/1714279)
+- policy / catalog: `MCPForUnity/Runtime/Helpers/UnityCompatShims.cs`
+- individual shim: `MCPForUnity/Runtime/Helpers/Unity*Compat.cs`
