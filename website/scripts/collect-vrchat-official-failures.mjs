@@ -7,8 +7,9 @@ const websiteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const outputPath = path.join(websiteRoot, "data", "failures", "records-vrchat-official-2026.json");
 const seedPath = path.join(websiteRoot, "data", "failures", "records-2026.json");
 const versions = ["3.10.2", "3.10.3", "3.10.4"];
-const rawBase = "https://raw.githubusercontent.com/vrchat-community/creator-docs/main/Docs/releases";
 const publicBase = "https://creators.vrchat.com/releases";
+const githubApiBase = "https://api.github.com/repos/vrchat-community/creator-docs/contents/Docs/releases";
+const githubToken = process.env.GITHUB_TOKEN ?? "";
 const failureSignal = /fixed|fail|incorrect|exception|regression|not working|wrong|revert|jitter|again|accurate|correctly|redundant|miscompile|preventing|could result|no longer|not appearing|not persist|match|now logs you in|behave as if/i;
 
 function plain(markdown) {
@@ -94,10 +95,28 @@ function extractRelease(markdown, version) {
   return candidates;
 }
 
-async function fetchText(url) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(15000), headers: { "user-agent": "unity-mcp-failure-kb-collector/1.0" } });
-  if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
-  return response.text();
+function githubHeaders() {
+  const headers = {
+    accept: "application/vnd.github+json",
+    "x-github-api-version": "2022-11-28",
+    "user-agent": "unity-mcp-failure-kb-collector/1.0"
+  };
+  if (githubToken) headers.authorization = `Bearer ${githubToken}`;
+  return headers;
+}
+
+async function fetchReleaseMarkdown(version) {
+  const url = `${githubApiBase}/release-${version}.md?ref=main`;
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(20000),
+    headers: githubHeaders()
+  });
+  if (!response.ok) throw new Error(`GitHub API HTTP ${response.status}: ${url}`);
+  const payload = await response.json();
+  if (payload.encoding !== "base64" || typeof payload.content !== "string") {
+    throw new Error(`Unexpected GitHub content response: ${url}`);
+  }
+  return Buffer.from(payload.content.replace(/\s+/g, ""), "base64").toString("utf8");
 }
 
 function dedupe(candidates, seeds) {
@@ -114,7 +133,7 @@ function dedupe(candidates, seeds) {
 async function collect() {
   const seeds = JSON.parse(fs.readFileSync(seedPath, "utf8"));
   const candidates = [];
-  for (const version of versions) candidates.push(...extractRelease(await fetchText(`${rawBase}/release-${version}.md`), version));
+  for (const version of versions) candidates.push(...extractRelease(await fetchReleaseMarkdown(version), version));
   return dedupe(candidates, seeds).sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
 }
 
