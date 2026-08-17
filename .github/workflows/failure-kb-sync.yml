@@ -1,0 +1,125 @@
+name: Failure KB — 2026 Sync
+
+on:
+  push:
+    branches: [beta]
+    paths:
+      - website/data/failures/**
+      - website/scripts/*failure*.mjs
+      - website/src/components/FailureKB/**
+      - website/docs/failures.mdx
+      - website/package.json
+      - .github/workflows/failure-kb-sync.yml
+  schedule:
+    - cron: '17 23 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: failure-kb-2026-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Validate, discover, and measure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install docs dependencies
+        working-directory: website
+        run: npm ci
+
+      - name: Validate canonical data
+        working-directory: website
+        run: |
+          npm run validate:failures
+          npm run validate:web-failures
+          npm run validate:signatures
+          npm run validate:taxonomy
+          npm run validate:unity-failures
+          npm run validate:coverage
+
+      - name: Check registered sources
+        id: sources
+        continue-on-error: true
+        working-directory: website
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/check-failure-sources.mjs > failure-source-report.json
+
+      - name: Discover GitHub failure candidates
+        id: github_discovery
+        continue-on-error: true
+        working-directory: website
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/collect-github-failures.mjs --json > github-failure-candidates.json
+
+      - name: Check VRChat official corpus
+        id: vrchat
+        continue-on-error: true
+        working-directory: website
+        run: node scripts/collect-vrchat-official-failures.mjs --check
+
+      - name: Discover web failure candidates
+        id: web
+        continue-on-error: true
+        working-directory: website
+        run: node scripts/collect-web-failures.mjs --live > web-failure-source-report.json
+
+      - name: Check Unity official corpus
+        id: unity
+        continue-on-error: true
+        working-directory: website
+        run: node scripts/collect-unity-official-failures.mjs --live > unity-failure-source-report.json
+
+      - name: Generate coverage report
+        id: coverage
+        if: always()
+        continue-on-error: true
+        working-directory: website
+        run: node scripts/failure-coverage.mjs --source-report failure-source-report.json > failure-coverage.json
+
+      - name: Build docs
+        id: build
+        if: always()
+        continue-on-error: true
+        working-directory: website
+        run: npm run build
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-kb-2026-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            website/failure-source-report.json
+            website/github-failure-candidates.json
+            website/web-failure-source-report.json
+            website/unity-failure-source-report.json
+            website/failure-coverage.json
+
+      - name: Enforce live checks
+        if: always()
+        run: |
+          test "${{ steps.sources.outcome }}" = "success"
+          test "${{ steps.github_discovery.outcome }}" = "success"
+          test "${{ steps.vrchat.outcome }}" = "success"
+          test "${{ steps.web.outcome }}" = "success"
+          test "${{ steps.unity.outcome }}" = "success"
+          test "${{ steps.coverage.outcome }}" = "success"
+          test "${{ steps.build.outcome }}" = "success"
