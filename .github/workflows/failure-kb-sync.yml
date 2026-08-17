@@ -113,6 +113,7 @@ jobs:
           if-no-files-found: warn
           path: |
             website/data/failures/records-vrchat-official-2026.json
+            website/data/failures/records-web-ja-2026.json
             website/failure-source-report.json
             website/github-failure-candidates.json
             website/web-failure-source-report.json
