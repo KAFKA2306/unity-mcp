@@ -26,7 +26,10 @@ function values(key) {
   for (const record of allRecords) {
     if (key === "platform") (record.platforms ?? []).forEach((value) => collected.add(value));
     else if (key === "package") (record.packages ?? []).forEach((item) => collected.add(item.name));
-    else if (record[key] && record[key] !== "unknown") collected.add(record[key]);
+    else if (record[key]) {
+      const hideUnknown = key === "unity_version" || key === "vrcsdk_version";
+      if (!hideUnknown || record[key] !== "unknown") collected.add(record[key]);
+    }
   }
   return [...collected].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 }
