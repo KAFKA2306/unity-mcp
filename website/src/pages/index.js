@@ -8,11 +8,14 @@ import HomeFeatures from '@site/src/components/HomeFeatures';
 import HomeCloser from '@site/src/components/HomeCloser';
 
 export default function Home() {
-  const { siteConfig } = useDocusaurusContext();
+  const { siteConfig, i18n } = useDocusaurusContext();
+  const ja = i18n.currentLocale !== 'en';
   return (
     <Layout
       title="MCP for Unity"
-      description={siteConfig.tagline}
+      description={ja
+        ? siteConfig.tagline
+        : 'AI-driven game development for the Unity Editor via the Model Context Protocol.'}
     >
       <main>
         <HomeHero />
