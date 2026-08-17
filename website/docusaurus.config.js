@@ -62,12 +62,11 @@ const config = {
   tagline: 'AI-driven game development for the Unity Editor',
   favicon: 'img/favicon.png',
 
-  // Hosted on GitHub Pages under the CoplayDev org.
-  // Custom domain (CNAME) deferred — see plan Phase 2.
-  url: 'https://coplaydev.github.io',
+  // Hosted on this repository's GitHub Pages site.
+  url: 'https://kafka2306.github.io',
   baseUrl,
 
-  organizationName: 'CoplayDev',
+  organizationName: 'KAFKA2306',
   projectName: 'unity-mcp',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
@@ -133,10 +132,18 @@ const config = {
   },
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
-    // Chinese translation deferred to a follow-up PR; structure ready
-    // (existing docs/i18n/README-zh.md will migrate into i18n/zh/).
+    defaultLocale: 'ja',
+    locales: ['ja', 'en'],
+    localeConfigs: {
+      ja: {
+        label: '日本語',
+        htmlLang: 'ja-JP',
+      },
+      en: {
+        label: 'English',
+        htmlLang: 'en',
+      },
+    },
   },
 
   presets: [
@@ -169,14 +176,11 @@ const config = {
         highlightSearchTermsOnTargetPage: true,
       },
     ],
-    // Redirects: as docs land in M2+, add entries here so external links
-    // pointing at old /docs/*.md paths on GitHub keep working.
     [
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [
-          // Example pattern (populated as content migrates in M2):
-          // { from: '/docs/guides/CLI_USAGE', to: '/guides/cli' },
+          { from: '/ja/failures', to: '/failures' },
         ],
       },
     ],
@@ -211,6 +215,10 @@ const config = {
             to: '/releases',
             label: 'Releases',
             position: 'left',
+          },
+          {
+            type: 'localeDropdown',
+            position: 'right',
           },
           {
             href: 'https://github.com/CoplayDev/unity-mcp',

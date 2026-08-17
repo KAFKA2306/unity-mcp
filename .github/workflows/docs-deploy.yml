@@ -1,7 +1,7 @@
 name: Docs — Build & Deploy
 
 # Builds the Docusaurus site under /website and, on beta push or manual dispatch,
-# deploys to GitHub Pages at https://coplaydev.github.io/unity-mcp/.
+# deploys to GitHub Pages at https://kafka2306.github.io/unity-mcp/.
 #
 # PR runs only build (no deploy) as a preview-validation step.
 # Re-deploys also fire when the Python tool/resource registry changes,

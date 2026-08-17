@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./styles.module.css";
 import seed from "@site/data/failures/records-2026.json";
 import github from "@site/data/failures/records-github-2026.json";
 import vrchat from "@site/data/failures/records-vrchat-official-2026.json";
 import web from "@site/data/failures/records-web-2026.json";
+import webJa from "@site/data/failures/records-web-ja-2026.json";
 import unity from "@site/data/failures/records-unity-official-2026.json";
 
-const allRecords = [...seed, ...github, ...vrchat, ...web, ...unity].sort(
+const allRecords = [...seed, ...github, ...vrchat, ...web, ...webJa, ...unity].sort(
   (a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
 );
 
@@ -19,6 +21,79 @@ const emptyFilters = {
   unity: "",
   vrcsdk: "",
   package: "",
+};
+
+const copyByLocale = {
+  en: {
+    all: "All",
+    records: "2026 records",
+    sourceFamilies: "source families",
+    resolved: "resolved",
+    workarounds: "workarounds",
+    unresolved: "unresolved",
+    searchLabel: "Error / exception / symptom",
+    searchPlaceholder: "Paste an error string, UUM id, exception name, or symptom",
+    component: "Component",
+    stage: "Stage",
+    status: "Status",
+    platform: "Platform",
+    unity: "Unity",
+    vrcsdk: "VRCSDK",
+    package: "Package",
+    clear: "Clear filters",
+    matching: (count) => `matching record${count === 1 ? "" : "s"}`,
+    evidence: "Evidence and resolution",
+    trigger: "Trigger",
+    rootCause: "Root cause",
+    solution: "Solution",
+    workaround: "Workaround",
+    packages: "Packages",
+    sources: "Sources",
+    related: "Same / similar signatures",
+    exact: "exact",
+    similar: "similar",
+    statusLabels: {
+      resolved: "resolved",
+      workaround: "workaround",
+      unresolved: "unresolved",
+      unknown: "unknown",
+    },
+  },
+  ja: {
+    all: "すべて",
+    records: "2026年の記録",
+    sourceFamilies: "情報源ファミリー",
+    resolved: "解決済み",
+    workarounds: "回避策あり",
+    unresolved: "未解決",
+    searchLabel: "エラー / 例外 / 症状",
+    searchPlaceholder: "エラー文字列、UUM ID、例外名、症状を貼り付けて検索",
+    component: "コンポーネント",
+    stage: "工程",
+    status: "状態",
+    platform: "プラットフォーム",
+    unity: "Unity",
+    vrcsdk: "VRCSDK",
+    package: "パッケージ",
+    clear: "絞り込みを解除",
+    matching: () => "件一致",
+    evidence: "根拠と解決情報",
+    trigger: "発生条件",
+    rootCause: "原因",
+    solution: "解決策",
+    workaround: "回避策",
+    packages: "パッケージ",
+    sources: "情報源",
+    related: "同一・類似シグネチャ",
+    exact: "完全一致",
+    similar: "類似",
+    statusLabels: {
+      resolved: "解決済み",
+      workaround: "回避策あり",
+      unresolved: "未解決",
+      unknown: "不明",
+    },
+  },
 };
 
 function values(key) {
@@ -116,12 +191,12 @@ function matches(record, filters) {
   return true;
 }
 
-function Select({ label, name, value, options, onChange }) {
+function Select({ label, name, value, options, onChange, allLabel }) {
   return (
     <label className={styles.field}>
       <span>{label}</span>
       <select name={name} value={value} onChange={onChange}>
-        <option value="">All</option>
+        <option value="">{allLabel}</option>
         {options.map((option) => (
           <option key={option} value={option}>{option}</option>
         ))}
@@ -131,6 +206,8 @@ function Select({ label, name, value, options, onChange }) {
 }
 
 export default function FailureKB() {
+  const { i18n } = useDocusaurusContext();
+  const copy = copyByLocale[i18n.currentLocale] ?? copyByLocale.ja;
   const [filters, setFilters] = useState(emptyFilters);
   const [ready, setReady] = useState(false);
 
@@ -162,36 +239,36 @@ export default function FailureKB() {
   return (
     <div className={styles.root}>
       <div className={styles.summary}>
-        <div><strong>{allRecords.length}</strong><span>2026 records</span></div>
-        <div><strong>{sourceFamilies}</strong><span>source families</span></div>
-        <div><strong>{statuses.resolved}</strong><span>resolved</span></div>
-        <div><strong>{statuses.workaround}</strong><span>workarounds</span></div>
-        <div><strong>{statuses.unresolved}</strong><span>unresolved</span></div>
+        <div><strong>{allRecords.length}</strong><span>{copy.records}</span></div>
+        <div><strong>{sourceFamilies}</strong><span>{copy.sourceFamilies}</span></div>
+        <div><strong>{statuses.resolved}</strong><span>{copy.resolved}</span></div>
+        <div><strong>{statuses.workaround}</strong><span>{copy.workarounds}</span></div>
+        <div><strong>{statuses.unresolved}</strong><span>{copy.unresolved}</span></div>
       </div>
 
       <div className={styles.searchPanel}>
         <label className={`${styles.field} ${styles.query}`}>
-          <span>Error / exception / symptom</span>
+          <span>{copy.searchLabel}</span>
           <input
             name="q"
             value={filters.q}
             onChange={onChange}
-            placeholder="Paste an error string, UUM id, exception name, or symptom"
+            placeholder={copy.searchPlaceholder}
             autoComplete="off"
           />
         </label>
-        <Select label="Component" name="component" value={filters.component} options={values("component")} onChange={onChange} />
-        <Select label="Stage" name="stage" value={filters.stage} options={values("stage")} onChange={onChange} />
-        <Select label="Status" name="status" value={filters.status} options={values("status")} onChange={onChange} />
-        <Select label="Platform" name="platform" value={filters.platform} options={values("platform")} onChange={onChange} />
-        <Select label="Unity" name="unity" value={filters.unity} options={values("unity_version")} onChange={onChange} />
-        <Select label="VRCSDK" name="vrcsdk" value={filters.vrcsdk} options={values("vrcsdk_version")} onChange={onChange} />
-        <Select label="Package" name="package" value={filters.package} options={values("package")} onChange={onChange} />
-        <button className={styles.reset} type="button" onClick={() => setFilters(emptyFilters)}>Clear filters</button>
+        <Select label={copy.component} name="component" value={filters.component} options={values("component")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.stage} name="stage" value={filters.stage} options={values("stage")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.status} name="status" value={filters.status} options={values("status")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.platform} name="platform" value={filters.platform} options={values("platform")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.unity} name="unity" value={filters.unity} options={values("unity_version")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.vrcsdk} name="vrcsdk" value={filters.vrcsdk} options={values("vrcsdk_version")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.package} name="package" value={filters.package} options={values("package")} onChange={onChange} allLabel={copy.all} />
+        <button className={styles.reset} type="button" onClick={() => setFilters(emptyFilters)}>{copy.clear}</button>
       </div>
 
       <div className={styles.resultHeader}>
-        <strong>{filtered.length}</strong> matching record{filtered.length === 1 ? "" : "s"}
+        <strong>{filtered.length}</strong> {copy.matching(filtered.length)}
       </div>
 
       <div className={styles.records}>
@@ -200,7 +277,7 @@ export default function FailureKB() {
           return (
             <article className={styles.card} key={record.id} id={`failure-${record.id}`}>
               <div className={styles.meta}>
-                <span className={`${styles.status} ${styles[record.status]}`}>{record.status}</span>
+                <span className={`${styles.status} ${styles[record.status]}`}>{copy.statusLabels[record.status] ?? record.status}</span>
                 <span>{record.date}</span>
                 <span>{record.source_family}</span>
               </div>
@@ -216,15 +293,15 @@ export default function FailureKB() {
               </div>
 
               <details className={styles.details}>
-                <summary>Evidence and resolution</summary>
+                <summary>{copy.evidence}</summary>
                 <dl>
-                  <dt>Trigger</dt><dd>{record.trigger}</dd>
-                  <dt>Root cause</dt><dd>{record.root_cause}</dd>
-                  <dt>Solution</dt><dd>{record.solution}</dd>
-                  <dt>Workaround</dt><dd>{record.workaround}</dd>
-                  <dt>Packages</dt>
+                  <dt>{copy.trigger}</dt><dd>{record.trigger}</dd>
+                  <dt>{copy.rootCause}</dt><dd>{record.root_cause}</dd>
+                  <dt>{copy.solution}</dt><dd>{record.solution}</dd>
+                  <dt>{copy.workaround}</dt><dd>{record.workaround}</dd>
+                  <dt>{copy.packages}</dt>
                   <dd>{(record.packages ?? []).map((item) => `${item.name} ${item.version}`).join(", ")}</dd>
-                  <dt>Sources</dt>
+                  <dt>{copy.sources}</dt>
                   <dd>
                     {(record.source_urls ?? []).map((url) => (
                       <div key={url}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>
@@ -233,12 +310,12 @@ export default function FailureKB() {
                 </dl>
                 {related.length > 0 && (
                   <div className={styles.related}>
-                    <strong>Same / similar signatures</strong>
+                    <strong>{copy.related}</strong>
                     <ul>
                       {related.map(({ record: candidate, kind, score }) => (
                         <li key={candidate.id}>
                           <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{candidate.title}</a>
-                          <span>{kind}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
+                          <span>{kind === "exact" ? copy.exact : copy.similar}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
                         </li>
                       ))}
                     </ul>

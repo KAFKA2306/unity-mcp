@@ -6,9 +6,17 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const data = path.join(root, "data", "failures");
 const registry = JSON.parse(fs.readFileSync(path.join(data, "sources-web.json"), "utf8"));
 const sources = registry.filter((source) => source.enabled);
-const canonical = JSON.parse(fs.readFileSync(path.join(data, "records-web-2026.json"), "utf8"));
-const relevant = /vrchat|vrc|unity|avatar|world|sdk|vcc|modular avatar|udon|physbone|shader/i;
-const failure = /error|fail|failed|failure|crash|broken|missing|cannot|can't|won't|validation|pink|fatal|warning|不具合|エラー|失敗|直し|解決|表示され|消え|起動しない|アップロードでき/i;
+const canonicalFiles = fs.readdirSync(data)
+  .filter((name) => /^records-web(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
+  .sort();
+const canonical = canonicalFiles.flatMap((name) => JSON.parse(fs.readFileSync(path.join(data, name), "utf8")));
+const japaneseCanonicalFile = "records-web-ja-2026.json";
+const japaneseCanonical = fs.existsSync(path.join(data, japaneseCanonicalFile))
+  ? JSON.parse(fs.readFileSync(path.join(data, japaneseCanonicalFile), "utf8"))
+  : [];
+const japaneseSources = sources.filter((source) => (source.languages ?? []).includes("ja"));
+const relevant = /vrchat|vrc|unity|avatar|world|sdk|vcc|modular avatar|udon|physbone|shader|liltoon|アバター|ワールド|ギミック|シェーダー|モジュラーアバター/i;
+const failure = /error|fail|failed|failure|crash|broken|missing|cannot|can't|won't|validation|pink|fatal|warning|不具合|エラー|失敗|直し|解決|表示され|消え|起動しない|アップロードでき|認証|ライセンス|マゼンタ|警告|鳴らない|開けない|見つからない/i;
 
 function decode(value = "") {
   return value.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
@@ -74,6 +82,8 @@ async function fetchText(source) {
 function selfTest() {
   const rss = parseRss(`<rss><channel><item><title>VRChat Unity build error</title><link>https://example.com/a</link><pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate></item></channel></rss>`);
   if (rss.length !== 1 || rss[0].date !== "2026-06-19") throw new Error("RSS parser self-test failed");
+  const jaRss = parseRss(`<rss><channel><item><title>VRChat アバターのライセンスエラーを解決</title><link>https://example.com/ja</link><pubDate>Mon, 19 Jan 2026 00:00:00 GMT</pubDate></item></channel></rss>`);
+  if (jaRss.length !== 1 || jaRss[0].date !== "2026-01-19") throw new Error("Japanese RSS parser self-test failed");
   const map = parseSitemap(`<sitemapindex><sitemap><loc>https://example.com/sitemap-1.xml</loc></sitemap></sitemapindex>`);
   if (map.nested_sitemaps.length !== 1) throw new Error("sitemap parser self-test failed");
   const html = parseHtml(`<html><head><title>VRChat error</title><meta property="article:published_time" content="2026-07-23T00:00:00+09:00"><link rel="canonical" href="https://example.com/post"></head></html>`, "https://fallback.invalid");
@@ -86,11 +96,21 @@ for (const required of ["rss", "sitemap", "manual_url"]) {
   if (!modes.has(required)) throw new Error(`enabled web source registry missing ${required}`);
 }
 if (canonical.length < 20) throw new Error(`web canonical corpus below 20: ${canonical.length}`);
+if (japaneseCanonical.length < 7) throw new Error(`Japanese web canonical corpus below 7: ${japaneseCanonical.length}`);
+if (japaneseSources.length < 3) throw new Error(`enabled Japanese web sources below 3: ${japaneseSources.length}`);
 const domains = new Set(canonical.flatMap((record) => record.source_urls).map((url) => new URL(url).hostname));
 if (domains.size < 5) throw new Error(`web canonical corpus requires >=5 domains; got ${domains.size}`);
 
 if (!process.argv.includes("--live")) {
-  console.log(JSON.stringify({ canonical: canonical.length, domains: domains.size, registered_source_endpoints: registry.length, enabled_source_endpoints: sources.length, modes: [...modes] }, null, 2));
+  console.log(JSON.stringify({
+    canonical: canonical.length,
+    japanese_canonical: japaneseCanonical.length,
+    domains: domains.size,
+    registered_source_endpoints: registry.length,
+    enabled_source_endpoints: sources.length,
+    enabled_japanese_source_endpoints: japaneseSources.length,
+    modes: [...modes]
+  }, null, 2));
   process.exit(0);
 }
 
@@ -98,21 +118,37 @@ const report = [];
 for (const source of sources) {
   try {
     const body = await fetchText(source);
+    const common = { source: source.id, languages: source.languages ?? [] };
     if (source.fetch_mode === "rss") {
       const items = parseRss(body);
-      report.push({ source: source.id, status: "success", mode: "rss", candidates_2026: items.length, sample: items.slice(0, 5) });
+      report.push({ ...common, status: "success", mode: "rss", candidates_2026: items.length, sample: items.slice(0, 5) });
     } else if (source.fetch_mode === "sitemap") {
       const map = parseSitemap(body);
-      report.push({ source: source.id, status: "success", mode: "sitemap", nested_sitemaps: map.nested_sitemaps.length, urls_2026: map.urls_2026.length });
+      report.push({ ...common, status: "success", mode: "sitemap", nested_sitemaps: map.nested_sitemaps.length, urls_2026: map.urls_2026.length });
     } else {
       const page = parseHtml(body, source.canonical_url);
-      report.push({ source: source.id, status: page.date.startsWith("2026-") ? "success" : "parse_failed", mode: "manual_url", page });
+      report.push({ ...common, status: page.date.startsWith("2026-") ? "success" : "parse_failed", mode: "manual_url", page });
     }
   } catch (error) {
     const blocked = [401, 403, 429].includes(error.httpStatus);
-    report.push({ source: source.id, status: blocked ? "blocked" : "failed", mode: source.fetch_mode, error: String(error.message ?? error) });
+    report.push({ source: source.id, languages: source.languages ?? [], status: blocked ? "blocked" : "failed", mode: source.fetch_mode, error: String(error.message ?? error) });
   }
 }
 
-console.log(JSON.stringify({ canonical: canonical.length, domains: domains.size, registered_source_endpoints: registry.length, enabled_source_endpoints: sources.length, report }, null, 2));
+const japaneseReport = report.filter((item) => item.languages.includes("ja"));
+console.log(JSON.stringify({
+  canonical: canonical.length,
+  japanese_canonical: japaneseCanonical.length,
+  domains: domains.size,
+  registered_source_endpoints: registry.length,
+  enabled_source_endpoints: sources.length,
+  enabled_japanese_source_endpoints: japaneseSources.length,
+  japanese_source_checks: {
+    checked: japaneseReport.length,
+    success: japaneseReport.filter((item) => item.status === "success").length,
+    blocked: japaneseReport.filter((item) => item.status === "blocked").length,
+    failed: japaneseReport.filter((item) => item.status === "failed" || item.status === "parse_failed").length
+  },
+  report
+}, null, 2));
 if (report.some((item) => item.status === "failed" || item.status === "parse_failed")) process.exit(1);
