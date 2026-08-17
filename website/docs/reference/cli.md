@@ -3,7 +3,7 @@ id: cli
 slug: /reference/cli
 title: CLIリファレンス
 sidebar_label: CLI
- description: unity-mcp CLIの起動方法、共通option、MCP toolとの対応を説明します。
+description: unity-mcp CLIの起動方法、共通option、MCP toolとの対応を説明します。
 ---
 
 # CLIリファレンス
@@ -13,13 +13,8 @@ sidebar_label: CLI
 ## 起動
 
 ```bash
-# installせずuvxで実行
 uvx --from mcpforunityserver mcp-for-unity <command> [args]
-
-# Server checkoutから実行
 cd Server && uv run mcp-for-unity <command> [args]
-
-# alias
 uvx --from mcpforunityserver unity-mcp <command> [args]
 ```
 
