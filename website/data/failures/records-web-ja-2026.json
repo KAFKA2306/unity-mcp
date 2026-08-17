@@ -50,10 +50,7 @@
     "title": "lilToonのincludeファイルを開けずプロジェクト全体がマゼンタになる",
     "date": "2026-02-28",
     "date_kind": "published",
-    "source_urls": [
-      "https://note.com/rainfall_mavesan/n/n7f53e36218ca",
-      "https://lilxyzw.github.io/lilToon/ja_JP/other/qa.html"
-    ],
+    "source_urls": ["https://note.com/rainfall_mavesan/n/n7f53e36218ca"],
     "source_type": "article",
     "source_family": "note",
     "component": "lilToon shader include",
@@ -66,7 +63,7 @@
     "symptom": "lilToonのHLSL includeを開けないエラーが繰り返され、プロジェクト内の描画オブジェクトがマゼンタのエラー表示になる。",
     "trigger": "記事ではpackageインポート後にlilToon内のファイル参照が壊れた状態で発生した。",
     "root_cause": "unknown",
-    "solution": "記事ではVCCのManage ProjectからlilToonを削除して再追加し、マテリアルにlilToonを再指定して復旧している。lilToon公式Q&Aも、最新版の上書き、削除後の再インポート、Reimportを順に案内している。",
+    "solution": "記事ではVCCのManage ProjectからlilToonを削除して再追加し、マテリアルにlilToonを再指定して復旧している。",
     "workaround": "unknown",
     "status": "resolved",
     "tags": ["ja", "日本語", "liltoon", "shader", "hlsl", "magenta", "note"]
@@ -147,7 +144,7 @@
     "date_kind": "published",
     "source_urls": [
       "https://note.com/litalita9764/n/n071c8aa34fdc",
-      "https://creators.vrchat.com/platforms/android/quest-content-optimization/"
+      "https://creators.vrchat.com/avatars/avatar-performance-ranking-system/"
     ],
     "source_type": "article",
     "source_family": "note",
@@ -160,7 +157,7 @@
     "error_signature": "The following component types are found on the Avatar and will be removed by the client: VRCSpatialAudioSource, Audio Source",
     "symptom": "Quest版ではメニューやアニメーションは動作しても、アバター上の音ギミックが無音になる。",
     "trigger": "Android / Quest向けアバターにAudio SourceまたはVRCSpatialAudioSourceを含める。",
-    "root_cause": "VRChat公式のAndroid Content Optimizationでは、Android上のアバターではAudio Sourcesが完全に無効化されると明記されている。",
+    "root_cause": "2026年のVRChat公式Performance Ranksでは、モバイルアバターのAudio Sourcesは無効化・除去される対象として記載されている。",
     "solution": "unknown",
     "workaround": "アバター側の音源を前提にせず、必要ならワールド側で音を出す設計にする。",
     "status": "workaround",
