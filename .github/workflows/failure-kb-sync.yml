@@ -15,7 +15,8 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write
+  actions: write
 
 concurrency:
   group: failure-kb-2026-sync
@@ -42,7 +43,17 @@ jobs:
         working-directory: website
         run: npm ci
 
+      - name: Refresh VRChat official corpus
+        id: vrchat
+        continue-on-error: true
+        working-directory: website
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/collect-vrchat-official-failures.mjs
+
       - name: Validate canonical data
+        id: canonical
+        continue-on-error: true
         working-directory: website
         run: |
           npm run validate:failures
@@ -67,14 +78,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/collect-github-failures.mjs --json > github-failure-candidates.json
-
-      - name: Check VRChat official corpus
-        id: vrchat
-        continue-on-error: true
-        working-directory: website
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: node scripts/collect-vrchat-official-failures.mjs --check
 
       - name: Discover web failure candidates
         id: web
@@ -109,6 +112,7 @@ jobs:
           name: failure-kb-2026-${{ github.run_id }}
           if-no-files-found: warn
           path: |
+            website/data/failures/records-vrchat-official-2026.json
             website/failure-source-report.json
             website/github-failure-candidates.json
             website/web-failure-source-report.json
@@ -118,10 +122,32 @@ jobs:
       - name: Enforce live checks
         if: always()
         run: |
+          test "${{ steps.vrchat.outcome }}" = "success"
+          test "${{ steps.canonical.outcome }}" = "success"
           test "${{ steps.sources.outcome }}" = "success"
           test "${{ steps.github_discovery.outcome }}" = "success"
-          test "${{ steps.vrchat.outcome }}" = "success"
           test "${{ steps.web.outcome }}" = "success"
           test "${{ steps.unity.outcome }}" = "success"
           test "${{ steps.coverage.outcome }}" = "success"
           test "${{ steps.build.outcome }}" = "success"
+
+      - name: Commit official source updates
+        id: canonical_commit
+        run: |
+          if git diff --quiet -- website/data/failures/records-vrchat-official-2026.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No canonical VRChat changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/data/failures/records-vrchat-official-2026.json
+          git commit -m "chore(failure-kb): sync VRChat official 2026 records"
+          git push origin HEAD:beta
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Re-deploy docs after canonical update
+        if: steps.canonical_commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run docs-deploy.yml --ref beta
