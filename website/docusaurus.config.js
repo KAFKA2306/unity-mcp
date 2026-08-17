@@ -195,6 +195,11 @@ const config = {
             label: 'ドキュメント',
           },
           {
+            to: '/failures',
+            label: 'エラー事例',
+            position: 'left',
+          },
+          {
             to: '/reference/tools',
             label: 'リファレンス',
             position: 'left',
