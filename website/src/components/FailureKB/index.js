@@ -5,9 +5,10 @@ import seed from "@site/data/failures/records-2026.json";
 import github from "@site/data/failures/records-github-2026.json";
 import vrchat from "@site/data/failures/records-vrchat-official-2026.json";
 import web from "@site/data/failures/records-web-2026.json";
+import webJa from "@site/data/failures/records-web-ja-2026.json";
 import unity from "@site/data/failures/records-unity-official-2026.json";
 
-const allRecords = [...seed, ...github, ...vrchat, ...web, ...unity].sort(
+const allRecords = [...seed, ...github, ...vrchat, ...web, ...webJa, ...unity].sort(
   (a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
 );
 
@@ -206,7 +207,7 @@ function Select({ label, name, value, options, onChange, allLabel }) {
 
 export default function FailureKB() {
   const { i18n } = useDocusaurusContext();
-  const copy = copyByLocale[i18n.currentLocale] ?? copyByLocale.en;
+  const copy = copyByLocale[i18n.currentLocale] ?? copyByLocale.ja;
   const [filters, setFilters] = useState(emptyFilters);
   const [ready, setReady] = useState(false);
 
