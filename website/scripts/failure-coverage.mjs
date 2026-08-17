@@ -113,7 +113,7 @@ const families = Object.keys(metrics.source_families).length;
 const problems = [];
 if (records.length < 100) problems.push(`canonical record count ${records.length} is below 100`);
 if (families < 6) problems.push(`source family count ${families} is below 6`);
-if (japaneseWebRecords.length < 7) problems.push(`Japanese web record count ${japaneseWebRecords.length} is below 7`);
+if (japaneseWebRecords.length < 12) problems.push(`Japanese web record count ${japaneseWebRecords.length} is below 12`);
 if (enabledJapaneseSources.length < 3) problems.push(`enabled Japanese source count ${enabledJapaneseSources.length} is below 3`);
 if (sourceReport && (sourceReport.failed ?? 0) > 0) problems.push(`${sourceReport.failed} source check(s) failed`);
 
