@@ -1,0 +1,87 @@
+{
+  "2026-unity-6000-3-3f1-uum-131538": {
+    "title": "特定のInference Engine処理でCheckDeviceStatus中にUnityがクラッシュすることがある",
+    "symptom": "特定のInference Engine処理を実行すると、CheckDeviceStatusでUnityがクラッシュすることがある。",
+    "trigger": "Unityの既知問題に記載された特定のInference Engine処理を実行する。"
+  },
+  "2026-unity-6000-3-3f1-uum-126803": {
+    "title": "WindowsでAudioManager::InitFMODによりUnity Editorがクラッシュすることがある",
+    "symptom": "Windows版Editorで各種操作中にAudioManager::InitFMODを起点としてクラッシュすることがある。",
+    "trigger": "影響を受けるWindows構成でEditor操作を行う。"
+  },
+  "2026-unity-6000-3-3f1-uum-130674": {
+    "title": "URPをアンインストールするとkeywords::PrintKeywordSpaceInfoでUnityがクラッシュすることがある",
+    "symptom": "特定プロジェクトでUniversal Render Pipelineをアンインストールすると、keywords::PrintKeywordSpaceInfoでEditorがクラッシュすることがある。",
+    "trigger": "影響を受けるプロジェクト構成でUniversal Render Pipelineをアンインストールする。"
+  },
+  "2026-unity-6000-3-3f1-uum-130083": {
+    "title": "VR Module依存関係を削除するとURP Sampleがコンパイルできない",
+    "symptom": "VR Module依存関係を削除した後、URP Sampleがコンパイルできなくなる。",
+    "trigger": "VR Module依存関係を削除した影響対象のURP Sample／template構成を使用する。"
+  },
+  "2026-unity-6000-3-3f1-uum-130350": {
+    "title": "モバイルキーボードを閉じた後にOnSubmitが繰り返し発火し続けることがある",
+    "symptom": "iOS／Androidでソフトウェアキーボードを閉じた後、uGUI Input FieldのOnSubmitが繰り返し発火することがある。",
+    "trigger": "iOSまたはAndroidで影響対象のuGUI Input Fieldを使用中にキーボードを閉じる。"
+  },
+  "2026-unity-6000-3-11f1-uum-135024": {
+    "title": "プロジェクト初回起動時にTexturesD3D12::CreateTextureInternalでクラッシュすることがある",
+    "symptom": "DirectX 12使用時、プロジェクトを初めて開いた際にTexturesD3D12::CreateTextureInternalでUnityがクラッシュすることがある。",
+    "trigger": "DirectX 12を使用して影響対象プロジェクトを初めて開く。"
+  },
+  "2026-unity-6000-3-11f1-uum-133911": {
+    "title": "Carving有効のNavMesh Obstacleを移動するとCPU使用率が上がることがある",
+    "symptom": "Carvingを有効にしたNavMesh Obstacleを移動するとCPU使用率が増加する。",
+    "trigger": "Carving有効のNavMesh Obstacleを移動する。"
+  },
+  "2026-unity-6000-3-11f1-uum-134743": {
+    "title": "DirectX 12のExclusive Fullscreenでfocus変更時にPlayerがクラッシュすることがある",
+    "symptom": "DirectX 12を使用したPlayerでExclusive Fullscreen中にfocusを切り替えるとクラッシュすることがある。",
+    "trigger": "DirectX 12のExclusive Fullscreenモード中にアプリケーションfocusを切り替える。"
+  },
+  "2026-unity-6000-3-12f1-uum-137538": {
+    "title": "DisableTypeTreeのAssetBundleからVFXを読み込むとCachedReaderでクラッシュすることがある",
+    "symptom": "DisableTypeTreeで作成したAssetBundleからVFXオブジェクトを読み込むと、CachedReader::OutOfBoundsErrorでUnityがクラッシュすることがある。",
+    "trigger": "DisableTypeTreeを使用したAssetBundleからVFXオブジェクトを読み込む。"
+  },
+  "2026-unity-6000-3-15f1-uum-141555": {
+    "title": "Graphics API一覧の先頭でもDirectX 12が使用されないことがある",
+    "symptom": "Graphics API一覧の先頭にDirectX 12を設定していても、UnityがDX12を使用せず起動することがある。",
+    "trigger": "影響対象構成でGraphics API一覧の先頭にDirectX 12を設定する。"
+  },
+  "2026-unity-6000-3-17f1-uum-142421": {
+    "title": "WindowsでUnity Package Managerの導入がEPERMで不定期に失敗することがある",
+    "symptom": "Windowsでパッケージ導入がEPERM operation-not-permittedエラーにより不定期に失敗することがある。",
+    "trigger": "影響対象Unity versionのWindows環境でパッケージを導入する。"
+  },
+  "2026-unity-6000-3-17f1-uum-141434": {
+    "title": "Domain teardown後の非同期HTTP callbackでScripting::LogExceptionがクラッシュすることがある",
+    "symptom": "Scripting domain teardown後に非同期HTTP callbackが実行されると、Scripting::LogExceptionでUnityがクラッシュすることがある。",
+    "trigger": "Scripting domain teardown後まで非同期HTTP callbackを生存させて実行する。"
+  },
+  "2026-unity-6000-5-5f1-uum-146750": {
+    "title": "RigBuilder rebind後にPlay Modeを終了するとAnimator::OnPlayableUnbindでクラッシュすることがある",
+    "symptom": "Animator評価中にRigBuilderがrebindした後でPlay Modeを終了すると、Animator::OnPlayableUnbindでUnityがクラッシュすることがある。",
+    "trigger": "Animator評価中にRigBuilderがrebindした後、Play Modeを終了する。"
+  },
+  "2026-unity-6000-5-5f1-uum-146860": {
+    "title": "同時UnityWebRequestを高頻度で生成・破棄するとAndroid IL2CPPでnative SIGSEGVが起きることがある",
+    "symptom": "Android IL2CPPで同時UnityWebRequest処理が多い場合、Curl_splaygetbest／curl_multi_perform付近のlibunity.soでnative SIGSEGVが発生することがある。",
+    "trigger": "影響対象Android IL2CPP構成で同時UnityWebRequest処理を高頻度に実行する。"
+  },
+  "2026-unity-6000-5-5f1-uum-147746": {
+    "title": "Addressablesアセット読込後のApplication.QuitでWindows Playerが無言クラッシュすることがある",
+    "symptom": "Addressablesアセットを読み込んだ後にApplication.Quitを呼ぶと、Windows Playerがエラー表示なくクラッシュすることがある。",
+    "trigger": "影響対象Windows PlayerでAddressablesアセットを読み込み、その後Application.Quitを呼ぶ。"
+  },
+  "2026-unity-6000-5-6f1-uum-148214": {
+    "title": "DirectX 12のFullscreen Windowでfocusを高速切替するとUnityMainでPlayerがクラッシュすることがある",
+    "symptom": "DirectX 12のFullscreen Window使用中にアプリfocusを高速で切り替えるとUnityMainでPlayerがクラッシュすることがある。",
+    "trigger": "DirectX 12のFullscreen Windowモード中にアプリケーションfocusを高速で切り替える。"
+  },
+  "2026-unity-6000-5-6f1-uum-146214": {
+    "title": "GPU Resident Drawer有効時にGPU Occlusion Cullingが遮蔽物の奥を正しくcullできないことがある",
+    "symptom": "GPU Resident Drawer有効時、GPU Occlusion Cullingが遮蔽されたinstanceをcullできず表示されたままになることがある。",
+    "trigger": "影響対象プロジェクトでGPU Resident DrawerとGPU Occlusion Cullingを有効にする。"
+  }
+}
