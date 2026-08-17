@@ -7,10 +7,23 @@ import vrchat from "@site/data/failures/records-vrchat-official-2026.json";
 import web from "@site/data/failures/records-web-2026.json";
 import webJa from "@site/data/failures/records-web-ja-2026.json";
 import unity from "@site/data/failures/records-unity-official-2026.json";
+import jaSeed from "@site/data/failures/display-ja-seed-2026.json";
+import jaGithub from "@site/data/failures/display-ja-github-2026.json";
+import jaVrchat from "@site/data/failures/display-ja-vrchat-official-2026.json";
+import jaWeb from "@site/data/failures/display-ja-web-2026.json";
+import jaUnity from "@site/data/failures/display-ja-unity-official-2026.json";
 
 const allRecords = [...seed, ...github, ...vrchat, ...web, ...webJa, ...unity].sort(
   (a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
 );
+
+const japaneseDisplay = {
+  ...jaSeed,
+  ...jaGithub,
+  ...jaVrchat,
+  ...jaWeb,
+  ...jaUnity,
+};
 
 const emptyFilters = {
   q: "",
@@ -98,6 +111,7 @@ const copyByLocale = {
 };
 
 const japaneseStages = {
+  unknown: "不明",
   setup: "セットアップ",
   launch: "起動",
   import: "インポート",
@@ -106,23 +120,112 @@ const japaneseStages = {
   upload: "アップロード",
   validation: "検証",
   runtime: "実行時",
+  editor: "エディター",
+  testing: "テスト",
+  install: "導入",
+  optimization: "最適化",
+  preview: "プレビュー",
+  resolve: "依存関係解決",
+  "editor UI": "エディターUI",
   "project creation": "プロジェクト作成",
+  "application launch": "アプリ起動",
+  "project launch": "プロジェクト起動",
+  "server launch": "サーバー起動",
+  "editor readiness": "エディター準備状態",
+  "multi-instance runtime": "複数インスタンス実行時",
+  "runtime / event binding": "実行時 / イベントバインド",
+  "ClientSim runtime": "ClientSim実行時",
+  "ClientSim build simulation": "ClientSimビルドシミュレーション",
+  "package install": "パッケージ導入",
+  "package resolution": "パッケージ解決",
+  "package download": "パッケージ取得",
+  "avatar authoring": "アバター制作",
   "avatar build": "アバタービルド",
   "manual bake": "手動Bake",
   "code execution": "コード実行",
   "launch / package resolution": "起動 / パッケージ解決",
   "avatar optimization": "アバター最適化",
   "build optimization": "ビルド最適化",
+  "play mode": "Play Mode",
+  "play mode build": "Play Modeビルド",
   "play mode / recompilation": "Play Mode / 再コンパイル",
-  "package install": "パッケージ導入",
   "avatar import": "アバターインポート",
+  "avatar validation": "アバター検証",
+  "platform validation": "プラットフォーム検証",
+  "platform build": "プラットフォームビルド",
   "build / validation": "ビルド / 検証",
   "build / upload": "ビルド / アップロード",
+  "build / runtime": "ビルド / 実行時",
   "performance validation": "パフォーマンス検証",
   "world upload validation": "ワールドアップロード検証",
-  "project launch": "プロジェクト起動",
   "runtime rendering": "実行時レンダリング",
   "optimization / runtime": "最適化 / 実行時",
+  "import / rendering": "インポート / レンダリング",
+  "compile / safe mode": "コンパイル / Safe Mode",
+  "texture bake": "テクスチャベイク",
+  "editor emulation": "エディターエミュレーション",
+};
+
+const japaneseSourceFamilies = {
+  "Unity Release Notes": "Unityリリースノート",
+  "VRChat SDK releases": "VRChat SDKリリース",
+  "VRChat Ask Forum": "VRChat Askフォーラム",
+  "Yu Suzumi blog": "Yu Suzumiブログ",
+};
+
+const japaneseComponents = {
+  "dependency detection": "依存関係検出",
+  "test runner": "テストランナー",
+  "HTTP server lifecycle": "HTTPサーバーのライフサイクル",
+  "screenshot capture": "スクリーンショット取得",
+  "server launcher": "サーバー起動",
+  "editor readiness": "エディター準備状態",
+  "editor window": "エディターウィンドウ",
+  "project creation": "プロジェクト作成",
+  "application UI": "アプリUI",
+  "Unity project launch": "Unityプロジェクト起動",
+  "interaction raycast": "インタラクションのレイキャスト",
+  "scene processing": "Scene処理",
+  "settings window": "設定ウィンドウ",
+  "package installer": "パッケージ導入",
+  "Windows installer": "Windowsインストーラー",
+  "package resolution UI": "パッケージ解決UI",
+  "Vertex Filter By Mask inspector": "Vertex Filter By MaskのInspector",
+  "Modular Avatar custom Inspector": "Modular AvatarカスタムInspector",
+  "PhysBone optimization": "PhysBone最適化",
+  "Trace And Optimize interoperability": "Trace And Optimize互換性",
+  "material optimization": "material最適化",
+  "LTCGI shader path": "LTCGI shader経路",
+  "VRCRaycast parameter emulation": "VRCRaycast parameterエミュレーション",
+  "VRChat Avatar validation": "VRChat Avatar検証",
+  "VRChat avatar upload": "VRChat Avatar upload",
+  "VRChat Worlds SDK validation": "VRChat Worlds SDK検証",
+  "XWear Packager dependency resolution": "XWear Packager依存関係解決",
+  "Unity version compatibility": "Unity version互換性",
+  "avatar materials / shaders": "Avatar material / shader",
+  "avatar object tags": "Avatar object tag",
+  "VRChat avatar performance": "VRChat Avatar performance",
+  "Avatar Optimizer workflow": "Avatar Optimizer workflow",
+  "VRChat world Pipeline Manager": "VRChat World Pipeline Manager",
+  "Unity project startup": "Unityプロジェクト起動",
+  "SkinnedMeshRenderer bounds": "SkinnedMeshRenderer Bounds",
+  "avatar build tags": "Avatar build tag",
+  "cross-platform avatar build": "platform別Avatar build",
+  "VRChat avatar particle validation": "VRChat Avatar particle検証",
+  "custom Unity editor script": "custom Unity Editor script",
+  "Humanoid avatar rig": "Humanoid Avatar Rig",
+  "avatar hierarchy": "Avatar Hierarchy",
+  "Avatar Gesture playable layer": "Avatar Gesture Playable Layer",
+  "Unity compilation / VRChat SDK scripts": "Unityコンパイル / VRChat SDK script",
+  "Quest avatar shader validation": "Quest Avatar shader検証",
+  "Platform Audio": "Platform Audio",
+  "Shader System": "Shader System",
+  "SRP Templates": "SRP Template",
+  "uGUI Controls": "uGUI Control",
+  "AI Navigation": "AI Navigation",
+  "Asset Bundles": "AssetBundle",
+  "Package Manager": "Package Manager",
+  "GPU Occlusion Culling": "GPU Occlusion Culling",
 };
 
 function values(key) {
@@ -184,23 +287,40 @@ function candidatesFor(record) {
     .slice(0, 6);
 }
 
+function localizedRecord(record, locale) {
+  if (locale === "en") return record;
+  return { ...record, ...(japaneseDisplay[record.id] ?? {}) };
+}
+
 function searchable(record) {
+  const ja = japaneseDisplay[record.id] ?? {};
   return [
     record.title,
+    ja.title,
     record.error_signature,
     normalizeSignature(record.error_signature),
     record.symptom,
+    ja.symptom,
     record.trigger,
+    ja.trigger,
     record.root_cause,
+    ja.root_cause,
     record.solution,
+    ja.solution,
     record.workaround,
+    ja.workaround,
     record.component,
+    japaneseComponents[record.component],
     record.stage,
+    japaneseStages[record.stage],
+    record.source_family,
+    japaneseSourceFamilies[record.source_family],
     record.unity_version,
     record.vrcsdk_version,
     ...(record.tags ?? []),
     ...(record.packages ?? []).flatMap((item) => [item.name, item.version]),
   ]
+    .filter(Boolean)
     .join(" ")
     .toLowerCase();
 }
@@ -228,6 +348,16 @@ function displayValue(value, locale, copy) {
 function displayStage(value, locale) {
   if (locale === "en") return value;
   return japaneseStages[value] ?? value;
+}
+
+function displayComponent(value, locale) {
+  if (locale === "en") return value;
+  return japaneseComponents[value] ?? value;
+}
+
+function displaySourceFamily(value, locale) {
+  if (locale === "en") return value;
+  return japaneseSourceFamilies[value] ?? value;
 }
 
 function Select({ label, name, value, options, onChange, allLabel, optionLabel = (option) => option }) {
@@ -297,7 +427,7 @@ export default function FailureKB() {
             autoComplete="off"
           />
         </label>
-        <Select label={copy.component} name="component" value={filters.component} options={values("component")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.component} name="component" value={filters.component} options={values("component")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayComponent(option, locale)} />
         <Select label={copy.stage} name="stage" value={filters.stage} options={values("stage")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayStage(option, locale)} />
         <Select label={copy.status} name="status" value={filters.status} options={values("status")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => copy.statusLabels[option] ?? option} />
         <Select label={copy.platform} name="platform" value={filters.platform} options={values("platform")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayValue(option, locale, copy)} />
@@ -314,18 +444,19 @@ export default function FailureKB() {
       <div className={styles.records}>
         {filtered.map((record) => {
           const related = candidatesFor(record);
+          const display = localizedRecord(record, locale);
           return (
             <article className={styles.card} key={record.id} id={`failure-${record.id}`}>
               <div className={styles.meta}>
                 <span className={`${styles.status} ${styles[record.status]}`}>{copy.statusLabels[record.status] ?? record.status}</span>
                 <span>{record.date}</span>
-                <span>{record.source_family}</span>
+                <span>{displaySourceFamily(record.source_family, locale)}</span>
               </div>
-              <h3>{record.title}</h3>
+              <h3>{display.title}</h3>
               {record.error_signature !== "unknown" && <pre className={styles.signature}>{record.error_signature}</pre>}
-              <p>{displayValue(record.symptom, locale, copy)}</p>
+              <p>{displayValue(display.symptom, locale, copy)}</p>
               <div className={styles.chips}>
-                <span>{record.component}</span>
+                <span>{displayComponent(record.component, locale)}</span>
                 <span>{displayStage(record.stage, locale)}</span>
                 {(record.platforms ?? []).map((platform) => <span key={platform}>{displayValue(platform, locale, copy)}</span>)}
                 {record.unity_version !== "unknown" && <span>Unity {record.unity_version}</span>}
@@ -335,10 +466,10 @@ export default function FailureKB() {
               <details className={styles.details}>
                 <summary>{copy.evidence}</summary>
                 <dl>
-                  <dt>{copy.trigger}</dt><dd>{displayValue(record.trigger, locale, copy)}</dd>
-                  <dt>{copy.rootCause}</dt><dd>{displayValue(record.root_cause, locale, copy)}</dd>
-                  <dt>{copy.solution}</dt><dd>{displayValue(record.solution, locale, copy)}</dd>
-                  <dt>{copy.workaround}</dt><dd>{displayValue(record.workaround, locale, copy)}</dd>
+                  <dt>{copy.trigger}</dt><dd>{displayValue(display.trigger, locale, copy)}</dd>
+                  <dt>{copy.rootCause}</dt><dd>{displayValue(display.root_cause, locale, copy)}</dd>
+                  <dt>{copy.solution}</dt><dd>{displayValue(display.solution, locale, copy)}</dd>
+                  <dt>{copy.workaround}</dt><dd>{displayValue(display.workaround, locale, copy)}</dd>
                   <dt>{copy.packages}</dt>
                   <dd>{(record.packages ?? []).map((item) => `${item.name} ${displayValue(item.version, locale, copy)}`).join(", ")}</dd>
                   <dt>{copy.sources}</dt>
@@ -354,7 +485,7 @@ export default function FailureKB() {
                     <ul>
                       {related.map(({ record: candidate, kind, score }) => (
                         <li key={candidate.id}>
-                          <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{candidate.title}</a>
+                          <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{localizedRecord(candidate, locale).title}</a>
                           <span>{kind === "exact" ? copy.exact : copy.similar}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
                         </li>
                       ))}

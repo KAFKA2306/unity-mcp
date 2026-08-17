@@ -1,0 +1,184 @@
+{
+  "2026-github-coplaydev-unity-mcp-1324": {
+    "title": "Windows StoreのApp Execution Alias配下にあるPythonを検出できない",
+    "symptom": "シェルではpyenv-winのPythonが動作するのに、MCP for UnityがPython未検出と報告する。",
+    "trigger": "PATH上の有効なPythonより前にWindowsAppsのApp Execution Aliasがある。",
+    "root_cause": "報告では、最初に見つかったpython.exeだけを確認し、WindowsAppsのstubで探索を止める検出処理が原因とされている。"
+  },
+  "2026-github-coplaydev-unity-mcp-1322": {
+    "title": "Domain Reload無効時にEditModeテスト後のPlayModeテストが失敗する",
+    "symptom": "EditMode実行直後に、Scene依存のPlayModeテストがSetUp/TearDownで失敗する。",
+    "trigger": "Domain ReloadなしでEditModeテストに続けてPlayModeテストを実行する。",
+    "root_cause": "報告では、強制されたDisableDomainReloadにより古いEditor static状態が残ることが原因とされている。",
+    "workaround": "PlayMode実行前にrefresh／compileを行い、Domain Reloadを発生させる。"
+  },
+  "2026-github-coplaydev-unity-mcp-1299": {
+    "title": "Unityインスタンスを1つ閉じると共有HTTP MCPサーバーまで停止する",
+    "symptom": "共有HTTPサーバーを使う複数Unity Editorのうち1つを閉じると、残りのMCP接続もすべて切断される。",
+    "trigger": "同一ローカルHTTP endpointへ2つのUnityプロジェクトを接続し、そのうち1つのEditorを閉じる。",
+    "workaround": "インスタンスを閉じた後に共有サーバー／セッションを再起動する。"
+  },
+  "2026-github-coplaydev-unity-mcp-1289": {
+    "title": "Play Mode中のスクリーンショットでPlayerLoopが再入しEditor.log大量出力からクラッシュすることがある",
+    "symptom": "Play Mode中のスクリーンショット取得でEditor.logが際限なく増え、Unity Editorがクラッシュすることがある。",
+    "trigger": "EditorがPlay Mode中にmanage_cameraのscreenshotを実行する。",
+    "root_cause": "報告では、UnitySynchronizationContextからEditorApplication.StepがPlayerLoopへ再入することが原因とされている。",
+    "workaround": "Editorを再起動して、残留した大量出力状態を解消する。"
+  },
+  "2026-github-coplaydev-unity-mcp-1279": {
+    "title": "Windowsでheadless MCPサーバー起動がos error 6で失敗する",
+    "symptom": "Python MCPサーバーが起動する前にStart Serverと自動起動が失敗する。",
+    "trigger": "WindowsのGUI版Unity Editorから既定HTTPサーバーをheadless起動する。",
+    "root_cause": "報告では、Consoleを持たない子プロセスが無効なstdinを継承することが原因とされている。",
+    "workaround": "生成されたコマンドを実Consoleのあるターミナルから手動実行する。"
+  },
+  "2026-github-coplaydev-unity-mcp-1276": {
+    "title": "Domain Reloadを延期すると全MCPツールが「compiling」のまま使用不能になる",
+    "symptom": "コンパイル完了後でEditorがidleでも、すべてのツール呼び出しがcompilingとして拒否される。",
+    "trigger": "EditorApplication.LockReloadAssembliesを保持したままスクリプトをコンパイルする。",
+    "root_cause": "報告では、Domain Reload延期中にEditorApplication.isCompilingがtrueのまま残ることが原因とされている。",
+    "workaround": "延期しているReloadを手動で解除する。"
+  },
+  "2026-github-coplaydev-unity-mcp-1238": {
+    "title": "MCPウィンドウへフォーカスするとUnity Editor全体が数秒固まる",
+    "symptom": "DockされたMCP for Unityタブへフォーカスを移す、または外す際にEditor全体が数秒フリーズする。",
+    "trigger": "CLI／path probeが遅い、または見つからない状態でMCPウィンドウへフォーカスする。",
+    "root_cause": "報告では、Unity UI thread上で同期的にプロセス生成とTCP probeを行うことが原因とされている。"
+  },
+  "2026-github-vcc-664": {
+    "title": "リモートrepositoryのtimeout後にVCCのプロジェクト作成が進まなくなる",
+    "symptom": "リモートVPM repository要求がtimeoutすると、Avatar／Worldどちらのプロジェクト作成も停止する。",
+    "trigger": "VRCFuryなど設定済みrepositoryが600秒以内に応答しない状態でプロジェクトを作成する。"
+  },
+  "2026-github-vcc-647": {
+    "title": "トルコ語localeでUdon GraphのInteractイベントbindingが壊れる",
+    "symptom": "他イベントは動作するのにInteractが発火せず、Interaction Textも表示されない。",
+    "trigger": "tr-TRのトルコ語locale環境でUdon Graph Event Interactを使用する。",
+    "root_cause": "報告では、culture依存の小文字化によりイベントsymbolへdotless ıが入ることが原因とされている。",
+    "workaround": "同じ処理をUdonSharpで実装するか、トルコ語以外のlocaleを使用する。"
+  },
+  "2026-github-vcc-659": {
+    "title": "VCCを起動しても白い画面のままになる",
+    "symptom": "Creator CompanionのプロジェクトUIが表示されず、真っ白な画面のままになる。",
+    "trigger": "報告環境でCreator Companionを起動する。"
+  },
+  "2026-github-vcc-649": {
+    "title": "VCCから開いたUnityプロジェクトがアセット内容に関係なくクラッシュする",
+    "symptom": "新規・既存を問わず、Creator Companion経由で開いたUnityプロジェクトがクラッシュする。",
+    "trigger": "報告されたVCC環境で空のプロジェクトまたは既存プロジェクトを開く。"
+  },
+  "2026-github-clientsim-142": {
+    "title": "VRChat本体では操作できるのにClientSimではStation Collider越しにInteractできない",
+    "symptom": "Station Colliderの奥にあるInteractableがClientSimでは無視される一方、現行VRChatクライアントでは操作できる。",
+    "trigger": "Rayの送出元とInteractableの間にStation Colliderを置く。",
+    "root_cause": "報告では、現在のClient挙動と一致しなくなった過去仕様のCollider無視判定が残っていることが指摘されている。"
+  },
+  "2026-github-clientsim-137": {
+    "title": "ClientSimと実ビルドでEditorOnlyオブジェクトの削除タイミングが異なる",
+    "symptom": "ClientSimではビルド処理中にEditorOnlyオブジェクトを参照できたり、実ビルドで削除されるオブジェクトが残ったりする。",
+    "trigger": "EditorOnlyオブジェクトを含むビルド時Hierarchy変更を使用する。",
+    "root_cause": "報告では、DestroyEditorOnlyの実行位置がSDKのScene処理と異なることが差異の原因とされている。"
+  },
+  "2026-github-clientsim-136": {
+    "title": "VRChat SDKからログアウト中にClientSim設定を開くとAPIエラーが大量出力される",
+    "symptom": "ログアウト状態でClientSim設定を開くとUnity Consoleへエラーが連続出力される。",
+    "trigger": "VRChat SDKからログアウトした状態で設定ウィンドウを開く。",
+    "workaround": "設定を開く前にVRChat SDKへログインする。"
+  },
+  "2026-github-vrc-get-3093": {
+    "title": "パッケージ外を指すsymlinkを含むとALCOMのパッケージ導入がpanicする",
+    "symptom": "外部symlinkを含むユーザーパッケージの導入でエラーとなり、ALCOMを完全停止するまで処理中表示が続く。",
+    "trigger": "READMEやLICENSEのsymlinkがパッケージdirectory外を指すユーザーパッケージを登録・導入する。",
+    "root_cause": "stack traceではcopy_recursiveがsymlink経由のfile typeでpanicしている。"
+  },
+  "2026-github-vrc-get-3055": {
+    "title": "ALCOM 1.1.6〜1.1.7のinstallerはWebView2未導入環境で自動導入に失敗する",
+    "symptom": "WebView2が存在しない環境でinstallerがWebView2 installerを起動できない。",
+    "trigger": "WebView2未導入のWindowsへALCOM 1.1.6〜1.1.7を導入する。",
+    "workaround": "ALCOMより先にWebView2を個別導入する。"
+  },
+  "2026-github-vrc-get-2957": {
+    "title": "後継パッケージ導入後にALCOMのUIから旧パッケージが消えるが実体は残ることがある",
+    "symptom": "Poiyomi ToonとProが共存してassembly重複を起こし、後継扱いされたToonがALCOMのアンインストールUIから消える。",
+    "trigger": "unlockedなcom.poiyomi.toonを導入後、Toonをlegacy packageとして宣言するcom.poiyomi.proを導入する。",
+    "root_cause": "報告では、legacy package削除がunlocked packageをskipする一方、UIはファイルが残っていてもlegacy行を削除することが原因とされている。",
+    "workaround": "旧パッケージを手動削除し、必要なら後継パッケージを再導入してコンパイルを復旧する。"
+  },
+  "2026-github-vrc-get-2917": {
+    "title": "Ubuntu 26.04でALCOM AppImageのGUIが白いままになる",
+    "symptom": "AppImageのウィンドウは作成されるが内容が永続的に白画面のままになる。",
+    "trigger": "報告されたUbuntu 26.04環境でALCOM AppImageを起動する。",
+    "root_cause": "報告ではlibgvfsdbus／libgvfscommonのsymbol失敗とEGL display作成失敗が観測されている。"
+  },
+  "2026-github-modular-avatar-2070": {
+    "title": "Modular Avatar Vertex Filter By Maskでmaterial slotのdropdownが消える",
+    "symptom": "カスタムInspectorにmaterial slotを選ぶdropdownが表示されなくなる。",
+    "trigger": "報告されたパッケージversionでMA Vertex Filter - By MaskをInspector表示する。",
+    "workaround": "InspectorをDebugへ切り替え、値を手動編集する。"
+  },
+  "2026-github-modular-avatar-2013": {
+    "title": "Modular Avatar Shape Changerのpreviewが更新されなくなりUnity再起動まで戻らないことがある",
+    "symptom": "Shape Changerのpreview、および報告上はBlendshape Sync／Object Toggle previewが変更を反映しなくなることがある。",
+    "trigger": "reactive componentのpreviewを使用中に報告された壊れた状態へ入る。",
+    "workaround": "Unityを再起動する。"
+  },
+  "2026-github-modular-avatar-1964": {
+    "title": "Blenderと3ds MaxのFBX規約差でMerge ArmatureがHips回転へ追従しない",
+    "symptom": "3ds Maxから書き出した衣装FBXをBlender由来アバターへMergeすると、衣装がアバターのHips回転へ追従しない。",
+    "trigger": "exporter間でHipsのrest rotationが90度異なる報告構成のarmatureをMergeする。",
+    "root_cause": "報告ではBlenderと3ds MaxのFBX bone rotation規約差が原因候補として示されている。"
+  },
+  "2026-github-ndmf-789": {
+    "title": "NDMFパッケージURL末尾の「?」によりVPM clientでHTTP 502になる",
+    "symptom": "末尾に単独の「?」が付いたNDMFパッケージURLをALCOM／VPM clientがdownloadできない。",
+    "trigger": "VPM listingから不正なrelease URLを解決する。",
+    "root_cause": "報告ではdownload URL末尾へ不要な「?」が追加されていることが原因とされている。",
+    "solution": "パッケージURL末尾の「?」を削除する。",
+    "workaround": "末尾の「?」を除いた修正済みURLを使用する。"
+  },
+  "2026-github-ndmf-776": {
+    "title": "パッケージ更新後にPlay Modeへ入るとNDMF ConsoleでNullReferenceExceptionが発生する",
+    "symptom": "プロジェクトのパッケージ更新後にPlay Modeへ入ると、NDMF内部pluginのNullReferenceExceptionが報告される。",
+    "trigger": "報告されたプロジェクト状態でパッケージを更新しPlay Modeへ入る。"
+  },
+  "2026-github-avatar-optimizer-1775": {
+    "title": "Trace And OptimizeがMA Object Toggle管理下のMeshRendererを削除することがある",
+    "symptom": "特定HierarchyでMA Object Toggleが管理するMeshRendererオブジェクトが最適化中に削除されることがある。",
+    "trigger": "該当するMA Object Toggle HierarchyへTrace And Optimizeを実行する。"
+  },
+  "2026-github-avatar-optimizer-1720": {
+    "title": "Avatar Optimizer 1.9.11が重複Hierarchyを対象にするVRCPhysBoneを削除する",
+    "symptom": "意図的に重複Hierarchyを対象にしたVRCPhysBoneが1.9.11では削除され、1.9.10では保持される。",
+    "trigger": "報告された重複PhysBone HierarchyをAvatar Optimizer 1.9.11でビルドする。",
+    "workaround": "regression修正まで1.9.10を使用する。"
+  },
+  "2026-github-avatar-optimizer-1724": {
+    "title": "Trace And OptimizeでU Shop武器ギミックの挙動が変わる",
+    "symptom": "Trace And Optimizeがあると、武器magazine追従やworld-fixedギミックの挙動が不正になる。",
+    "trigger": "報告されたU Shop武器ギミックとTrace And Optimizeを併用する。",
+    "workaround": "Avatar Optimizerを外す。報告者は両方の症状が消えるとしている。"
+  },
+  "2026-github-liltoon-427": {
+    "title": "同じBlendTreeへ多数の経路から到達できるとlilOptimizerに数分かかることがある",
+    "symptom": "複雑なBlendTree graphでは同じclipを数万回処理し、最適化に数分かかることがある。",
+    "trigger": "同一BlendTree／AnimationClipへ多数の経路から到達できるgraphを使用する。",
+    "root_cause": "報告ではVRChatModule.GetAnimationClipsFromGameObjectに重複排除がないことが原因とされている。"
+  },
+  "2026-github-liltoon-424": {
+    "title": "lilToonのmaterial最適化でUV Tilingが誤ってtextureへ焼き込まれる",
+    "symptom": "UV Tilingが1以外のmaterialを最適化Bakeすると、tilingが誤った形でtextureへ焼き込まれる。",
+    "trigger": "X=1／Y=2などのUV Tilingを使い、layer／material最適化をBakeする。"
+  },
+  "2026-github-poiyomi-91": {
+    "title": "PoiyomiのLTCGIを有効にするとAndroid／Quest実行時にshader表示が壊れる",
+    "symptom": "Editorでは正常でも、Android／Quest実行時にLTCGIを有効にしたmaterialが壊れる、または見えなくなる。",
+    "trigger": "Android／QuestでLTCGIを有効にしたshaderを実行する。",
+    "workaround": "影響を受けるAndroid／Quest向けではLTCGIを無効にする。"
+  },
+  "2026-github-gesture-manager-99": {
+    "title": "Gesture ManagerではVRCRaycastのHitがfalseだがcomponent側ではtrueになる",
+    "symptom": "raycast componentのHit boolはtrueなのにGesture Managerのdebug parameterではfalseとなる。同じ設定はVRChat本体では動作する。",
+    "trigger": "新しいVRCRaycast componentをGesture Managerのemulationで使用する。",
+    "workaround": "このparameterについてはGesture ManagerではなくVRChat本体で挙動を検証する。"
+  }
+}
