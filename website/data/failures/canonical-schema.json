@@ -19,7 +19,7 @@
         "required": ["url", "source_type", "publisher", "supports"],
         "properties": {
           "url": {"type": "string", "format": "uri"},
-          "source_type": {"type": "string", "enum": ["official_release", "github_issue", "article", "forum", "unity_issue_tracker"]},
+          "source_type": {"type": "string", "enum": ["official_release", "github_issue", "github_commit", "article", "forum", "unity_issue_tracker"]},
           "publisher": {"type": "string", "minLength": 1},
           "published_at": {"type": "string", "format": "date"},
           "supports": {
