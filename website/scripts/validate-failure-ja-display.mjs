@@ -11,6 +11,7 @@ const translated = [
   ["records-2026.json", "display-ja-seed-2026.json"],
   ["records-feedback-2026.json", "display-ja-feedback-2026.json"],
   ["records-github-2026.json", "display-ja-github-2026.json"],
+  ["records-vrcfury-2026.json", "display-ja-vrcfury-2026.json"],
   ["records-vrchat-official-2026.json", "display-ja-vrchat-official-2026.json"],
   ["records-web-2026.json", "display-ja-web-2026.json"],
   ["records-unity-official-2026.json", "display-ja-unity-official-2026.json"],
