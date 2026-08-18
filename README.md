@@ -45,6 +45,16 @@ Control the Unity Editor in natural language from any MCP client — create scen
 
 **[Browse the full tool catalog →](https://coplaydev.github.io/unity-mcp/reference/tools/)**
 
+## VRChat Failure KB
+
+This fork also maintains an evidence-backed database of VRChat creation failures. The current view only promotes records that explicitly identify VRChat's currently supported Unity version, **2022.3.22f1**; records with another or unverified Unity version remain in the raw collection rather than being treated as current.
+
+- **[Browse VRChat creation failures →](https://kafka2306.github.io/unity-mcp/failures)**
+- [Data scope and evidence model](https://kafka2306.github.io/unity-mcp/failures/data)
+- [VRChat: Current Unity Version](https://creators.vrchat.com/sdk/upgrade/current-unity-version/)
+
+The Unity range in the MCP for Unity Quickstart below describes the editor integration itself and is separate from the stricter Unity scope used by the VRChat Failure KB.
+
 ---
 
 ## Quickstart
