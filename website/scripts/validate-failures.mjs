@@ -11,6 +11,7 @@ function readJson(name) {
 }
 
 const recordSchema = readJson("schema.json");
+const scope = readJson("scope.json");
 const recordFiles = fs.readdirSync(dataRoot)
   .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
   .sort();
@@ -20,6 +21,12 @@ const sourceFiles = fs.readdirSync(dataRoot)
   .filter((name) => /^sources(?:-[a-z0-9-]+)?\.json$/.test(name))
   .sort();
 const sources = sourceFiles.flatMap((name) => readJson(name));
+
+const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
+
+function isCurrentRecord(record) {
+  return currentUnityVersions.has(record.unity_version);
+}
 
 function typeMatches(value, type) {
   if (type === "array") return Array.isArray(value);
@@ -86,6 +93,25 @@ function validateCollection(items, schema, label, minimum) {
 validateCollection(records, recordSchema, "records", 10);
 validateCollection(sources, sourceSchema, "sources", 20);
 
+if (currentUnityVersions.size !== 1 || !currentUnityVersions.has("2022.3.22f1")) {
+  errors.push(`scope: current Unity must be exactly 2022.3.22f1, got ${JSON.stringify([...currentUnityVersions])}`);
+}
+if ((scope.legacy_unity_versions ?? []).some((version) => currentUnityVersions.has(version))) {
+  errors.push("scope: legacy Unity version must not be included in current Unity versions");
+}
+if (!isCurrentRecord({ unity_version: "2022.3.22f1" })) {
+  errors.push("scope: supported Unity version was rejected");
+}
+for (const unsupported of ["unknown", "2019.4.31f1", "2022.3.8f1", "6000.0.0f1"]) {
+  if (isCurrentRecord({ unity_version: unsupported })) {
+    errors.push(`scope: unsupported or unverified Unity version accepted: ${unsupported}`);
+  }
+}
+
+const currentRecords = records.filter(isCurrentRecord);
+const excludedRecords = records.filter((record) => !isCurrentRecord(record));
+if (currentRecords.length < 1) errors.push("current records: no record explicitly targets the supported Unity version");
+
 if (Array.isArray(sources)) {
   const families = new Set(sources.map((source) => source.source_family));
   if (families.size < 6) errors.push(`sources: expected at least 6 source families, got ${families.size}`);
@@ -103,7 +129,8 @@ if (errors.length) {
 }
 
 console.log(
-  `Failure KB validation passed: ${records.length} record(s) in ${recordFiles.length} file(s), ` +
+  `Failure KB validation passed: ${currentRecords.length} current record(s), ${excludedRecords.length} excluded by Unity scope, ` +
+  `${records.length} raw record(s) in ${recordFiles.length} file(s), ` +
   `${sources.length} source endpoint(s) in ${sourceFiles.length} file(s), ` +
   `${new Set(sources.map((source) => source.source_family)).size} source families.`
 );

@@ -7,15 +7,17 @@ import vrchat from "@site/data/failures/records-vrchat-official-2026.json";
 import web from "@site/data/failures/records-web-2026.json";
 import webJa from "@site/data/failures/records-web-ja-2026.json";
 import unity from "@site/data/failures/records-unity-official-2026.json";
+import failureScope from "@site/data/failures/scope.json";
 import jaSeed from "@site/data/failures/display-ja-seed-2026.json";
 import jaGithub from "@site/data/failures/display-ja-github-2026.json";
 import jaVrchat from "@site/data/failures/display-ja-vrchat-official-2026.json";
 import jaWeb from "@site/data/failures/display-ja-web-2026.json";
 import jaUnity from "@site/data/failures/display-ja-unity-official-2026.json";
 
-const allRecords = [...seed, ...github, ...vrchat, ...web, ...webJa, ...unity].sort(
-  (a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
-);
+const currentUnityVersions = new Set(failureScope.current_unity_versions);
+const allRecords = [...seed, ...github, ...vrchat, ...web, ...webJa, ...unity]
+  .filter((record) => currentUnityVersions.has(record.unity_version))
+  .sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
 
 const japaneseDisplay = {
   ...jaSeed,
