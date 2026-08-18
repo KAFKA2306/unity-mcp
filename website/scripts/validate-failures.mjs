@@ -23,12 +23,9 @@ const sourceFiles = fs.readdirSync(dataRoot)
 const sources = sourceFiles.flatMap((name) => readJson(name));
 
 const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
-const implicitCurrentFamilies = new Set(scope.current_vrchat_source_families_without_explicit_unity ?? []);
 
 function isCurrentRecord(record) {
-  if (currentUnityVersions.has(record.unity_version)) return true;
-  if (record.unity_version !== "unknown") return false;
-  return implicitCurrentFamilies.has(record.source_family);
+  return currentUnityVersions.has(record.unity_version);
 }
 
 function typeMatches(value, type) {
@@ -102,24 +99,18 @@ if (currentUnityVersions.size !== 1 || !currentUnityVersions.has("2022.3.22f1"))
 if ((scope.legacy_unity_versions ?? []).some((version) => currentUnityVersions.has(version))) {
   errors.push("scope: legacy Unity version must not be included in current Unity versions");
 }
-if (!isCurrentRecord({ unity_version: "2022.3.22f1", source_family: "test" })) {
+if (!isCurrentRecord({ unity_version: "2022.3.22f1" })) {
   errors.push("scope: supported Unity version was rejected");
 }
-for (const unsupported of ["2019.4.31f1", "2022.3.8f1", "6000.0.0f1"]) {
-  if (isCurrentRecord({ unity_version: unsupported, source_family: "VRChat SDK releases" })) {
-    errors.push(`scope: unsupported Unity version accepted: ${unsupported}`);
+for (const unsupported of ["unknown", "2019.4.31f1", "2022.3.8f1", "6000.0.0f1"]) {
+  if (isCurrentRecord({ unity_version: unsupported })) {
+    errors.push(`scope: unsupported or unverified Unity version accepted: ${unsupported}`);
   }
-}
-if (!isCurrentRecord({ unity_version: "unknown", source_family: "VRChat SDK releases" })) {
-  errors.push("scope: VRChat official record without explicit Unity version was rejected");
-}
-if (isCurrentRecord({ unity_version: "unknown", source_family: "MCP for Unity" })) {
-  errors.push("scope: unrelated record without explicit Unity version was accepted");
 }
 
 const currentRecords = records.filter(isCurrentRecord);
 const excludedRecords = records.filter((record) => !isCurrentRecord(record));
-if (currentRecords.length < 10) errors.push(`current records: expected at least 10 entries, got ${currentRecords.length}`);
+if (currentRecords.length < 1) errors.push("current records: no record explicitly targets the supported Unity version");
 
 if (Array.isArray(sources)) {
   const families = new Set(sources.map((source) => source.source_family));
