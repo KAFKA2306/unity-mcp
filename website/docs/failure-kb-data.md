@@ -23,6 +23,19 @@ Unity `2019.4.31f1` は旧VRChat SDK向けのlegacy versionとしてcurrent view
 
 既存recordの`source_urls`、`source_type`、`source_family`は移行期間中のみ残し、全recordを`evidence[]`へ変換するmigrationで削除します。
 
+## Environment
+
+制作環境は`environment`へまとめます。`unity_version`はcurrent corpusではVRChat対応版を必須とし、確認できない値を`unknown`で埋めません。VRChat SDK version、package version、host OS versionは確認できる場合だけ保持します。
+
+`host_os`はFailureを観測した制作側OSで、`Windows`、`macOS`、`Linux`をcanonical nameとします。必要なら各OSにversionを保持します。
+
+`target_platform`はVRChat SDKでbuild/uploadする対象で、VRChat公式のplatform表記に合わせ`Windows`、`Android`、`iOS`だけをcanonical valueにします。`PC`や`Quest`はcanonical target valueとして保存しません。
+
+- https://creators.vrchat.com/platforms/
+- https://creators.vrchat.com/platforms/android/cross-platform-setup/
+
+既存のflat `unity_version`、`vrcsdk_version`、`packages`、`platforms`は移行期間中のみ残し、ontology migrationで`environment`へ統合します。
+
 recordの`date`は、`date_kind`で示された**情報源の公開日または観測日**です。その不具合自体が2026年に初めて発生したことを意味する値ではありません。
 
 `root_cause`、`solution`、`workaround`は、情報源で確認できた事実だけを記録します。現行recordでは引用元から確認できない場合に`unknown`を使っていますが、このsentinelはontology migrationでnullable/field omissionへ移行します。
