@@ -86,3 +86,41 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+  smoke:
+    name: Smoke test published Failure KB
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      SITE_ROOT: https://kafka2306.github.io/unity-mcp
+    steps:
+      - name: Fetch published pages and data
+        run: |
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
+            "$SITE_ROOT/failures" -o /tmp/failures.html
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
+            "$SITE_ROOT/data/failures/current-2026.json" -o /tmp/current-2026.json
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
+            "$SITE_ROOT/data/failures/migration-summary-2026.json" -o /tmp/migration-summary-2026.json
+
+      - name: Validate published Failure KB
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          html = Path('/tmp/failures.html').read_text(encoding='utf-8')
+          current = json.loads(Path('/tmp/current-2026.json').read_text(encoding='utf-8'))
+          summary = json.loads(Path('/tmp/migration-summary-2026.json').read_text(encoding='utf-8'))
+
+          assert '<html' in html.lower(), 'published /failures is not HTML'
+          assert isinstance(current, list), 'current-2026.json must be a JSON array'
+          assert len(current) == 8, f'expected 8 current records, got {len(current)}'
+          assert all(record.get('environment', {}).get('unity_version') == '2022.3.22f1' for record in current), \
+              'published current corpus contains a Unity version outside VRChat current scope'
+          assert summary.get('raw_records') == 121, summary
+          assert summary.get('current_canonical_records') == 8, summary
+          assert summary.get('excluded_records') == 113, summary
+
+          print('Published Failure KB smoke test passed: /failures HTTP OK; raw 121 / current 8 / excluded 113; Unity 2022.3.22f1 only.')
+          PY
