@@ -14,9 +14,9 @@ const YEAR = "2026";
 const MAX_SITEMAPS = 16;
 const MAX_UNKNOWN_ARTICLES = 60;
 const FETCH_TIMEOUT_MS = 20000;
-const USER_AGENT = "unity-mcp-failure-kb-note-discovery/1.0";
+const USER_AGENT = "unity-mcp-failure-kb-note-discovery/1.1";
 const articlePattern = /^https:\/\/note\.com\/[^/?#]+\/n\/[a-z0-9_-]+\/?$/i;
-const relevant = /vrchat|vrcsdk|vrc sdk|vcc|unity|avatar|アバター|world|ワールド|physbone|contact|modular avatar|モジュラーアバター|udon|shader|シェーダー|liltoon|poiyomi|pipeline manager|vrm/i;
+const vrchatAnchor = /vrchat|vrcsdk|vrc sdk|creator companion|\bvcc\b|physbones?|modular avatar|モジュラーアバター|udon|liltoon|poiyomi|pipeline manager|vrm converter for vrchat|vrc avatar descriptor|vrc scene descriptor/i;
 const failure = /error|exception|fail|failed|failure|cannot|can't|unable|crash|broken|missing|warning|invalid|unsupported|pink|magenta|エラー|失敗|できない|出来ない|動かない|揺れない|掴めない|消える|消えた|表示されない|見えない|警告|不具合|直らない|アップロードできない|ビルドできない|変換できない|ピンク|マゼンタ/i;
 
 function decodeEntities(value = "") {
@@ -81,6 +81,24 @@ function sourceDate(value) {
   return Number.isNaN(parsed.valueOf()) ? null : parsed.toISOString().slice(0, 10);
 }
 
+function jsonStringValue(html, key) {
+  const match = html.match(new RegExp(`"${key}"\\s*:\\s*("(?:\\\\.|[^"\\\\])*")`, "i"));
+  if (!match) return null;
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return null;
+  }
+}
+
+function articleText(html, title, description) {
+  const article = html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i);
+  if (article) return stripHtml(article[1]).slice(0, 50000);
+  const structured = jsonStringValue(html, "articleBody");
+  if (structured) return stripHtml(structured).slice(0, 50000);
+  return `${title ?? ""} ${description ?? ""}`.trim();
+}
+
 function parseArticle(html, fallbackUrl) {
   const title = first(html, [
     /<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i,
@@ -102,13 +120,20 @@ function parseArticle(html, fallbackUrl) {
     /["']datePublished["']\s*:\s*["']([^"']+)["']/i,
     /<time[^>]+datetime=["']([^"']+)["']/i
   ]);
+  const cleanTitle = title ? stripHtml(title) : null;
+  const cleanDescription = description ? stripHtml(description) : null;
   return {
     url: normalizeUrl(canonical ?? fallbackUrl),
-    title: title ? stripHtml(title) : null,
-    description: description ? stripHtml(description) : null,
+    title: cleanTitle,
+    description: cleanDescription,
     published_at: sourceDate(published),
-    searchable_text: stripHtml(html).slice(0, 50000)
+    article_text: articleText(html, cleanTitle, cleanDescription)
   };
+}
+
+function isCandidate(article) {
+  const text = `${article.title ?? ""} ${article.description ?? ""} ${article.article_text ?? ""}`;
+  return vrchatAnchor.test(text) && failure.test(text);
 }
 
 function decodeBody(buffer) {
@@ -153,12 +178,14 @@ function prioritizeSitemaps(items) {
 
 function selfTest() {
   const sitemap = `<sitemapindex><sitemap><loc>https://note.com/sitemap/a.xml.gz</loc><lastmod>2026-08-18</lastmod></sitemap></sitemapindex>`;
-  const compressed = gzipSync(Buffer.from(sitemap));
-  const parsed = parseSitemap(decodeBody(compressed));
+  const parsed = parseSitemap(decodeBody(gzipSync(Buffer.from(sitemap))));
   if (parsed.sitemaps.length !== 1 || parsed.sitemaps[0].lastmod !== "2026-08-18") throw new Error("gzip sitemap self-test failed");
-  const page = parseArticle(`<html><head><meta property="og:title" content="VRChat upload error"><meta property="article:published_time" content="2026-06-19T00:00:00+09:00"><link rel="canonical" href="https://note.com/example/n/nabc"></head><body>Unityでアップロードできない</body></html>`, "https://note.com/fallback/n/nx");
-  if (page.published_at !== "2026-06-19") throw new Error(`article date self-test failed: ${page.published_at}`);
-  if (!relevant.test(`${page.title} ${page.searchable_text}`) || !failure.test(`${page.title} ${page.searchable_text}`)) throw new Error("candidate keyword self-test failed");
+
+  const genuine = parseArticle(`<html><head><meta property="og:title" content="アップロードできない"><meta property="article:published_time" content="2026-06-19T00:00:00+09:00"><link rel="canonical" href="https://note.com/example/n/nabc"></head><body><article>VRChat SDKでBuild & Publishするとエラーになる</article></body></html>`, "https://note.com/fallback/n/nx");
+  if (genuine.published_at !== "2026-06-19" || !isCandidate(genuine)) throw new Error("genuine VRChat candidate self-test failed");
+
+  const falsePositive = parseArticle(`<html><head><meta property="og:title" content="Aniimo 正式サービス開始"><meta property="article:published_time" content="2026-08-15T00:00:00+09:00"><meta property="og:description" content="PS5とXbox向けゲーム情報"></head><body><article>ゲームの予約特典とキャラクター情報。エラー情報ではない。</article><aside>関連記事: VRChat Unity upload error</aside></body></html>`, "https://note.com/example/n/ngame");
+  if (isCandidate(falsePositive)) throw new Error("unrelated game false-positive self-test failed");
 }
 
 selfTest();
@@ -216,9 +243,7 @@ for (const item of unknownArticles) {
     const article = parseArticle(await fetchText(item.url), item.url);
     report.article_pages_checked += 1;
     if (!article.published_at?.startsWith(`${YEAR}-`)) continue;
-    if (!articlePattern.test(article.url) || known.has(article.url)) continue;
-    const haystack = `${article.title ?? ""} ${article.description ?? ""} ${article.searchable_text}`;
-    if (!relevant.test(haystack) || !failure.test(haystack)) continue;
+    if (!articlePattern.test(article.url) || known.has(article.url) || !isCandidate(article)) continue;
     report.candidates.push({
       url: article.url,
       title: article.title,
