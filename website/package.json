@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
+    "prestart": "npm run generate:current-failures",
     "start": "docusaurus start",
-    "prebuild": "npm run validate:failures && npm run validate:evidence && npm run validate:environment && npm run validate:ja-display && npm run validate:web-failures && npm run validate:signatures && npm run validate:taxonomy && npm run validate:unity-failures && npm run validate:coverage",
+    "prebuild": "npm run generate:current-failures && npm run validate:current-failures && npm run validate:failures && npm run validate:evidence && npm run validate:environment && npm run validate:ja-display && npm run validate:web-failures && npm run validate:signatures && npm run validate:taxonomy && npm run validate:unity-failures && npm run validate:coverage",
     "build": "docusaurus build",
+    "generate:current-failures": "node scripts/migrate-failures.mjs --write",
+    "validate:current-failures": "node scripts/validate-current-failures.mjs",
     "validate:failures": "node scripts/validate-failures.mjs",
     "validate:evidence": "node scripts/validate-failure-evidence.mjs",
     "validate:environment": "node scripts/validate-failure-environment.mjs",
@@ -46,18 +49,8 @@
     "sharp": "^0.35.2"
   },
   "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 3 chrome version",
-      "last 3 firefox version",
-      "last 5 safari version"
-    ]
+    "production": [">0.5%", "not dead", "not op_mini all"],
+    "development": ["last 3 chrome version", "last 3 firefox version", "last 5 safari version"]
   },
-  "engines": {
-    "node": ">=20.9.0"
-  }
+  "engines": {"node": ">=20.9.0"}
 }

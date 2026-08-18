@@ -3,7 +3,7 @@ title: エラー情報のデータ範囲
 slug: /failures/data
 ---
 
-`/failures` のcurrent viewは、**VRChatが現在対応しているUnity `2022.3.22f1` がrecord内で明示されている2026年の失敗事例**に限定します。
+`/failures` のcurrent corpusは、**VRChatが現在対応しているUnity `2022.3.22f1` がrecord内で明示されている2026年の失敗事例**に限定します。
 
 VRChat公式の対応Unityは以下で確認します。
 
@@ -11,33 +11,37 @@ VRChat公式の対応Unityは以下で確認します。
 - https://creators.vrchat.com/getting-started/
 - https://creators.vrchat.com/sdk/upgrade/unity-2022/
 
-Unity `2019.4.31f1` は旧VRChat SDK向けのlegacy versionとしてcurrent viewには含めません。Unity 6000系や、情報源からUnity versionを確認できずcanonical recordが`unknown`のままの記録もcurrent viewには含めません。raw collectionからcurrent viewへのscopeは`website/data/failures/scope.json`を正本として機械的に適用します。
+Unity `2019.4.31f1` はlegacy versionとしてcurrent corpusには含めません。Unity 6000系、その他の明示的な非対応version、Unity version未確認のrecordもcurrent canonicalへ昇格しません。scopeは`website/data/failures/scope.json`を正本として機械的に適用します。
 
-初期corpusのraw collectionは、**2026年に公開または観測された**Webページ、Issue、Release、forum投稿、記事を情報源とする記録です。raw collectionにscope外recordが存在しても、current view・current count・類似候補には入りません。物理的な移行・削除はontology migrationで行います。
+## Raw collection と current canonical
+
+既存の`records-*.json`は、2026年に収集した**raw collection**として保持します。rawの値を消したり、Unity versionを推測で補完したりしません。
+
+`website/scripts/migrate-failures.mjs`がraw collectionからcurrent scopeだけを決定的に変換し、build/start前に新ontologyの`current-2026.json`を生成します。生成物はサイト上の`/data/failures/current-2026.json`から再利用できます。migration summaryも`/data/failures/migration-summary-2026.json`として生成します。
+
+2026-08-18時点の固定検証値はraw 121件、current canonical 8件、scope外またはUnity version未確認113件です。件数が変わる場合はcollector変更とscope根拠を同時に更新します。
 
 ## Evidence
 
-情報源はURL単位の`evidence[]`へ移行します。各evidenceは最低限`url`、`source_type`、`publisher`、`supports[]`を持ち、`supports[]`でそのURLが裏付けるrecord内の主張を示します。公開日を情報源から確認できる場合だけ`published_at`を保持します。
+current canonicalでは情報源をURL単位の`evidence[]`として保持します。各evidenceは`url`、`source_type`、`publisher`、`supports[]`を持ち、公開日を確認できる場合だけ`published_at`を保持します。
 
-`source_domain`はcanonical dataへ重複保存せず、`evidence[].url`をURLとしてparseした`hostname`から導出します。GitHub URLの場合の`owner/repo`もURL pathから派生させます。これによりURLとdomain/repositoryの不整合を作りません。
-
-既存recordの`source_urls`、`source_type`、`source_family`は移行期間中のみ残し、全recordを`evidence[]`へ変換するmigrationで削除します。
+`source_domain`は保存せず`evidence[].url`のhostnameから導出します。GitHub URLの`owner/repo`もURL pathから派生させます。
 
 ## Environment
 
-制作環境は`environment`へまとめます。`unity_version`はcurrent corpusではVRChat対応版を必須とし、確認できない値を`unknown`で埋めません。VRChat SDK version、package version、host OS versionは確認できる場合だけ保持します。
+制作環境は`environment`へまとめます。current canonicalの`unity_version`は`2022.3.22f1`だけを許可します。VRChat SDK version、package version、host OS versionは確認できる場合だけ保持し、`unknown`文字列は使いません。
 
-`host_os`はFailureを観測した制作側OSで、`Windows`、`macOS`、`Linux`をcanonical nameとします。必要なら各OSにversionを保持します。
+`host_os`は制作側OSで`Windows`、`macOS`、`Linux`をcanonical nameとします。legacy `platforms`からOSだと明確に判断できる値だけ移行します。
 
-`target_platform`はVRChat SDKでbuild/uploadする対象で、VRChat公式のplatform表記に合わせ`Windows`、`Android`、`iOS`だけをcanonical valueにします。`PC`や`Quest`はcanonical target valueとして保存しません。
+`target_platform`はVRChat SDKでbuild/uploadする対象で、`Windows`、`Android`、`iOS`をcanonical valueとします。raw `platforms`からtargetを推測して補完しません。
 
 - https://creators.vrchat.com/platforms/
 - https://creators.vrchat.com/platforms/android/cross-platform-setup/
 
-既存のflat `unity_version`、`vrcsdk_version`、`packages`、`platforms`は移行期間中のみ残し、ontology migrationで`environment`へ統合します。
+## Failure と Remedy
 
-recordの`date`は、`date_kind`で示された**情報源の公開日または観測日**です。その不具合自体が2026年に初めて発生したことを意味する値ではありません。
+rawの`solution`と`workaround`はcurrent canonicalでは`remedies[]`へ移し、`fix`と`workaround`を区別します。`status`は保存せずremedyから表示時に導出します。`tags`もcanonical dataには複製しません。
 
-`root_cause`、`solution`、`workaround`は、情報源で確認できた事実だけを記録します。現行recordでは引用元から確認できない場合に`unknown`を使っていますが、このsentinelはontology migrationでnullable/field omissionへ移行します。
+`error_signature`、`trigger`、`root_cause`、version等がrawで`unknown`の場合、current canonicalではfieldそのものを省略します。情報源にない内容は推測で補完しません。
 
-エラー文字列、API名、package名、versionなど、検索や再現に必要な技術情報は原文を保持します。日本語表示では、その周辺の説明を日本語で提示します。
+recordの`date`は`date_kind`で示された情報源の公開日または観測日です。不具合自体の初発日を意味しません。
