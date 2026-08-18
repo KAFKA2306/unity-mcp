@@ -1,23 +1,24 @@
 import React, { useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./styles.module.css";
-import seed from "@site/data/failures/records-2026.json";
-import github from "@site/data/failures/records-github-2026.json";
-import vrchat from "@site/data/failures/records-vrchat-official-2026.json";
-import web from "@site/data/failures/records-web-2026.json";
-import webJa from "@site/data/failures/records-web-ja-2026.json";
-import unity from "@site/data/failures/records-unity-official-2026.json";
-import failureScope from "@site/data/failures/scope.json";
+import currentRecords from "@site/data/failures/current-2026.json";
+import taxonomy from "@site/data/failures/taxonomy.json";
 import jaSeed from "@site/data/failures/display-ja-seed-2026.json";
 import jaGithub from "@site/data/failures/display-ja-github-2026.json";
 import jaVrchat from "@site/data/failures/display-ja-vrchat-official-2026.json";
 import jaWeb from "@site/data/failures/display-ja-web-2026.json";
 import jaUnity from "@site/data/failures/display-ja-unity-official-2026.json";
+import {
+  evidenceViews,
+  filterKeys,
+  matchesStructured,
+  statusFor,
+  valuesFor,
+} from "@site/scripts/failure-view.mjs";
 
-const currentUnityVersions = new Set(failureScope.current_unity_versions);
-const allRecords = [...seed, ...github, ...vrchat, ...web, ...webJa, ...unity]
-  .filter((record) => currentUnityVersions.has(record.unity_version))
-  .sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+const allRecords = [...currentRecords].sort(
+  (a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
+);
 
 const japaneseDisplay = {
   ...jaSeed,
@@ -27,220 +28,116 @@ const japaneseDisplay = {
   ...jaUnity,
 };
 
-const emptyFilters = {
-  q: "",
-  component: "",
-  stage: "",
-  status: "",
-  platform: "",
-  unity: "",
-  vrcsdk: "",
-  package: "",
-};
+const emptyFilters = Object.fromEntries(filterKeys.map((key) => [key, ""]));
 
 const copyByLocale = {
   en: {
     all: "All",
-    records: "2026 records",
-    sourceFamilies: "source families",
+    records: "current records",
+    sourceDomains: "source domains",
     resolved: "resolved",
     workarounds: "workarounds",
     unresolved: "unresolved",
     searchLabel: "Error / exception / symptom",
-    searchPlaceholder: "Paste an error string, UUM id, exception name, or symptom",
+    searchPlaceholder: "Paste an error string, exception name, symptom, package, or source",
+    software: "Software",
     component: "Component",
-    stage: "Stage",
-    status: "Status",
-    platform: "Platform",
+    phase: "Phase",
+    failureType: "Failure type",
+    hostOs: "Host OS",
+    targetPlatform: "Target platform",
     unity: "Unity",
     vrcsdk: "VRCSDK",
     package: "Package",
+    sourceDomain: "Source domain",
+    sourceType: "Source type",
+    repository: "GitHub repository",
     clear: "Clear filters",
     matching: (count) => `matching record${count === 1 ? "" : "s"}`,
     evidence: "Evidence and resolution",
     trigger: "Trigger",
     rootCause: "Root cause",
-    solution: "Solution",
-    workaround: "Workaround",
+    remedies: "Remedies",
     packages: "Packages",
-    sources: "Sources",
+    sources: "Evidence",
     related: "Same / similar signatures",
     exact: "exact",
     similar: "similar",
+    supports: "supports",
+    noRemedy: "No verified remedy recorded.",
     statusLabels: {
       resolved: "resolved",
       workaround: "workaround",
       unresolved: "unresolved",
-      unknown: "unknown",
+    },
+    remedyLabels: {
+      fix: "fix",
+      workaround: "workaround",
     },
   },
   ja: {
     all: "すべて",
-    records: "2026年の記録",
-    sourceFamilies: "情報源の種類",
+    records: "現行レコード",
+    sourceDomains: "情報源ドメイン",
     resolved: "解決済み",
     workarounds: "回避策あり",
     unresolved: "未解決",
     searchLabel: "エラー / 例外 / 症状",
-    searchPlaceholder: "エラー文字列、UUM ID、例外名、症状を貼り付けて検索",
+    searchPlaceholder: "エラー文字列、例外名、症状、パッケージ、情報源を検索",
+    software: "ソフトウェア",
     component: "コンポーネント",
-    stage: "工程",
-    status: "状態",
-    platform: "プラットフォーム",
+    phase: "工程",
+    failureType: "不具合種別",
+    hostOs: "制作OS",
+    targetPlatform: "対象プラットフォーム",
     unity: "Unity",
     vrcsdk: "VRCSDK",
     package: "パッケージ",
+    sourceDomain: "情報源ドメイン",
+    sourceType: "情報源種別",
+    repository: "GitHubリポジトリ",
     clear: "絞り込みを解除",
     matching: () => "件一致",
     evidence: "根拠と解決情報",
     trigger: "発生条件",
     rootCause: "原因",
-    solution: "解決策",
-    workaround: "回避策",
+    remedies: "解決策・回避策",
     packages: "パッケージ",
-    sources: "情報源",
+    sources: "根拠",
     related: "同一・類似シグネチャ",
     exact: "完全一致",
     similar: "類似",
-    unknown: "不明",
+    supports: "根拠対象",
+    noRemedy: "確認済みの解決策・回避策はありません。",
     statusLabels: {
       resolved: "解決済み",
       workaround: "回避策あり",
       unresolved: "未解決",
-      unknown: "不明",
+    },
+    remedyLabels: {
+      fix: "解決策",
+      workaround: "回避策",
     },
   },
 };
 
-const japaneseStages = {
-  unknown: "不明",
-  setup: "セットアップ",
-  launch: "起動",
-  import: "インポート",
-  compile: "コンパイル",
-  build: "ビルド",
-  upload: "アップロード",
-  validation: "検証",
-  runtime: "実行時",
-  editor: "エディター",
-  testing: "テスト",
-  install: "導入",
-  optimization: "最適化",
-  preview: "プレビュー",
-  resolve: "依存関係解決",
-  "editor UI": "エディターUI",
-  "project creation": "プロジェクト作成",
-  "application launch": "アプリ起動",
-  "project launch": "プロジェクト起動",
-  "server launch": "サーバー起動",
-  "editor readiness": "エディター準備状態",
-  "multi-instance runtime": "複数インスタンス実行時",
-  "runtime / event binding": "実行時 / イベントバインド",
-  "ClientSim runtime": "ClientSim実行時",
-  "ClientSim build simulation": "ClientSimビルドシミュレーション",
-  "package install": "パッケージ導入",
-  "package resolution": "パッケージ解決",
-  "package download": "パッケージ取得",
-  "avatar authoring": "アバター制作",
-  "avatar build": "アバタービルド",
-  "manual bake": "手動Bake",
-  "code execution": "コード実行",
-  "launch / package resolution": "起動 / パッケージ解決",
-  "avatar optimization": "アバター最適化",
-  "build optimization": "ビルド最適化",
-  "play mode": "Play Mode",
-  "play mode build": "Play Modeビルド",
-  "play mode / recompilation": "Play Mode / 再コンパイル",
-  "avatar import": "アバターインポート",
-  "avatar validation": "アバター検証",
-  "platform validation": "プラットフォーム検証",
-  "platform build": "プラットフォームビルド",
-  "build / validation": "ビルド / 検証",
-  "build / upload": "ビルド / アップロード",
-  "build / runtime": "ビルド / 実行時",
-  "performance validation": "パフォーマンス検証",
-  "world upload validation": "ワールドアップロード検証",
-  "runtime rendering": "実行時レンダリング",
-  "optimization / runtime": "最適化 / 実行時",
-  "import / rendering": "インポート / レンダリング",
-  "compile / safe mode": "コンパイル / Safe Mode",
-  "texture bake": "テクスチャベイク",
-  "editor emulation": "エディターエミュレーション",
+const sourceTypeLabels = {
+  ja: {
+    official_release: "公式リリース",
+    github_issue: "GitHub Issue",
+    article: "記事",
+    forum: "フォーラム",
+    unity_issue_tracker: "Unity Issue Tracker",
+  },
 };
 
-const japaneseSourceFamilies = {
-  "Unity Release Notes": "Unityリリースノート",
-  "VRChat SDK releases": "VRChat SDKリリース",
-  "VRChat Ask Forum": "VRChat Askフォーラム",
-  "Yu Suzumi blog": "Yu Suzumiブログ",
-};
+function taxonomyLabel(axis, value, locale) {
+  if (!value || locale === "en") return value;
+  return taxonomy.labels?.[axis]?.[value] ?? value;
+}
 
-const japaneseComponents = {
-  "dependency detection": "依存関係検出",
-  "test runner": "テストランナー",
-  "HTTP server lifecycle": "HTTPサーバーのライフサイクル",
-  "screenshot capture": "スクリーンショット取得",
-  "server launcher": "サーバー起動",
-  "editor readiness": "エディター準備状態",
-  "editor window": "エディターウィンドウ",
-  "project creation": "プロジェクト作成",
-  "application UI": "アプリUI",
-  "Unity project launch": "Unityプロジェクト起動",
-  "interaction raycast": "インタラクションのレイキャスト",
-  "scene processing": "Scene処理",
-  "settings window": "設定ウィンドウ",
-  "package installer": "パッケージ導入",
-  "Windows installer": "Windowsインストーラー",
-  "package resolution UI": "パッケージ解決UI",
-  "Vertex Filter By Mask inspector": "Vertex Filter By MaskのInspector",
-  "Modular Avatar custom Inspector": "Modular AvatarカスタムInspector",
-  "PhysBone optimization": "PhysBone最適化",
-  "Trace And Optimize interoperability": "Trace And Optimize互換性",
-  "material optimization": "material最適化",
-  "LTCGI shader path": "LTCGI shader経路",
-  "VRCRaycast parameter emulation": "VRCRaycast parameterエミュレーション",
-  "VRChat Avatar validation": "VRChat Avatar検証",
-  "VRChat avatar upload": "VRChat Avatar upload",
-  "VRChat Worlds SDK validation": "VRChat Worlds SDK検証",
-  "XWear Packager dependency resolution": "XWear Packager依存関係解決",
-  "Unity version compatibility": "Unity version互換性",
-  "avatar materials / shaders": "Avatar material / shader",
-  "avatar object tags": "Avatar object tag",
-  "VRChat avatar performance": "VRChat Avatar performance",
-  "Avatar Optimizer workflow": "Avatar Optimizer workflow",
-  "VRChat world Pipeline Manager": "VRChat World Pipeline Manager",
-  "Unity project startup": "Unityプロジェクト起動",
-  "SkinnedMeshRenderer bounds": "SkinnedMeshRenderer Bounds",
-  "avatar build tags": "Avatar build tag",
-  "cross-platform avatar build": "platform別Avatar build",
-  "VRChat avatar particle validation": "VRChat Avatar particle検証",
-  "custom Unity editor script": "custom Unity Editor script",
-  "Humanoid avatar rig": "Humanoid Avatar Rig",
-  "avatar hierarchy": "Avatar Hierarchy",
-  "Avatar Gesture playable layer": "Avatar Gesture Playable Layer",
-  "Unity compilation / VRChat SDK scripts": "Unityコンパイル / VRChat SDK script",
-  "Quest avatar shader validation": "Quest Avatar shader検証",
-  "Platform Audio": "Platform Audio",
-  "Shader System": "Shader System",
-  "SRP Templates": "SRP Template",
-  "uGUI Controls": "uGUI Control",
-  "AI Navigation": "AI Navigation",
-  "Asset Bundles": "AssetBundle",
-  "Package Manager": "Package Manager",
-  "GPU Occlusion Culling": "GPU Occlusion Culling",
-};
-
-function values(key) {
-  const collected = new Set();
-  for (const record of allRecords) {
-    if (key === "platform") (record.platforms ?? []).forEach((value) => collected.add(value));
-    else if (key === "package") (record.packages ?? []).forEach((item) => collected.add(item.name));
-    else if (record[key]) {
-      const hideUnknown = key === "unity_version" || key === "vrcsdk_version";
-      if (!hideUnknown || record[key] !== "unknown") collected.add(record[key]);
-    }
-  }
-  return [...collected].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+function sourceTypeLabel(value, locale) {
+  return sourceTypeLabels[locale]?.[value] ?? value;
 }
 
 function normalizeSignature(value = "") {
@@ -267,14 +164,14 @@ function jaccard(a, b) {
 }
 
 function candidatesFor(record) {
-  if (!record.error_signature || record.error_signature === "unknown") return [];
+  if (!record.error_signature) return [];
   const signature = normalizeSignature(record.error_signature);
   const sourceTokens = tokens(record.error_signature);
   return allRecords
     .filter((candidate) =>
       candidate.id !== record.id &&
-      candidate.component === record.component &&
-      candidate.error_signature !== "unknown"
+      candidate.classification?.component === record.classification?.component &&
+      candidate.error_signature
     )
     .map((candidate) => {
       const normalized = normalizeSignature(candidate.error_signature);
@@ -289,14 +186,23 @@ function candidatesFor(record) {
     .slice(0, 6);
 }
 
-function localizedRecord(record, locale) {
-  if (locale === "en") return record;
-  return { ...record, ...(japaneseDisplay[record.id] ?? {}) };
+function localized(record, field, locale) {
+  if (locale === "en") return record[field];
+  return japaneseDisplay[record.id]?.[field] ?? record[field];
+}
+
+function localizedRemedy(record, remedy, locale) {
+  if (locale === "en") return remedy.description;
+  const display = japaneseDisplay[record.id] ?? {};
+  const legacyField = remedy.type === "fix" ? "solution" : "workaround";
+  return display[legacyField] ?? remedy.description;
 }
 
 function searchable(record) {
   const ja = japaneseDisplay[record.id] ?? {};
+  const evidence = evidenceViews(record);
   return [
+    record.id,
     record.title,
     ja.title,
     record.error_signature,
@@ -307,20 +213,28 @@ function searchable(record) {
     ja.trigger,
     record.root_cause,
     ja.root_cause,
-    record.solution,
+    record.classification?.software,
+    record.classification?.component,
+    taxonomy.labels?.component?.[record.classification?.component],
+    record.classification?.phase,
+    taxonomy.labels?.phase?.[record.classification?.phase],
+    record.classification?.failure_type,
+    taxonomy.labels?.failure_type?.[record.classification?.failure_type],
+    record.environment?.unity_version,
+    record.environment?.vrchat_sdk_version,
+    ...(record.environment?.packages ?? []).flatMap((item) => [item.name, item.version]),
+    ...(record.environment?.host_os ?? []).flatMap((item) => [item.name, item.version]),
+    ...(record.environment?.target_platform ?? []),
+    ...(record.remedies ?? []).flatMap((item) => [item.type, item.description]),
     ja.solution,
-    record.workaround,
     ja.workaround,
-    record.component,
-    japaneseComponents[record.component],
-    record.stage,
-    japaneseStages[record.stage],
-    record.source_family,
-    japaneseSourceFamilies[record.source_family],
-    record.unity_version,
-    record.vrcsdk_version,
-    ...(record.tags ?? []),
-    ...(record.packages ?? []).flatMap((item) => [item.name, item.version]),
+    ...evidence.flatMap((item) => [
+      item.url,
+      item.publisher,
+      item.source_type,
+      item.source_domain,
+      item.repository,
+    ]),
   ]
     .filter(Boolean)
     .join(" ")
@@ -328,45 +242,18 @@ function searchable(record) {
 }
 
 function matches(record, filters) {
+  if (!matchesStructured(record, filters)) return false;
   const query = filters.q.trim().toLowerCase();
-  const normalizedQuery = normalizeSignature(filters.q);
+  if (!query) return true;
   const text = searchable(record);
-  if (query && !text.includes(query) && !text.includes(normalizedQuery)) return false;
-  if (filters.component && record.component !== filters.component) return false;
-  if (filters.stage && record.stage !== filters.stage) return false;
-  if (filters.status && record.status !== filters.status) return false;
-  if (filters.platform && !(record.platforms ?? []).includes(filters.platform)) return false;
-  if (filters.unity && record.unity_version !== filters.unity) return false;
-  if (filters.vrcsdk && record.vrcsdk_version !== filters.vrcsdk) return false;
-  if (filters.package && !(record.packages ?? []).some((item) => item.name === filters.package)) return false;
-  return true;
+  return text.includes(query) || text.includes(normalizeSignature(filters.q));
 }
 
-function displayValue(value, locale, copy) {
-  if (locale !== "en" && value === "unknown") return copy.unknown;
-  return value;
-}
-
-function displayStage(value, locale) {
-  if (locale === "en") return value;
-  return japaneseStages[value] ?? value;
-}
-
-function displayComponent(value, locale) {
-  if (locale === "en") return value;
-  return japaneseComponents[value] ?? value;
-}
-
-function displaySourceFamily(value, locale) {
-  if (locale === "en") return value;
-  return japaneseSourceFamilies[value] ?? value;
-}
-
-function Select({ label, name, value, options, onChange, allLabel, optionLabel = (option) => option }) {
+function Select({ label, name, value, options, onChange, allLabel, optionLabel = (option) => option, disabled = false }) {
   return (
     <label className={styles.field}>
       <span>{label}</span>
-      <select name={name} value={value} onChange={onChange}>
+      <select name={name} value={value} onChange={onChange} disabled={disabled}>
         <option value="">{allLabel}</option>
         {options.map((option) => (
           <option key={option} value={option}>{optionLabel(option)}</option>
@@ -385,7 +272,7 @@ export default function FailureKB() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setFilters(Object.fromEntries(Object.keys(emptyFilters).map((key) => [key, params.get(key) ?? ""])));
+    setFilters(Object.fromEntries(filterKeys.map((key) => [key, params.get(key) ?? ""])));
     setReady(true);
   }, []);
 
@@ -398,21 +285,38 @@ export default function FailureKB() {
   }, [filters, ready]);
 
   const filtered = useMemo(() => allRecords.filter((record) => matches(record, filters)), [filters]);
-  const sourceFamilies = useMemo(() => new Set(allRecords.map((record) => record.source_family)).size, []);
-  const statuses = useMemo(
-    () => Object.fromEntries(["resolved", "workaround", "unresolved", "unknown"].map(
-      (status) => [status, allRecords.filter((record) => record.status === status).length]
-    )),
-    []
-  );
+  const facets = useMemo(() => Object.fromEntries([
+    "software",
+    "component",
+    "phase",
+    "failure_type",
+    "host_os",
+    "target_platform",
+    "unity",
+    "vrcsdk",
+    "package",
+    "source_domain",
+    "source_type",
+    "repository",
+  ].map((key) => [key, valuesFor(allRecords, key)])), []);
+  const statuses = useMemo(() => Object.fromEntries(
+    ["resolved", "workaround", "unresolved"].map((status) => [status, allRecords.filter((record) => statusFor(record) === status).length])
+  ), []);
 
-  const onChange = (event) => setFilters((current) => ({ ...current, [event.target.name]: event.target.value }));
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setFilters((current) => {
+      const next = { ...current, [name]: value };
+      if (name === "source_domain" && value && value !== "github.com") next.repository = "";
+      return next;
+    });
+  };
 
   return (
     <div className={styles.root}>
       <div className={styles.summary}>
         <div><strong>{allRecords.length}</strong><span>{copy.records}</span></div>
-        <div><strong>{sourceFamilies}</strong><span>{copy.sourceFamilies}</span></div>
+        <div><strong>{facets.source_domain.length}</strong><span>{copy.sourceDomains}</span></div>
         <div><strong>{statuses.resolved}</strong><span>{copy.resolved}</span></div>
         <div><strong>{statuses.workaround}</strong><span>{copy.workarounds}</span></div>
         <div><strong>{statuses.unresolved}</strong><span>{copy.unresolved}</span></div>
@@ -421,21 +325,20 @@ export default function FailureKB() {
       <div className={styles.searchPanel}>
         <label className={`${styles.field} ${styles.query}`}>
           <span>{copy.searchLabel}</span>
-          <input
-            name="q"
-            value={filters.q}
-            onChange={onChange}
-            placeholder={copy.searchPlaceholder}
-            autoComplete="off"
-          />
+          <input name="q" value={filters.q} onChange={onChange} placeholder={copy.searchPlaceholder} autoComplete="off" />
         </label>
-        <Select label={copy.component} name="component" value={filters.component} options={values("component")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayComponent(option, locale)} />
-        <Select label={copy.stage} name="stage" value={filters.stage} options={values("stage")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayStage(option, locale)} />
-        <Select label={copy.status} name="status" value={filters.status} options={values("status")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => copy.statusLabels[option] ?? option} />
-        <Select label={copy.platform} name="platform" value={filters.platform} options={values("platform")} onChange={onChange} allLabel={copy.all} optionLabel={(option) => displayValue(option, locale, copy)} />
-        <Select label={copy.unity} name="unity" value={filters.unity} options={values("unity_version")} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.vrcsdk} name="vrcsdk" value={filters.vrcsdk} options={values("vrcsdk_version")} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.package} name="package" value={filters.package} options={values("package")} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.software} name="software" value={filters.software} options={facets.software} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.component} name="component" value={filters.component} options={facets.component} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("component", value, locale)} />
+        <Select label={copy.phase} name="phase" value={filters.phase} options={facets.phase} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("phase", value, locale)} />
+        <Select label={copy.failureType} name="failure_type" value={filters.failure_type} options={facets.failure_type} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("failure_type", value, locale)} />
+        <Select label={copy.hostOs} name="host_os" value={filters.host_os} options={facets.host_os} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.targetPlatform} name="target_platform" value={filters.target_platform} options={facets.target_platform} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.unity} name="unity" value={filters.unity} options={facets.unity} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.vrcsdk} name="vrcsdk" value={filters.vrcsdk} options={facets.vrcsdk} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.package} name="package" value={filters.package} options={facets.package} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.sourceDomain} name="source_domain" value={filters.source_domain} options={facets.source_domain} onChange={onChange} allLabel={copy.all} />
+        <Select label={copy.sourceType} name="source_type" value={filters.source_type} options={facets.source_type} onChange={onChange} allLabel={copy.all} optionLabel={(value) => sourceTypeLabel(value, locale)} />
+        <Select label={copy.repository} name="repository" value={filters.repository} options={facets.repository} onChange={onChange} allLabel={copy.all} disabled={Boolean(filters.source_domain && filters.source_domain !== "github.com")} />
         <button className={styles.reset} type="button" onClick={() => setFilters(emptyFilters)}>{copy.clear}</button>
       </div>
 
@@ -446,39 +349,59 @@ export default function FailureKB() {
       <div className={styles.records}>
         {filtered.map((record) => {
           const related = candidatesFor(record);
-          const display = localizedRecord(record, locale);
+          const status = statusFor(record);
+          const classification = record.classification ?? {};
+          const environment = record.environment ?? {};
+          const evidence = evidenceViews(record);
           return (
             <article className={styles.card} key={record.id} id={`failure-${record.id}`}>
               <div className={styles.meta}>
-                <span className={`${styles.status} ${styles[record.status]}`}>{copy.statusLabels[record.status] ?? record.status}</span>
+                <span className={`${styles.status} ${styles[status]}`}>{copy.statusLabels[status]}</span>
                 <span>{record.date}</span>
-                <span>{displaySourceFamily(record.source_family, locale)}</span>
+                <span>{classification.software}</span>
               </div>
-              <h3>{display.title}</h3>
-              {record.error_signature !== "unknown" && <pre className={styles.signature}>{record.error_signature}</pre>}
-              <p>{displayValue(display.symptom, locale, copy)}</p>
+              <h3>{localized(record, "title", locale)}</h3>
+              {record.error_signature && <pre className={styles.signature}>{record.error_signature}</pre>}
+              <p>{localized(record, "symptom", locale)}</p>
               <div className={styles.chips}>
-                <span>{displayComponent(record.component, locale)}</span>
-                <span>{displayStage(record.stage, locale)}</span>
-                {(record.platforms ?? []).map((platform) => <span key={platform}>{displayValue(platform, locale, copy)}</span>)}
-                {record.unity_version !== "unknown" && <span>Unity {record.unity_version}</span>}
-                {record.vrcsdk_version !== "unknown" && <span>VRCSDK {record.vrcsdk_version}</span>}
+                {classification.component && <span>{taxonomyLabel("component", classification.component, locale)}</span>}
+                {classification.phase && <span>{taxonomyLabel("phase", classification.phase, locale)}</span>}
+                {classification.failure_type && <span>{taxonomyLabel("failure_type", classification.failure_type, locale)}</span>}
+                {(environment.host_os ?? []).map((host) => <span key={`${host.name}-${host.version ?? ""}`}>{host.name}{host.version ? ` ${host.version}` : ""}</span>)}
+                {(environment.target_platform ?? []).map((target) => <span key={target}>{target}</span>)}
+                <span>Unity {environment.unity_version}</span>
+                {environment.vrchat_sdk_version && <span>VRCSDK {environment.vrchat_sdk_version}</span>}
               </div>
 
               <details className={styles.details}>
                 <summary>{copy.evidence}</summary>
                 <dl>
-                  <dt>{copy.trigger}</dt><dd>{displayValue(display.trigger, locale, copy)}</dd>
-                  <dt>{copy.rootCause}</dt><dd>{displayValue(display.root_cause, locale, copy)}</dd>
-                  <dt>{copy.solution}</dt><dd>{displayValue(display.solution, locale, copy)}</dd>
-                  <dt>{copy.workaround}</dt><dd>{displayValue(display.workaround, locale, copy)}</dd>
+                  {record.trigger && <><dt>{copy.trigger}</dt><dd>{localized(record, "trigger", locale)}</dd></>}
+                  {record.root_cause && <><dt>{copy.rootCause}</dt><dd>{localized(record, "root_cause", locale)}</dd></>}
+                  <dt>{copy.remedies}</dt>
+                  <dd>
+                    {(record.remedies ?? []).length ? (
+                      <ul className={styles.compactList}>
+                        {(record.remedies ?? []).map((remedy, index) => (
+                          <li key={`${remedy.type}-${index}`}><strong>{copy.remedyLabels[remedy.type]}:</strong> {localizedRemedy(record, remedy, locale)}</li>
+                        ))}
+                      </ul>
+                    ) : copy.noRemedy}
+                  </dd>
                   <dt>{copy.packages}</dt>
-                  <dd>{(record.packages ?? []).map((item) => `${item.name} ${displayValue(item.version, locale, copy)}`).join(", ")}</dd>
+                  <dd>{(environment.packages ?? []).map((item) => `${item.name}${item.version ? ` ${item.version}` : ""}`).join(", ")}</dd>
                   <dt>{copy.sources}</dt>
                   <dd>
-                    {(record.source_urls ?? []).map((url) => (
-                      <div key={url}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>
-                    ))}
+                    <ul className={styles.compactList}>
+                      {evidence.map((item) => (
+                        <li key={item.url}>
+                          <a href={item.url} target="_blank" rel="noreferrer">{item.source_domain}</a>
+                          {` — ${item.publisher} / ${sourceTypeLabel(item.source_type, locale)}`}
+                          {item.repository ? ` / ${item.repository}` : ""}
+                          {item.supports?.length ? ` / ${copy.supports}: ${item.supports.join(", ")}` : ""}
+                        </li>
+                      ))}
+                    </ul>
                   </dd>
                 </dl>
                 {related.length > 0 && (
@@ -487,7 +410,7 @@ export default function FailureKB() {
                     <ul>
                       {related.map(({ record: candidate, kind, score }) => (
                         <li key={candidate.id}>
-                          <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{localizedRecord(candidate, locale).title}</a>
+                          <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{localized(candidate, "title", locale)}</a>
                           <span>{kind === "exact" ? copy.exact : copy.similar}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
                         </li>
                       ))}
