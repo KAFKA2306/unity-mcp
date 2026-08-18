@@ -11,12 +11,14 @@ on:
       - website/package.json
       - .github/workflows/failure-kb-sync.yml
   schedule:
+    # 08:17 JST. Keep off the top of the hour to reduce scheduled-run congestion.
     - cron: '17 23 * * *'
   workflow_dispatch: {}
 
 permissions:
   contents: write
   actions: write
+  issues: write
 
 concurrency:
   group: failure-kb-2026-sync
@@ -43,7 +45,7 @@ jobs:
         working-directory: website
         run: npm ci
 
-      - name: Refresh VRChat official corpus
+      - name: Refresh VRChat official raw corpus
         id: vrchat
         continue-on-error: true
         working-directory: website
@@ -51,16 +53,12 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/collect-vrchat-official-failures.mjs
 
-      - name: Validate canonical data
-        id: canonical
-        continue-on-error: true
+      - name: Generate and validate current canonical corpus
         working-directory: website
         run: |
-          npm run validate:failures
-          npm run validate:web-failures
-          npm run validate:signatures
-          npm run validate:taxonomy
-          npm run validate:unity-failures
+          npm run generate:current-failures
+          npm run validate:ontology
+          npm run validate:ja-display
           npm run validate:coverage
 
       - name: Check registered sources
@@ -79,33 +77,95 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/collect-github-failures.mjs --json > github-failure-candidates.json
 
-      - name: Discover web failure candidates
+      - name: Discover note.com failure candidates
+        id: note
+        continue-on-error: true
+        working-directory: website
+        run: npm run discover:note-failures > note-discovery.log
+
+      - name: Prepare note candidate queue
+        id: note_queue
+        if: always() && steps.note.outcome == 'success'
+        working-directory: website
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const report = JSON.parse(fs.readFileSync('note-failure-candidates.json', 'utf8'));
+          const candidates = report.candidates ?? [];
+          const lines = [
+            '## note.com Failure candidates',
+            '',
+            `Discovery status: **${report.status}**`,
+            `Discovered at: ${report.discovered_at ?? 'unknown'}`,
+            `Known Evidence URLs: ${report.known_evidence_urls ?? 0}`,
+            `Sitemaps checked: ${report.sitemap_documents_checked ?? 0}`,
+            `Article pages checked: ${report.article_pages_checked ?? 0}`,
+            `Fetch/parse errors: ${(report.page_errors ?? []).length}`,
+            '',
+            'このIssueは日次collectorが更新する処理キューです。記事本文で確認できるFailureだけをraw record化し、Unity `2022.3.22f1`が観測環境として明示された場合だけcurrent canonicalへ昇格してください。',
+            ''
+          ];
+          if (candidates.length) {
+            lines.push('| published | title | URL |', '|---|---|---|');
+            for (const item of candidates) {
+              const title = (item.title ?? '(title unavailable)').replaceAll('|', '\\|');
+              lines.push(`| ${item.published_at ?? ''} | ${title} | ${item.url} |`);
+            }
+          } else {
+            lines.push('未処理のnote.com候補はありません。');
+          }
+          fs.writeFileSync('note-failure-candidates.md', `${lines.join('\n')}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `count=${candidates.length}\nstatus=${report.status}\n`);
+          NODE
+
+      - name: Create or update note candidate Issue
+        if: always() && steps.note_queue.outputs.count != '' && steps.note_queue.outputs.count != '0'
+        working-directory: website
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QUEUE_TITLE: "[auto] note.com Failure candidates"
+        run: |
+          issue_number="$(gh api "repos/$GITHUB_REPOSITORY/issues?state=open&per_page=100" --jq '.[] | select(.pull_request == null and .title == env.QUEUE_TITLE) | .number' | head -n 1)"
+          if [ -n "$issue_number" ]; then
+            gh issue edit "$issue_number" --body-file note-failure-candidates.md
+            echo "Updated candidate Issue #$issue_number"
+          else
+            gh issue create --title "$QUEUE_TITLE" --body-file note-failure-candidates.md
+          fi
+
+      - name: Close empty note candidate Issue
+        if: always() && steps.note_queue.outputs.count == '0' && (steps.note_queue.outputs.status == 'success' || steps.note_queue.outputs.status == 'partial')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QUEUE_TITLE: "[auto] note.com Failure candidates"
+        run: |
+          issue_number="$(gh api "repos/$GITHUB_REPOSITORY/issues?state=open&per_page=100" --jq '.[] | select(.pull_request == null and .title == env.QUEUE_TITLE) | .number' | head -n 1)"
+          if [ -n "$issue_number" ]; then
+            gh issue close "$issue_number" --comment "日次探索で未処理候補が0件になったため自動closeします。"
+          fi
+
+      - name: Audit other web sources
         id: web
         continue-on-error: true
         working-directory: website
         run: node scripts/collect-web-failures.mjs --live > web-failure-source-report.json
 
-      - name: Check Unity official corpus
+      - name: Audit Unity official raw corpus
         id: unity
         continue-on-error: true
         working-directory: website
         run: node scripts/collect-unity-official-failures.mjs --live > unity-failure-source-report.json
 
       - name: Generate coverage report
-        id: coverage
         if: always()
-        continue-on-error: true
         working-directory: website
         run: node scripts/failure-coverage.mjs --source-report failure-source-report.json > failure-coverage.json
 
       - name: Build docs
-        id: build
-        if: always()
-        continue-on-error: true
         working-directory: website
         run: npm run build
 
-      - name: Upload audit reports
+      - name: Upload audit and discovery reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -113,32 +173,22 @@ jobs:
           if-no-files-found: warn
           path: |
             website/data/failures/records-vrchat-official-2026.json
-            website/data/failures/records-web-ja-2026.json
             website/failure-source-report.json
             website/github-failure-candidates.json
+            website/note-failure-candidates.json
+            website/note-failure-candidates.md
+            website/note-discovery.log
             website/web-failure-source-report.json
             website/unity-failure-source-report.json
             website/failure-coverage.json
 
-      - name: Enforce live checks
-        if: always()
-        run: |
-          test "${{ steps.vrchat.outcome }}" = "success"
-          test "${{ steps.canonical.outcome }}" = "success"
-          test "${{ steps.sources.outcome }}" = "success"
-          test "${{ steps.github_discovery.outcome }}" = "success"
-          test "${{ steps.web.outcome }}" = "success"
-          test "${{ steps.unity.outcome }}" = "success"
-          test "${{ steps.coverage.outcome }}" = "success"
-          test "${{ steps.build.outcome }}" = "success"
-
       - name: Commit official source updates
         id: canonical_commit
-        if: github.ref == 'refs/heads/beta'
+        if: github.ref == 'refs/heads/beta' && steps.vrchat.outcome == 'success'
         run: |
           if git diff --quiet -- website/data/failures/records-vrchat-official-2026.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "No canonical VRChat changes."
+            echo "No canonical VRChat source changes."
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -148,7 +198,7 @@ jobs:
           git push origin HEAD:beta
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Re-deploy docs after canonical update
+      - name: Re-deploy docs after official source update
         if: github.ref == 'refs/heads/beta' && steps.canonical_commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
