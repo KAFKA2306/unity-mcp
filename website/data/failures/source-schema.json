@@ -27,7 +27,7 @@
     "fetch_url": {"type": "string", "format": "uri"},
     "source_family": {"type": "string", "minLength": 1},
     "source_class": {"type": "string", "enum": ["official", "maintainer", "community", "article"]},
-    "content_type": {"type": "string", "enum": ["docs", "release", "issues", "issue_tracker", "forum", "article"]},
+    "content_type": {"type": "string", "enum": ["docs", "release", "issues", "commits", "issue_tracker", "forum", "article"]},
     "fetch_mode": {"type": "string", "enum": ["github_api", "html", "rss", "sitemap", "manual_url"]},
     "enabled": {"type": "boolean"},
     "year_scope": {"type": "array", "minItems": 1, "items": {"type": "string", "enum": ["2026"]}},

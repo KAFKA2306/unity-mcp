@@ -6,6 +6,7 @@ import taxonomy from "@site/data/failures/taxonomy.json";
 import jaSeed from "@site/data/failures/display-ja-seed-2026.json";
 import jaFeedback from "@site/data/failures/display-ja-feedback-2026.json";
 import jaGithub from "@site/data/failures/display-ja-github-2026.json";
+import jaVrcfury from "@site/data/failures/display-ja-vrcfury-2026.json";
 import jaVrchat from "@site/data/failures/display-ja-vrchat-official-2026.json";
 import jaWeb from "@site/data/failures/display-ja-web-2026.json";
 import jaUnity from "@site/data/failures/display-ja-unity-official-2026.json";
@@ -25,6 +26,7 @@ const japaneseDisplay = {
   ...jaSeed,
   ...jaFeedback,
   ...jaGithub,
+  ...jaVrcfury,
   ...jaVrchat,
   ...jaWeb,
   ...jaUnity,
@@ -121,6 +123,7 @@ const sourceTypeLabels = {
   ja: {
     official_release: "公式リリース",
     github_issue: "GitHub Issue",
+    github_commit: "GitHub Commit",
     article: "記事",
     forum: "フォーラム",
     unity_issue_tracker: "Unity Issue Tracker",

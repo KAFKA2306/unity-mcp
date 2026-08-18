@@ -3,6 +3,7 @@ const softwareRules = [
   [/Creator Companion|\bVCC\b/i, "VRChat Creator Companion"],
   [/ClientSim/i, "VRChat ClientSim"],
   [/UdonSharp/i, "UdonSharp"],
+  [/VRCFury/i, "VRCFury"],
   [/Modular Avatar|\bMA\b/i, "Modular Avatar"],
   [/\bNDMF\b/i, "NDMF"],
   [/Avatar Optimizer|\bAAO\b/i, "Avatar Optimizer"],
