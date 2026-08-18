@@ -10,7 +10,7 @@ const records = fs.readdirSync(dataRoot)
   .sort()
   .flatMap((name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8")));
 
-const productRules = [
+const softwareRules = [
   [/VRChat SDK/i, "VRChat SDK"],
   [/Creator Companion|\bVCC\b/i, "VRChat Creator Companion"],
   [/ClientSim/i, "VRChat ClientSim"],
@@ -27,14 +27,34 @@ const productRules = [
   [/Unity Issue Tracker|Unity Editor/i, "Unity"]
 ];
 
-function text(record) {
-  return [record.title, record.symptom, record.trigger, record.root_cause, record.solution, record.workaround, record.component, record.stage, ...(record.tags ?? []), ...(record.packages ?? []).map((item) => item.name)].join(" ");
+function packages(record) {
+  return record.environment?.packages ?? record.packages ?? [];
 }
 
-function product(record) {
-  const value = `${record.source_family} ${text(record)}`;
-  for (const [pattern, canonical] of productRules) if (pattern.test(value)) return canonical;
-  return record.source_type === "article" || record.source_type === "forum" ? "other" : "unknown";
+function text(record) {
+  return [
+    record.title,
+    record.symptom,
+    record.trigger,
+    record.root_cause,
+    record.solution,
+    record.workaround,
+    record.component,
+    record.phase ?? record.stage,
+    ...(record.tags ?? []),
+    ...packages(record).map((item) => item.name)
+  ].filter(Boolean).join(" ");
+}
+
+function software(record) {
+  const publishers = (record.evidence ?? []).map((item) => item.publisher).join(" ");
+  const value = `${record.source_family ?? ""} ${publishers} ${text(record)}`;
+  for (const [pattern, canonical] of softwareRules) if (pattern.test(value)) return canonical;
+  const sourceTypes = new Set([
+    record.source_type,
+    ...(record.evidence ?? []).map((item) => item.source_type)
+  ].filter(Boolean));
+  return [...sourceTypes].every((value) => value === "article" || value === "forum") ? "other" : "unknown";
 }
 
 function component(record) {
@@ -64,8 +84,8 @@ function component(record) {
   return "unknown";
 }
 
-function stage(record) {
-  const value = `${record.stage} ${record.title} ${record.symptom}`;
+function phase(record) {
+  const value = `${record.phase ?? record.stage ?? ""} ${record.title ?? ""} ${record.symptom ?? ""}`;
   const rules = [
     [/validation|validator/i, "validation"],
     [/upload|publish/i, "upload"],
@@ -76,8 +96,6 @@ function stage(record) {
     [/preview/i, "preview"],
     [/clientsim|test runner|\btest\b/i, "test"],
     [/build|bake/i, "build"],
-    [/network/i, "networking"],
-    [/optimi[sz]/i, "optimization"],
     [/runtime|play mode/i, "runtime"],
     [/launch|startup|open project|project launch/i, "launch"],
     [/editor|inspector|gizmo/i, "editor"],
@@ -110,23 +128,6 @@ function failureType(record) {
   return "unknown";
 }
 
-function platform(record) {
-  const values = new Set((record.platforms ?? []).map((value) => value.toLowerCase()));
-  const hasWindows = [...values].some((value) => value.includes("windows"));
-  const hasMac = [...values].some((value) => value.includes("mac"));
-  const hasLinux = [...values].some((value) => value.includes("linux") || value.includes("ubuntu") || value.includes("xubuntu"));
-  const hasAndroid = [...values].some((value) => value.includes("android") || value.includes("quest"));
-  const hasPc = [...values].some((value) => value === "pc");
-  const count = [hasWindows, hasMac, hasLinux, hasAndroid, hasPc].filter(Boolean).length;
-  if (count > 1) return "cross-platform";
-  if (hasWindows) return "Windows";
-  if (hasMac) return "macOS";
-  if (hasLinux) return "Linux";
-  if (hasAndroid) return "Android / Quest";
-  if (hasPc) return "PC";
-  return "unknown";
-}
-
 function assertVocabulary(axis, value, id) {
   if (!taxonomy.axes[axis].includes(value)) throw new Error(`${id}: invalid ${axis} ${value}`);
 }
@@ -134,29 +135,38 @@ function assertVocabulary(axis, value, id) {
 function classify(record) {
   const result = {
     id: record.id,
-    product: product(record),
+    software: software(record),
     component: component(record),
-    stage: stage(record),
-    failure_type: failureType(record),
-    platform: platform(record)
+    phase: phase(record),
+    failure_type: failureType(record)
   };
   for (const [axis, value] of Object.entries(result)) if (axis !== "id") assertVocabulary(axis, value, record.id);
   return result;
 }
 
 function selfTest() {
-  const vcc = product({ source_family:"VCC", source_type:"github_issue", title:"", symptom:"", trigger:"", root_cause:"", solution:"", workaround:"", component:"", stage:"", tags:[], packages:[] });
-  if (vcc !== "VRChat Creator Companion") throw new Error("VCC synonym canonicalization failed");
-  const aa = product({ source_family:"AAO", source_type:"github_issue", title:"", symptom:"", trigger:"", root_cause:"", solution:"", workaround:"", component:"", stage:"", tags:[], packages:[] });
-  if (aa !== "Avatar Optimizer") throw new Error("AAO synonym canonicalization failed");
+  const fixture = { source_type:"github_issue", title:"", symptom:"", trigger:"", root_cause:"", solution:"", workaround:"", component:"", stage:"", tags:[], packages:[] };
+  if (software({ ...fixture, source_family:"VCC" }) !== "VRChat Creator Companion") throw new Error("VCC synonym canonicalization failed");
+  if (software({ ...fixture, source_family:"AAO" }) !== "Avatar Optimizer") throw new Error("AAO synonym canonicalization failed");
+  if (phase({ ...fixture, stage:"optimization" }) === "optimization") throw new Error("optimization must not be a phase");
+  if (phase({ ...fixture, stage:"networking" }) === "networking") throw new Error("networking must not be a phase");
+
+  for (const [axis, labels] of Object.entries(taxonomy.labels ?? {})) {
+    if (!(axis in taxonomy.axes)) throw new Error(`labels reference unknown axis ${axis}`);
+    for (const value of Object.keys(labels)) assertVocabulary(axis, value, `labels.${axis}`);
+  }
 }
 
 selfTest();
 if (records.length < 90) throw new Error(`taxonomy requires >=90 observed records, got ${records.length}`);
 const classified = records.map(classify);
 const counts = {};
-for (const axis of ["product", "component", "stage", "failure_type", "platform"]) {
-  counts[axis] = Object.fromEntries([...taxonomy.axes[axis]].map((value) => [value, classified.filter((item) => item[axis] === value).length]).filter(([, count]) => count > 0));
+for (const axis of ["software", "component", "phase", "failure_type"]) {
+  counts[axis] = Object.fromEntries(
+    taxonomy.axes[axis]
+      .map((value) => [value, classified.filter((item) => item[axis] === value).length])
+      .filter(([, count]) => count > 0)
+  );
 }
 
 const output = { taxonomy_version: taxonomy.version, records: classified.length, counts, classified };
