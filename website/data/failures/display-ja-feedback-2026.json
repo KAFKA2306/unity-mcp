@@ -1,0 +1,43 @@
+{
+  "2026-ask-sdk-3104-tags-null-upload": {
+    "title": "SDK 3.10.4でアバタータグ未設定のままアップロードするとtags nullエラーで失敗する",
+    "symptom": "テストビルドは成功するが、実際のアバターアップロードではメタデータ作成・更新時に失敗する。",
+    "trigger": "VRChat SDK 3.10.4でアバタータグを1つも設定せずにアップロードする。",
+    "root_cause": "フォーラムでは、タグのアップロード処理にあるSDK 3.10.4の既知不具合として案内されている。",
+    "solution": "アップロード前にアバタータグを1つ以上設定する。リンク先のVRChat Feedbackでは将来リリースで対応予定とされている。",
+    "workaround": "任意のアバタータグを1つ設定してからアップロードする。"
+  },
+  "2026-ask-android-build-support-reinstall": {
+    "title": "Quest向けアバタービルドがAndroid Build Supportの再インストールで復旧する",
+    "symptom": "同じプロジェクトはWindows向けにビルドできるがAndroid/Quest向けだけ失敗し、新規プロジェクトのVRChatサンプルアバターでもAndroidビルドが失敗する。",
+    "trigger": "報告された環境で、ローカルのUnity Android Build Supportが不調な状態のままAndroid向けビルドを行う。",
+    "root_cause": "事例ではSDKサンプルアバターでもAndroidだけ失敗し、Android Build Supportの再インストールで解消したため、ローカルのAndroid Build Support導入状態まで原因を切り分けている。",
+    "solution": "Unity HubでUnity 2022.3.22f1用Android Build Supportを再インストールし、Androidビルドを再実行する。"
+  },
+  "2026-feedback-contact-box-size-dropped-on-old-sdk-import": {
+    "title": "古いSDKでpackageをimportしてから更新するとContact ReceiverのBox Sizeが失われる",
+    "symptom": "Box型VRC Contact Receiverを含むpackageを古いSDKへimportしてからSDKを更新すると、Size値が失われる。",
+    "trigger": "Box fieldを認識しないSDK versionへpackageをimportし、その後SDK 3.10.4以降へ更新する。",
+    "root_cause": "VRChatスタッフは、導入中SDKが認識できないcomponent fieldはUnityによって保存データから落ちると説明している。Box ContactはSDK 3.10.4で利用可能になった。",
+    "solution": "packageをimportする前にSDK 3.10.4以降へ更新する。古いSDKで既にimportした場合は更新後にpackageを再importする。"
+  },
+  "2026-feedback-incomplete-avatar-blocks-upload": {
+    "title": "失敗した未完了アバターの状態が残ると後続アップロードも完了しないことがある",
+    "symptom": "Avatar UploadingとSignature Uploadingの後でアップロードが完了せず、失敗したアバターがWeb上には存在してもVRChatではUnavailableになることがある。",
+    "trigger": "以前のアバターアップロードが未完了・不整合な状態で残ったまま再アップロードする。",
+    "root_cause": "報告者の最終的な解決では、完了しなかったアバターに紐づく不整合が原因だったとされている。",
+    "solution": "失敗して残った未完了アバターを削除し、アップロードをやり直す。"
+  },
+  "2026-feedback-local-world-multiclient-black-screen": {
+    "title": "ローカルWorldテストで2個目以降のclientが黒画面で停止することがある",
+    "symptom": "local multi-client Worldテスト中、2個目以降のclientが黒画面で停止し、再join時に繰り返しcrashする場合もある。",
+    "trigger": "同じWorldに対して複数のlocal Build & Test clientを起動する。",
+    "workaround": "VRChatのdebug loggingをFullに設定する。関連reportのworkaroundとして、このtracked report内でも動作確認が報告されている。"
+  },
+  "2026-feedback-constraint-stale-physbone-reference": {
+    "title": "監視対象PhysBoneを削除するとVRC Constraintに参照が残りMissingReferenceExceptionが出る",
+    "symptom": "missing PhysBone参照が残ったVRCConstraintBaseから、objectの有効化、prefab override、undo/redoなどのEditor操作でMissingReferenceExceptionが繰り返し発生する。",
+    "trigger": "VRC Constraintが監視していたPhysBoneを後から削除し、Monitored PhysBones dataにmissing参照が残る。",
+    "workaround": "ConstraintをDebug表示してMonitored Phys Bonesのmissing参照を確認する。報告されたworkflowでは対象Constraintを作り直すことで古い参照を除去できる。"
+  }
+}
