@@ -7,7 +7,7 @@ Failure KBは、収集した`records-*.json`を**raw collection**、そこから
 
 通常のdocs buildはlive network collectionを行いません。commit済みraw dataから`migrate-failures.mjs`を実行し、current canonicalを決定的に生成します。current ontologyの正本検証は`npm run validate:ontology`の1コマンドで行い、schema、VRChat Unity scope、taxonomy、Evidence、Environment、status導出、source domain/repository派生、filter semantics、migration determinismをまとめて検証します。
 
-`validate:ontology`には不正データのnegative fixtureも含めます。unsupported Unity、`unknown` sentinel、重複Evidence、非HTTP URL、taxonomy外値、host OS/target platformの誤用、根拠のないclaim、legacy canonical field、複数Evidenceを跨ぐsource filter誤一致をrejectできなければ失敗します。
+`validate:ontology`には不正データのnegative fixtureも含めます。unsupported Unity、`unknown` sentinel、重複Evidence、非HTTP URL、taxonomy外値、host OS/target platformの誤用、根拠のないclaim、legacy canonical field、複数Evidenceを跨ぐsource filter誤一致をrejectできなければ失敗します。日本語native raw recordはファイル名を個別列挙せず、`ja` / `日本語` tagを持つrecordとして`validate:ja-display`が検証します。
 
 raw / current canonical / scope外・未確認の件数は収集に応じて変化するため、固定値をドキュメントやCIへ埋め込みません。`migrate-failures.mjs`が生成する`migration-summary-2026.json`と`failure-coverage.mjs`を正本とし、`excluded_records = raw_records - current_canonical_records`、current canonical非空、current recordのUnity versionが`scope.json`内にあることを機械的に検証します。
 
