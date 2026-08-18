@@ -12,6 +12,7 @@ const taxonomy = JSON.parse(fs.readFileSync(path.join(dataRoot, "taxonomy.json")
 const scope = JSON.parse(fs.readFileSync(path.join(dataRoot, "scope.json"), "utf8"));
 const records = JSON.parse(fs.readFileSync(path.join(dataRoot, "current-2026.json"), "utf8"));
 const legacyFields = new Set(["source_urls", "source_type", "source_family", "unity_version", "vrcsdk_version", "packages", "platforms", "stage", "solution", "workaround", "status", "tags"]);
+let negativeFixtures = 0;
 
 function typeMatches(value, type) {
   if (type === "array") return Array.isArray(value);
@@ -131,6 +132,7 @@ function expectRejected(name, mutate) {
   mutate(fixture);
   const errors = validateCanonicalRecords([fixture]);
   if (!errors.length) throw new Error(`negative fixture was accepted: ${name}`);
+  negativeFixtures += 1;
 }
 
 function validateNegativeFixtures() {
@@ -156,6 +158,7 @@ function validateNegativeFixtures() {
   if (matchesEvidence(evidenceFixture, { source_domain: "github.com", source_type: "official_release", repository: "" })) {
     throw new Error("negative fixture was accepted: source filters crossed evidence items");
   }
+  negativeFixtures += 1;
 }
 
 function validateMigrationDeterminism() {
@@ -189,4 +192,4 @@ validateNegativeFixtures();
 validateMigrationDeterminism();
 
 const domains = [...new Set(records.flatMap((record) => record.evidence.map((item) => sourceDomain(item.url))))].sort();
-console.log(`Failure ontology validation passed: ${records.length} current records, ${domains.length} source domains, schema/scope/taxonomy/evidence/environment/status/filter/determinism checks passed, 9 negative fixtures rejected.`);
+console.log(`Failure ontology validation passed: ${records.length} current records, ${domains.length} source domains, schema/scope/taxonomy/evidence/environment/status/filter/determinism checks passed, ${negativeFixtures} negative fixtures rejected.`);
