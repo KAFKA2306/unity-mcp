@@ -3,9 +3,9 @@ import path from "node:path";
 import { gunzipSync, gzipSync } from "node:zlib";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const data = path.join(root, "data", "failures");
-const outputPath = path.join(root, "note-failure-candidates.json");
+const websiteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const data = path.join(websiteRoot, "data", "failures");
+const outputPath = path.join(websiteRoot, "note-failure-candidates.json");
 const registry = JSON.parse(fs.readFileSync(path.join(data, "sources-web.json"), "utf8"));
 const noteSource = registry.find((source) => source.id === "note-sitemap" && source.enabled);
 if (!noteSource) throw new Error("enabled note-sitemap source is missing");
@@ -181,9 +181,9 @@ const report = {
   candidates: []
 };
 
-let root;
+let rootSitemap;
 try {
-  root = parseSitemap(await fetchText(noteSource.fetch_url));
+  rootSitemap = parseSitemap(await fetchText(noteSource.fetch_url));
   report.sitemap_documents_checked += 1;
 } catch (error) {
   report.status = [401, 403, 429].includes(error.httpStatus) ? "blocked" : "failed";
@@ -193,8 +193,8 @@ try {
   process.exit(0);
 }
 
-const sitemapUrls = [...root.urls];
-for (const sitemap of prioritizeSitemaps(root.sitemaps)) {
+const sitemapUrls = [...rootSitemap.urls];
+for (const sitemap of prioritizeSitemaps(rootSitemap.sitemaps)) {
   try {
     const parsed = parseSitemap(await fetchText(sitemap.url));
     report.sitemap_documents_checked += 1;
