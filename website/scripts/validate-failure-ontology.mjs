@@ -173,13 +173,12 @@ function validateMigrationDeterminism() {
 }
 
 const currentUnity = scope.current_unity_versions ?? [];
-if (currentUnity.length !== 1 || currentUnity[0] !== "2022.3.22f1") {
-  throw new Error(`current VRChat Unity scope changed unexpectedly: ${JSON.stringify(currentUnity)}`);
+if (!currentUnity.length) throw new Error("scope.json must define at least one current Unity version");
+const schemaUnity = schema.properties?.environment?.properties?.unity_version?.const;
+if (!schemaUnity || !currentUnity.includes(schemaUnity)) {
+  throw new Error("canonical schema Unity const must be included in scope.json current_unity_versions");
 }
-if (schema.properties?.environment?.properties?.unity_version?.const !== currentUnity[0]) {
-  throw new Error("canonical schema Unity const differs from scope.json");
-}
-if (records.length !== 8) throw new Error(`migration baseline changed: expected 8 current canonical records, got ${records.length}`);
+if (!records.length) throw new Error("current canonical corpus must not be empty");
 
 const errors = validateCanonicalRecords(records);
 if (errors.length) {

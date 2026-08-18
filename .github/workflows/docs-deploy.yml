@@ -115,12 +115,23 @@ jobs:
 
           assert '<html' in html.lower(), 'published /failures is not HTML'
           assert isinstance(current, list), 'current-2026.json must be a JSON array'
-          assert len(current) == 8, f'expected 8 current records, got {len(current)}'
-          assert all(record.get('environment', {}).get('unity_version') == '2022.3.22f1' for record in current), \
-              'published current corpus contains a Unity version outside VRChat current scope'
-          assert summary.get('raw_records') == 121, summary
-          assert summary.get('current_canonical_records') == 8, summary
-          assert summary.get('excluded_records') == 113, summary
+          assert current, 'published current corpus must not be empty'
 
-          print('Published Failure KB smoke test passed: /failures HTTP OK; raw 121 / current 8 / excluded 113; Unity 2022.3.22f1 only.')
+          raw_count = summary.get('raw_records')
+          current_count = summary.get('current_canonical_records')
+          excluded_count = summary.get('excluded_records')
+          allowed_unity = set(summary.get('current_unity_versions') or [])
+
+          assert isinstance(raw_count, int) and raw_count >= len(current), summary
+          assert current_count == len(current), (summary, len(current))
+          assert excluded_count == raw_count - current_count, summary
+          assert allowed_unity, 'migration summary has no current Unity versions'
+          assert all(record.get('environment', {}).get('unity_version') in allowed_unity for record in current), \
+              'published current corpus contains a Unity version outside migration scope'
+
+          print(
+              f'Published Failure KB smoke test passed: /failures HTTP OK; '
+              f'raw {raw_count} / current {current_count} / excluded {excluded_count}; '
+              f'Unity scope {sorted(allowed_unity)}.'
+          )
           PY

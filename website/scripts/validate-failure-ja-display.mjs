@@ -14,6 +14,7 @@ const translated = [
   ["records-web-2026.json", "display-ja-web-2026.json"],
   ["records-unity-official-2026.json", "display-ja-unity-official-2026.json"],
 ];
+const translatedFiles = new Set(translated.map(([recordsFile]) => recordsFile));
 
 function readJson(name) {
   return JSON.parse(fs.readFileSync(path.join(dataDir, name), "utf8"));
@@ -21,6 +22,11 @@ function readJson(name) {
 
 function needsTranslation(value) {
   return typeof value === "string" && value.length > 0 && value !== "unknown" && !japanese.test(value);
+}
+
+function isJapaneseRecord(record) {
+  const tags = new Set(record.tags ?? []);
+  return tags.has("ja") || tags.has("日本語");
 }
 
 const failures = [];
@@ -51,14 +57,22 @@ for (const [recordsFile, displayFile] of translated) {
   }
 }
 
-for (const record of readJson("records-web-ja-2026.json")) {
-  checkedRecords += 1;
-  for (const field of fields) {
-    const value = record[field];
-    if (typeof value !== "string" || value.length === 0 || value === "unknown") continue;
-    checkedFields += 1;
-    if (!japanese.test(value)) {
-      failures.push(`records-web-ja-2026.json: ${record.id}.${field} is not Japanese`);
+const nativeJapaneseFiles = fs.readdirSync(dataDir)
+  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
+  .filter((name) => !translatedFiles.has(name))
+  .sort();
+
+for (const recordsFile of nativeJapaneseFiles) {
+  for (const record of readJson(recordsFile)) {
+    if (!isJapaneseRecord(record)) continue;
+    checkedRecords += 1;
+    for (const field of fields) {
+      const value = record[field];
+      if (typeof value !== "string" || value.length === 0 || value === "unknown") continue;
+      checkedFields += 1;
+      if (!japanese.test(value)) {
+        failures.push(`${recordsFile}: ${record.id}.${field} is not Japanese`);
+      }
     }
   }
 }
