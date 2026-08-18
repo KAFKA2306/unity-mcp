@@ -5,9 +5,10 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "prebuild": "npm run validate:failures && npm run validate:ja-display && npm run validate:web-failures && npm run validate:signatures && npm run validate:taxonomy && npm run validate:unity-failures && npm run validate:coverage",
+    "prebuild": "npm run validate:failures && npm run validate:evidence && npm run validate:ja-display && npm run validate:web-failures && npm run validate:signatures && npm run validate:taxonomy && npm run validate:unity-failures && npm run validate:coverage",
     "build": "docusaurus build",
     "validate:failures": "node scripts/validate-failures.mjs",
+    "validate:evidence": "node scripts/validate-failure-evidence.mjs",
     "validate:ja-display": "node scripts/validate-failure-ja-display.mjs",
     "validate:web-failures": "node scripts/collect-web-failures.mjs",
     "validate:signatures": "node scripts/normalize-failure-signatures.mjs",
