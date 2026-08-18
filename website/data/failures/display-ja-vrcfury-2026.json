@@ -1,0 +1,44 @@
+{
+  "2026-vrcfury-gesture-manager-global-collider-playerid": {
+    "title": "VRCFuryがGesture ManagerのplayerId代入による新しいglobal colliderの不具合を修正",
+    "symptom": "Gesture Managerの旧来のplayerId代入処理が有効なとき、global colliderのplayerId動作が正しくならない場合がある。",
+    "trigger": "global colliderなど新しいVRCSDKのAvatar DynamicsコンポーネントとGesture Managerを併用する。",
+    "root_cause": "VRCFury maintainerのコメントでは、Gesture Managerは古いVRCSDKがplayerIdを設定しなかったため独自に設定しているが、global colliderなど一部の新しいコンポーネントには設定しないため、代入経路が混在して壊れると説明されている。",
+    "solution": "Gesture Manager側のplayerId書き込みを抑止し、SDK側に代入を任せる修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-sps-autorig-material-swap-binding": {
+    "title": "autorigされたmeshでSPSのmaterial swapが正しく動かない",
+    "symptom": "対象meshがautorigされると、SPSのmaterial swapが正しく動作しない。",
+    "trigger": "autorigによりMeshRendererからSkinnedMeshRendererへ変換されるrendererにSPS bakeを行う。",
+    "root_cause": "修正diffでは、autorig変換後のblendshape・material slot書き換えで元のMeshRenderer bindingを使い続けず、最終的なSkinnedMeshRenderer bindingを使う必要があることが示されている。",
+    "solution": "autorig後のSPS material binding修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-animation-path-trailing-slash": {
+    "title": "Hierarchy内のobject名がスラッシュで終わるとanimation target lookupが壊れる",
+    "symptom": "名前末尾がスラッシュのobjectを含むHierarchyで、VRCFuryのanimation target lookupが壊れる。",
+    "trigger": "名前が「/」で終わるHierarchy objectを経由するanimation bindingを解決する。",
+    "root_cause": "relative path resolverがこのHierarchy pathのedge caseを正しく扱えておらず、修正ではbase pathとrelative pathの処理を分離して正規化ロジックを変更している。",
+    "solution": "relative animation path resolverの修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-sps-liltoon-lightmode-never": {
+    "title": "SPS shader patchがLightMode = NeverのpassでlilToon errorを起こす場合がある",
+    "symptom": "対象shader pathでVRCFuryのSPS shader patchによりlilToon errorが発生する。",
+    "trigger": "LightMode = Neverと指定されたpassを含むlilToon shaderをSPSでpatchする。",
+    "root_cause": "maintainer commitでは、LightMode = NeverのpassをSPS patch対象から除外し、不足していたUnityShaderVariables includeを追加することでlilToon errorを修正している。",
+    "solution": "lilToon向けSPS shader patch修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-play-audio-clips-lost-on-clone": {
+    "title": "Load In Background有効化のためcloneされたVRCAnimatorPlayAudioのAudioClip参照が失われる場合がある",
+    "symptom": "VRCFuryがLoad In Backgroundを有効にするためcloneしたVRCAnimatorPlayAudioのAudioClip参照が失われる場合がある。",
+    "trigger": "VRCFuryがLoad In Background有効化のためVRCAnimatorPlayAudioのclipをcloneするavatarをbuildする。",
+    "root_cause": "save pathがVRCAnimatorPlayAudioから参照されるAudioClip assetをすべて保持していなかった。修正ではsub-controllerを含めてclipを列挙しsave contextへ追加している。",
+    "solution": "VRCAnimatorPlayAudioのclip保持修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-generated-material-only-in-generated-clip-not-saved": {
+    "title": "generated animation clip内だけに存在するgenerated material assetが保存されない",
+    "symptom": "generated animation clipからのみ参照されるVRCFury生成materialがgenerated assetとして保存されない。",
+    "trigger": "generated clipのobject-reference keyframe valueとしてのみ存在するmaterialを生成する。",
+    "root_cause": "clipのsave pathがgenerated object-reference keyframe valueをnew assetとして登録していなかった。修正ではobject curveを走査しVRCFuryが生成したkeyframe valueを保存する。",
+    "solution": "generated materialのasset保存修正を含むVRCFuryを使用する。"
+  }
+}
