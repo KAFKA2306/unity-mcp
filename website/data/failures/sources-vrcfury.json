@@ -1,0 +1,18 @@
+[
+  {
+    "id": "vrcfury-commits",
+    "name": "VRCFury Fix Commits",
+    "canonical_url": "https://github.com/VRCFury/VRCFury/commits/main",
+    "fetch_url": "https://api.github.com/repos/VRCFury/VRCFury/commits",
+    "source_family": "VRCFury",
+    "source_class": "maintainer",
+    "content_type": "commits",
+    "fetch_mode": "github_api",
+    "enabled": true,
+    "year_scope": ["2026"],
+    "languages": ["en"],
+    "repository": "VRCFury/VRCFury",
+    "last_verified_date": "2026-08-19",
+    "access_note": "Public maintainer GitHub commit history; retain only failure-relevant fixes whose symptom and correction are supported by commit metadata and diff. Do not infer an unreported Unity or VRCSDK version."
+  }
+]
