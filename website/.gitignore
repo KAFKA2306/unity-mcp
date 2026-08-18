@@ -7,6 +7,9 @@
 # Generated files
 .docusaurus
 .cache-loader
+/data/failures/current-2026.json
+/static/data/failures/current-2026.json
+/static/data/failures/migration-summary-2026.json
 
 # Misc
 .DS_Store
