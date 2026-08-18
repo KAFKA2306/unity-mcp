@@ -12,6 +12,7 @@
     "validate:ontology": "node scripts/validate-failure-ontology.mjs",
     "validate:ja-display": "node scripts/validate-failure-ja-display.mjs",
     "validate:coverage": "node scripts/failure-coverage.mjs",
+    "discover:note-failures": "node scripts/discover-note-failures.mjs --live --write",
     "audit:raw-schema": "node scripts/validate-failures.mjs",
     "audit:raw-signatures": "node scripts/normalize-failure-signatures.mjs",
     "audit:raw-taxonomy": "node scripts/classify-failures.mjs",
