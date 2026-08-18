@@ -1,7 +1,7 @@
 {
-  "version": "2026-v1",
+  "version": "2026-v2",
   "axes": {
-    "product": [
+    "software": [
       "VRChat SDK",
       "VRChat Creator Companion",
       "VRChat ClientSim",
@@ -41,7 +41,7 @@
       "filesystem / process",
       "unknown"
     ],
-    "stage": [
+    "phase": [
       "setup",
       "install",
       "resolve",
@@ -54,8 +54,6 @@
       "validation",
       "upload",
       "runtime",
-      "networking",
-      "optimization",
       "launch",
       "unknown"
     ],
@@ -63,7 +61,6 @@
       "exception",
       "compile error",
       "dependency error",
-      "compatibility",
       "validation error",
       "crash",
       "hang / timeout",
@@ -76,15 +73,6 @@
       "UI defect",
       "data / state corruption",
       "unsupported configuration",
-      "unknown"
-    ],
-    "platform": [
-      "Windows",
-      "macOS",
-      "Linux",
-      "Android / Quest",
-      "PC",
-      "cross-platform",
       "unknown"
     ]
   },
@@ -101,5 +89,63 @@
     "vrc-get": "vrc-get / ALCOM",
     "Gesture Manager": "VRC Gesture Manager",
     "Poiyomi": "Poiyomi Toon Shader"
+  },
+  "labels": {
+    "component": {
+      "package management": "パッケージ管理",
+      "project setup": "プロジェクト設定",
+      "editor UI": "エディターUI",
+      "avatar rig": "アバターリグ",
+      "avatar parameters": "アバターパラメーター",
+      "animation": "アニメーション",
+      "PhysBones / Contacts": "PhysBones / Contacts",
+      "shader / material": "シェーダー / マテリアル",
+      "rendering": "レンダリング",
+      "scene / world": "シーン / ワールド",
+      "Udon / scripting": "Udon / スクリプト",
+      "build / validation": "ビルド / 検証",
+      "upload / publishing": "アップロード / 公開",
+      "simulation / preview": "シミュレーション / プレビュー",
+      "optimization": "最適化",
+      "import / export": "インポート / エクスポート",
+      "networking / transport": "ネットワーク / 通信",
+      "tool execution": "ツール実行",
+      "filesystem / process": "ファイルシステム / プロセス",
+      "unknown": "不明"
+    },
+    "phase": {
+      "setup": "セットアップ",
+      "install": "導入",
+      "resolve": "依存関係解決",
+      "import": "インポート",
+      "compile": "コンパイル",
+      "editor": "エディター",
+      "preview": "プレビュー",
+      "test": "テスト",
+      "build": "ビルド",
+      "validation": "検証",
+      "upload": "アップロード",
+      "runtime": "実行時",
+      "launch": "起動",
+      "unknown": "不明"
+    },
+    "failure_type": {
+      "exception": "例外",
+      "compile error": "コンパイルエラー",
+      "dependency error": "依存関係エラー",
+      "validation error": "検証エラー",
+      "crash": "クラッシュ",
+      "hang / timeout": "ハング / タイムアウト",
+      "resource leak": "リソースリーク",
+      "missing asset / reference": "アセット / 参照不足",
+      "incorrect behavior": "不正な動作",
+      "rendering defect": "描画不具合",
+      "performance regression": "性能劣化",
+      "network / transport error": "ネットワーク / 通信エラー",
+      "UI defect": "UI不具合",
+      "data / state corruption": "データ / 状態破損",
+      "unsupported configuration": "非対応構成",
+      "unknown": "不明"
+    }
   }
 }
