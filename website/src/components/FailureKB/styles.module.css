@@ -46,6 +46,7 @@
   background: var(--ifm-background-color);
 }
 
+.field select:disabled { opacity: 0.55; cursor: not-allowed; }
 .query { grid-column: 1 / -1; }
 
 .reset {
@@ -81,7 +82,6 @@
 }
 
 .resolved, .workaround, .unresolved { font-weight: 700; }
-.unknown { opacity: 0.8; }
 
 .signature {
   white-space: pre-wrap;
@@ -109,6 +109,8 @@
 
 .details dt { font-weight: 600; }
 .details dd { margin: 0; overflow-wrap: anywhere; }
+.compactList { margin: 0; padding-left: 1.15rem; }
+.compactList li + li { margin-top: 0.35rem; }
 
 .related { border-top: 1px solid var(--failure-border); margin-top: 0.9rem; padding-top: 0.8rem; }
 .related ul { margin: 0.5rem 0 0; padding-left: 1.2rem; }
