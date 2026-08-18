@@ -73,6 +73,14 @@ function parseSitemap(xml) {
   return { sitemaps, urls };
 }
 
+function sourceDate(value) {
+  if (!value) return null;
+  const literal = value.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (literal) return literal[1];
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.valueOf()) ? null : parsed.toISOString().slice(0, 10);
+}
+
 function parseArticle(html, fallbackUrl) {
   const title = first(html, [
     /<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i,
@@ -94,15 +102,11 @@ function parseArticle(html, fallbackUrl) {
     /["']datePublished["']\s*:\s*["']([^"']+)["']/i,
     /<time[^>]+datetime=["']([^"']+)["']/i
   ]);
-  const date = published ? (() => {
-    const parsed = new Date(published);
-    return Number.isNaN(parsed.valueOf()) ? published.slice(0, 10) : parsed.toISOString().slice(0, 10);
-  })() : null;
   return {
     url: normalizeUrl(canonical ?? fallbackUrl),
     title: title ? stripHtml(title) : null,
     description: description ? stripHtml(description) : null,
-    published_at: date,
+    published_at: sourceDate(published),
     searchable_text: stripHtml(html).slice(0, 50000)
   };
 }
@@ -153,7 +157,7 @@ function selfTest() {
   const parsed = parseSitemap(decodeBody(compressed));
   if (parsed.sitemaps.length !== 1 || parsed.sitemaps[0].lastmod !== "2026-08-18") throw new Error("gzip sitemap self-test failed");
   const page = parseArticle(`<html><head><meta property="og:title" content="VRChat upload error"><meta property="article:published_time" content="2026-06-19T00:00:00+09:00"><link rel="canonical" href="https://note.com/example/n/nabc"></head><body>Unityでアップロードできない</body></html>`, "https://note.com/fallback/n/nx");
-  if (page.published_at !== "2026-06-18" && page.published_at !== "2026-06-19") throw new Error("article date self-test failed");
+  if (page.published_at !== "2026-06-19") throw new Error(`article date self-test failed: ${page.published_at}`);
   if (!relevant.test(`${page.title} ${page.searchable_text}`) || !failure.test(`${page.title} ${page.searchable_text}`)) throw new Error("candidate keyword self-test failed");
 }
 
