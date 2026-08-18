@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import styles from "./styles.module.css";
-import currentRecords from "@site/data/failures/current-2026.json";
+import browseRecords from "@site/data/failures/browse-2026.json";
 import taxonomy from "@site/data/failures/taxonomy.json";
 import jaSeed from "@site/data/failures/display-ja-seed-2026.json";
 import jaGithub from "@site/data/failures/display-ja-github-2026.json";
@@ -16,7 +16,7 @@ import {
   valuesFor,
 } from "@site/scripts/failure-view.mjs";
 
-const allRecords = [...currentRecords].sort(
+const allRecords = [...browseRecords].sort(
   (a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id)
 );
 
@@ -33,10 +33,10 @@ const emptyFilters = Object.fromEntries(filterKeys.map((key) => [key, ""]));
 const copyByLocale = {
   en: {
     all: "All",
-    records: "current records",
+    records: "all records",
+    verified: "current verified",
     sourceDomains: "source domains",
     resolved: "resolved",
-    workarounds: "workarounds",
     unresolved: "unresolved",
     searchLabel: "Error / exception / symptom",
     searchPlaceholder: "Paste an error string, exception name, symptom, package, or source",
@@ -65,22 +65,19 @@ const copyByLocale = {
     similar: "similar",
     supports: "supports",
     noRemedy: "No verified remedy recorded.",
-    statusLabels: {
-      resolved: "resolved",
-      workaround: "workaround",
-      unresolved: "unresolved",
-    },
-    remedyLabels: {
-      fix: "fix",
-      workaround: "workaround",
-    },
+    currentVerified: "current Unity verified",
+    legacy: "legacy Unity",
+    otherVersion: "other Unity version",
+    unverified: "Unity version unverified",
+    statusLabels: { resolved: "resolved", workaround: "workaround", unresolved: "unresolved" },
+    remedyLabels: { fix: "fix", workaround: "workaround" },
   },
   ja: {
     all: "すべて",
-    records: "現行レコード",
+    records: "全レコード",
+    verified: "現行Unity検証済み",
     sourceDomains: "情報源ドメイン",
     resolved: "解決済み",
-    workarounds: "回避策あり",
     unresolved: "未解決",
     searchLabel: "エラー / 例外 / 症状",
     searchPlaceholder: "エラー文字列、例外名、症状、パッケージ、情報源を検索",
@@ -109,15 +106,12 @@ const copyByLocale = {
     similar: "類似",
     supports: "根拠対象",
     noRemedy: "確認済みの解決策・回避策はありません。",
-    statusLabels: {
-      resolved: "解決済み",
-      workaround: "回避策あり",
-      unresolved: "未解決",
-    },
-    remedyLabels: {
-      fix: "解決策",
-      workaround: "回避策",
-    },
+    currentVerified: "現行Unity検証済み",
+    legacy: "旧Unity",
+    otherVersion: "別Unity version",
+    unverified: "Unity version未確認",
+    statusLabels: { resolved: "解決済み", workaround: "回避策あり", unresolved: "未解決" },
+    remedyLabels: { fix: "解決策", workaround: "回避策" },
   },
 };
 
@@ -194,8 +188,16 @@ function localized(record, field, locale) {
 function localizedRemedy(record, remedy, locale) {
   if (locale === "en") return remedy.description;
   const display = japaneseDisplay[record.id] ?? {};
-  const legacyField = remedy.type === "fix" ? "solution" : "workaround";
-  return display[legacyField] ?? remedy.description;
+  return display[remedy.type === "fix" ? "solution" : "workaround"] ?? remedy.description;
+}
+
+function verificationLabel(record, copy) {
+  switch (record.verification?.unity_version_status) {
+    case "current": return copy.currentVerified;
+    case "legacy": return copy.legacy;
+    case "other": return copy.otherVersion;
+    default: return copy.unverified;
+  }
 }
 
 function searchable(record) {
@@ -222,23 +224,15 @@ function searchable(record) {
     taxonomy.labels?.failure_type?.[record.classification?.failure_type],
     record.environment?.unity_version,
     record.environment?.vrchat_sdk_version,
+    record.verification?.unity_version_status,
     ...(record.environment?.packages ?? []).flatMap((item) => [item.name, item.version]),
     ...(record.environment?.host_os ?? []).flatMap((item) => [item.name, item.version]),
     ...(record.environment?.target_platform ?? []),
     ...(record.remedies ?? []).flatMap((item) => [item.type, item.description]),
     ja.solution,
     ja.workaround,
-    ...evidence.flatMap((item) => [
-      item.url,
-      item.publisher,
-      item.source_type,
-      item.source_domain,
-      item.repository,
-    ]),
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
+    ...evidence.flatMap((item) => [item.url, item.publisher, item.source_type, item.source_domain, item.repository]),
+  ].filter(Boolean).join(" ").toLowerCase();
 }
 
 function matches(record, filters) {
@@ -255,9 +249,7 @@ function Select({ label, name, value, options, onChange, allLabel, optionLabel =
       <span>{label}</span>
       <select name={name} value={value} onChange={onChange} disabled={disabled}>
         <option value="">{allLabel}</option>
-        {options.map((option) => (
-          <option key={option} value={option}>{optionLabel(option)}</option>
-        ))}
+        {options.map((option) => <option key={option} value={option}>{optionLabel(option)}</option>)}
       </select>
     </label>
   );
@@ -286,22 +278,13 @@ export default function FailureKB() {
 
   const filtered = useMemo(() => allRecords.filter((record) => matches(record, filters)), [filters]);
   const facets = useMemo(() => Object.fromEntries([
-    "software",
-    "component",
-    "phase",
-    "failure_type",
-    "host_os",
-    "target_platform",
-    "unity",
-    "vrcsdk",
-    "package",
-    "source_domain",
-    "source_type",
-    "repository",
+    "software", "component", "phase", "failure_type", "host_os", "target_platform",
+    "unity", "vrcsdk", "package", "source_domain", "source_type", "repository",
   ].map((key) => [key, valuesFor(allRecords, key)])), []);
   const statuses = useMemo(() => Object.fromEntries(
     ["resolved", "workaround", "unresolved"].map((status) => [status, allRecords.filter((record) => statusFor(record) === status).length])
   ), []);
+  const verifiedCount = useMemo(() => allRecords.filter((record) => record.verification?.current_scope).length, []);
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -316,9 +299,9 @@ export default function FailureKB() {
     <div className={styles.root}>
       <div className={styles.summary}>
         <div><strong>{allRecords.length}</strong><span>{copy.records}</span></div>
+        <div><strong>{verifiedCount}</strong><span>{copy.verified}</span></div>
         <div><strong>{facets.source_domain.length}</strong><span>{copy.sourceDomains}</span></div>
         <div><strong>{statuses.resolved}</strong><span>{copy.resolved}</span></div>
-        <div><strong>{statuses.workaround}</strong><span>{copy.workarounds}</span></div>
         <div><strong>{statuses.unresolved}</strong><span>{copy.unresolved}</span></div>
       </div>
 
@@ -342,9 +325,7 @@ export default function FailureKB() {
         <button className={styles.reset} type="button" onClick={() => setFilters(emptyFilters)}>{copy.clear}</button>
       </div>
 
-      <div className={styles.resultHeader}>
-        <strong>{filtered.length}</strong> {copy.matching(filtered.length)}
-      </div>
+      <div className={styles.resultHeader}><strong>{filtered.length}</strong> {copy.matching(filtered.length)}</div>
 
       <div className={styles.records}>
         {filtered.map((record) => {
@@ -357,19 +338,20 @@ export default function FailureKB() {
             <article className={styles.card} key={record.id} id={`failure-${record.id}`}>
               <div className={styles.meta}>
                 <span className={`${styles.status} ${styles[status]}`}>{copy.statusLabels[status]}</span>
+                <span>{verificationLabel(record, copy)}</span>
                 <span>{record.date}</span>
-                <span>{classification.software}</span>
+                {classification.software && <span>{classification.software}</span>}
               </div>
               <h3>{localized(record, "title", locale)}</h3>
               {record.error_signature && <pre className={styles.signature}>{record.error_signature}</pre>}
-              <p>{localized(record, "symptom", locale)}</p>
+              {record.symptom && <p>{localized(record, "symptom", locale)}</p>}
               <div className={styles.chips}>
                 {classification.component && <span>{taxonomyLabel("component", classification.component, locale)}</span>}
                 {classification.phase && <span>{taxonomyLabel("phase", classification.phase, locale)}</span>}
                 {classification.failure_type && <span>{taxonomyLabel("failure_type", classification.failure_type, locale)}</span>}
                 {(environment.host_os ?? []).map((host) => <span key={`${host.name}-${host.version ?? ""}`}>{host.name}{host.version ? ` ${host.version}` : ""}</span>)}
                 {(environment.target_platform ?? []).map((target) => <span key={target}>{target}</span>)}
-                <span>Unity {environment.unity_version}</span>
+                {environment.unity_version ? <span>Unity {environment.unity_version}</span> : <span>{copy.unverified}</span>}
                 {environment.vrchat_sdk_version && <span>VRCSDK {environment.vrchat_sdk_version}</span>}
               </div>
 
@@ -379,44 +361,35 @@ export default function FailureKB() {
                   {record.trigger && <><dt>{copy.trigger}</dt><dd>{localized(record, "trigger", locale)}</dd></>}
                   {record.root_cause && <><dt>{copy.rootCause}</dt><dd>{localized(record, "root_cause", locale)}</dd></>}
                   <dt>{copy.remedies}</dt>
-                  <dd>
-                    {(record.remedies ?? []).length ? (
-                      <ul className={styles.compactList}>
-                        {(record.remedies ?? []).map((remedy, index) => (
-                          <li key={`${remedy.type}-${index}`}><strong>{copy.remedyLabels[remedy.type]}:</strong> {localizedRemedy(record, remedy, locale)}</li>
-                        ))}
-                      </ul>
-                    ) : copy.noRemedy}
-                  </dd>
-                  <dt>{copy.packages}</dt>
-                  <dd>{(environment.packages ?? []).map((item) => `${item.name}${item.version ? ` ${item.version}` : ""}`).join(", ")}</dd>
-                  <dt>{copy.sources}</dt>
-                  <dd>
+                  <dd>{(record.remedies ?? []).length ? (
                     <ul className={styles.compactList}>
-                      {evidence.map((item) => (
-                        <li key={item.url}>
-                          <a href={item.url} target="_blank" rel="noreferrer">{item.source_domain}</a>
-                          {` — ${item.publisher} / ${sourceTypeLabel(item.source_type, locale)}`}
-                          {item.repository ? ` / ${item.repository}` : ""}
-                          {item.supports?.length ? ` / ${copy.supports}: ${item.supports.join(", ")}` : ""}
-                        </li>
+                      {record.remedies.map((remedy, index) => (
+                        <li key={`${remedy.type}-${index}`}><strong>{copy.remedyLabels[remedy.type]}:</strong> {localizedRemedy(record, remedy, locale)}</li>
                       ))}
                     </ul>
-                  </dd>
+                  ) : copy.noRemedy}</dd>
+                  {(environment.packages ?? []).length > 0 && <><dt>{copy.packages}</dt><dd>{environment.packages.map((item) => `${item.name}${item.version ? ` ${item.version}` : ""}`).join(", ")}</dd></>}
+                  <dt>{copy.sources}</dt>
+                  <dd><ul className={styles.compactList}>
+                    {evidence.map((item) => (
+                      <li key={item.url}>
+                        <a href={item.url} target="_blank" rel="noreferrer">{item.source_domain}</a>
+                        {` — ${item.publisher} / ${sourceTypeLabel(item.source_type, locale)}`}
+                        {item.repository ? ` / ${item.repository}` : ""}
+                        {item.supports?.length ? ` / ${copy.supports}: ${item.supports.join(", ")}` : ""}
+                      </li>
+                    ))}
+                  </ul></dd>
                 </dl>
-                {related.length > 0 && (
-                  <div className={styles.related}>
-                    <strong>{copy.related}</strong>
-                    <ul>
-                      {related.map(({ record: candidate, kind, score }) => (
-                        <li key={candidate.id}>
-                          <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{localized(candidate, "title", locale)}</a>
-                          <span>{kind === "exact" ? copy.exact : copy.similar}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {related.length > 0 && <div className={styles.related}>
+                  <strong>{copy.related}</strong>
+                  <ul>{related.map(({ record: candidate, kind, score }) => (
+                    <li key={candidate.id}>
+                      <a href={`?q=${encodeURIComponent(candidate.error_signature)}#failure-${candidate.id}`}>{localized(candidate, "title", locale)}</a>
+                      <span>{kind === "exact" ? copy.exact : copy.similar}{kind === "similar" ? ` ${Math.round(score * 100)}%` : ""}</span>
+                    </li>
+                  ))}</ul>
+                </div>}
               </details>
             </article>
           );
