@@ -125,7 +125,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           QUEUE_TITLE: "[auto] note.com Failure candidates"
         run: |
-          issue_number="$(gh api "repos/$GITHUB_REPOSITORY/issues?state=open&per_page=100" --jq '.[] | select(.pull_request == null and .title == env.QUEUE_TITLE) | .number' | head -n 1)"
+          issue_number="$(gh issue list --state open --search "$QUEUE_TITLE in:title" --json number,title --jq ".[] | select(.title == \"$QUEUE_TITLE\") | .number" | head -n 1)"
           if [ -n "$issue_number" ]; then
             gh issue edit "$issue_number" --body-file note-failure-candidates.md
             echo "Updated candidate Issue #$issue_number"
@@ -135,11 +135,12 @@ jobs:
 
       - name: Close empty note candidate Issue
         if: always() && steps.note_queue.outputs.count == '0' && (steps.note_queue.outputs.status == 'success' || steps.note_queue.outputs.status == 'partial')
+        working-directory: website
         env:
           GH_TOKEN: ${{ github.token }}
           QUEUE_TITLE: "[auto] note.com Failure candidates"
         run: |
-          issue_number="$(gh api "repos/$GITHUB_REPOSITORY/issues?state=open&per_page=100" --jq '.[] | select(.pull_request == null and .title == env.QUEUE_TITLE) | .number' | head -n 1)"
+          issue_number="$(gh issue list --state open --search "$QUEUE_TITLE in:title" --json number,title --jq ".[] | select(.title == \"$QUEUE_TITLE\") | .number" | head -n 1)"
           if [ -n "$issue_number" ]; then
             gh issue close "$issue_number" --comment "日次探索で未処理候補が0件になったため自動closeします。"
           fi
