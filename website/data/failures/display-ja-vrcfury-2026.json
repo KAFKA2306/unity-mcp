@@ -13,6 +13,13 @@
     "root_cause": "修正diffでは、autorig変換後のblendshape・material slot書き換えで元のMeshRenderer bindingを使い続けず、最終的なSkinnedMeshRenderer bindingを使う必要があることが示されている。",
     "solution": "autorig後のSPS material binding修正を含むVRCFuryを使用する。"
   },
+  "2026-vrcfury-synced-layer-unoverridden-motion-persists": {
+    "title": "synced layerでoverrideされていないmotionが残る場合がある",
+    "symptom": "synced Animator layerで、そのstateにoverride motionがないにもかかわらず以前のmotionが残る場合がある。",
+    "trigger": "override motionがnullのstateを含むsynced Animator layerをVRCFuryで読み込み・書き換える。",
+    "root_cause": "loaderはGetOverrideMotionがnon-nullのときだけwrapped stateのmotionを置き換えていたため、null overrideでは既存motionが残っていた。",
+    "solution": "nullを含むoverride結果を常に読み込み、overrideされていないmotionを除去する修正を含むVRCFuryを使用する。"
+  },
   "2026-vrcfury-animation-path-trailing-slash": {
     "title": "Hierarchy内のobject名がスラッシュで終わるとanimation target lookupが壊れる",
     "symptom": "名前末尾がスラッシュのobjectを含むHierarchyで、VRCFuryのanimation target lookupが壊れる。",
@@ -27,6 +34,13 @@
     "root_cause": "maintainer commitでは、LightMode = NeverのpassをSPS patch対象から除外し、不足していたUnityShaderVariables includeを追加することでlilToon errorを修正している。",
     "solution": "lilToon向けSPS shader patch修正を含むVRCFuryを使用する。"
   },
+  "2026-vrcfury-platform-switch-many-shaders-slow": {
+    "title": "shaderが大量にあるprojectでplatform switchingが極端に遅くなる",
+    "symptom": "shader数の多いUnity projectでbuild platformの切り替えが非常に遅くなる。",
+    "trigger": "VRCFuryのshader property cache invalidationが有効な状態でplatformを切り替え、Unityが多数のshaderを再importする。",
+    "root_cause": "asset postprocessorがimportされたshaderを1件ずつloadしてcache entryを削除しており、全shader再import時に非常に高コストになっていた。",
+    "solution": "import発生時に小さなshader property cacheを一度clearし、必要なshaderだけlazyに再生成する修正を含むVRCFuryを使用する。"
+  },
   "2026-vrcfury-play-audio-clips-lost-on-clone": {
     "title": "Load In Background有効化のためcloneされたVRCAnimatorPlayAudioのAudioClip参照が失われる場合がある",
     "symptom": "VRCFuryがLoad In Backgroundを有効にするためcloneしたVRCAnimatorPlayAudioのAudioClip参照が失われる場合がある。",
@@ -34,11 +48,53 @@
     "root_cause": "save pathがVRCAnimatorPlayAudioから参照されるAudioClip assetをすべて保持していなかった。修正ではsub-controllerを含めてclipを列挙しsave contextへ追加している。",
     "solution": "VRCAnimatorPlayAudioのclip保持修正を含むVRCFuryを使用する。"
   },
+  "2026-vrcfury-generated-generic-avatar-rig-not-saved": {
+    "title": "generic Animatorから参照されるVRCFury生成avatar rigが保存されない場合がある",
+    "symptom": "generic Animatorが使用するVRCFury生成avatar rigがgenerated assetへ保存されない場合がある。",
+    "trigger": "generic Animator componentから参照されるAvatar rig assetをVRCFuryが生成または変更するavatarをbuildする。",
+    "root_cause": "save passはRendererとAudioSourceを走査していたがAnimator componentを走査しておらず、generic Animatorからのみ到達できるgenerated Avatar assetを取りこぼしていた。",
+    "solution": "RendererとAudioSourceに加えてAnimator componentから参照されるunsaved assetも保存する修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-subanimator-play-audio-purged": {
+    "title": "有効なAnimator Play Audioだけを持つsub-animatorがpurgeされる場合がある",
+    "symptom": "有効なAnimator Play Audio actionを持っているにもかかわらずsub-animatorが削除される場合がある。",
+    "trigger": "有効なanimation clip bindingはないが、配下objectをtargetにするVRCAnimatorPlayAudioを持つsub-animatorを使用する。",
+    "root_cause": "empty animator cleanupは有効なclip bindingだけを見ており、Animator Play Audio behaviourを考慮せずcontrollerをemptyと判定していた。",
+    "solution": "sub-animator削除前にAnimator Play Audioのtargetも確認する修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-subanimator-layer-mask-distributed": {
+    "title": "sub-animator controllerにVRChat Base layer向けmask処理が誤適用される場合がある",
+    "symptom": "sub-animator controllerのlayer maskがVRChat Base animator layerとして扱われ、意図しないdistributionを受ける場合がある。",
+    "trigger": "build中にVRCFuryが保存済みsub-animator controllerを再読み込みする。",
+    "root_cause": "sub-animator reload pathがVRCAvatarDescriptor.AnimLayerType.Baseを指定してVFControllerWithVrcType.Loadを使い、generic sub-controllerにVRChat layer typeの処理を適用していた。",
+    "solution": "sub-animator controllerをVRChat Base typeにせずplain VFControllerとして読み込む修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-ma-object-replacement-armature-lookup": {
+    "title": "Modular Avatar Object Replacementでhumanoid boneを置換するとarmature lookupが失敗する場合がある",
+    "symptom": "Modular Avatar Object Replacementがbuild中にbone objectを置換した後、VRCFuryがhumanoid armature boneを解決できない場合がある。",
+    "trigger": "後続のVRCFury featureがarmatureまたはanimation path lookupを行う前にModular Avatar Object Replacementでhumanoid boneを置換する。",
+    "root_cause": "armatureとobject path lookupが以前のsnapshotに依存しており、build-time object replacement後のhierarchyを表せなくなっていた。",
+    "solution": "複数のobject path・armature snapshotを保持し、build-time hierarchy replacement後もそれらを横断して解決する修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-sps-marker-mesh-not-saved": {
+    "title": "SPS markerのMeshFilter meshがgenerated asset保存時に失われる場合がある",
+    "symptom": "generated asset保存後にSPS markerのMeshFilterが参照していたmeshが失われる場合がある。",
+    "trigger": "MeshFilter経由でgenerated meshを参照するSPS markerを含むavatarをbuildする。",
+    "root_cause": "asset-saving traversalはRenderer componentのunsaved assetを保存していたがMeshFilter componentを走査しておらず、MeshFilterからのみ到達できるmarker meshを落としていた。",
+    "solution": "MeshFilter componentから参照されるunsaved component assetも保存する修正を含むVRCFuryを使用する。"
+  },
   "2026-vrcfury-generated-material-only-in-generated-clip-not-saved": {
     "title": "generated animation clip内だけに存在するgenerated material assetが保存されない",
     "symptom": "generated animation clipからのみ参照されるVRCFury生成materialがgenerated assetとして保存されない。",
     "trigger": "generated clipのobject-reference keyframe valueとしてのみ存在するmaterialを生成する。",
     "root_cause": "clipのsave pathがgenerated object-reference keyframe valueをnew assetとして登録していなかった。修正ではobject curveを走査しVRCFuryが生成したkeyframe valueを保存する。",
     "solution": "generated materialのasset保存修正を含むVRCFuryを使用する。"
+  },
+  "2026-vrcfury-gogoloco-cross-statemachine-transitions": {
+    "title": "GoGoLocoのcross-state-machine transitionがcontroller clone/save後に壊れる場合がある",
+    "symptom": "GoGoLocoで使われるstate machine間transitionがVRCFuryによるcontroller cloneまたはserialize後に失われるか誤ったdestinationへ解決される場合がある。",
+    "trigger": "GoGoLocoのようにnested state machine間のtransitionを持つAnimatorControllerをVRCFuryで処理する。",
+    "root_cause": "state machineを再帰的にclone/saveしている途中でtransitionをlinkしており、cross-machine destinationに必要なstate・state-machine mapが完成していなかった。",
+    "solution": "state-machine graph全体を先にclone/saveし、完全なmapを使って別のrecursive transition passを行う修正を含むVRCFuryを使用する。"
   }
 }
