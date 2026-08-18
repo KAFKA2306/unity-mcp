@@ -8,6 +8,7 @@ const dataRoot = path.join(websiteRoot, "data", "failures");
 const staticRoot = path.join(websiteRoot, "static", "data", "failures");
 const scope = JSON.parse(fs.readFileSync(path.join(dataRoot, "scope.json"), "utf8"));
 const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
+const legacyUnityVersions = new Set(scope.legacy_unity_versions ?? []);
 const recordFiles = fs.readdirSync(dataRoot)
   .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
   .sort();
@@ -18,11 +19,10 @@ function known(value) {
 }
 
 function publisher(record) {
-  const values = {
+  return {
     "VRChat SDK releases": "VRChat",
     "Unity Release Notes": "Unity"
-  };
-  return values[record.source_family] ?? record.source_family;
+  }[record.source_family] ?? record.source_family;
 }
 
 function supports(record) {
@@ -64,10 +64,15 @@ function hostOs(platform) {
 }
 
 function environment(record) {
-  const packages = (record.packages ?? []).map((item) => ({
-    name: item.name,
-    ...(known(item.version) ? { version: item.version } : {})
-  }));
+  const result = {
+    packages: (record.packages ?? []).map((item) => ({
+      name: item.name,
+      ...(known(item.version) ? { version: item.version } : {})
+    }))
+  };
+  if (known(record.unity_version)) result.unity_version = record.unity_version;
+  if (known(record.vrcsdk_version)) result.vrchat_sdk_version = record.vrcsdk_version;
+
   const hosts = [];
   const hostKeys = new Set();
   for (const value of record.platforms ?? []) {
@@ -79,19 +84,16 @@ function environment(record) {
     hostKeys.add(key);
     hosts.push(item);
   }
-  return {
-    unity_version: record.unity_version,
-    ...(known(record.vrcsdk_version) ? { vrchat_sdk_version: record.vrcsdk_version } : {}),
-    packages,
-    ...(hosts.length ? { host_os: hosts } : {})
-  };
+  if (hosts.length) result.host_os = hosts;
+  return result;
 }
 
-function classification(record) {
-  const values = classifyFailure(record);
+function classification(record, strict = false) {
   const result = {};
-  for (const [key, value] of Object.entries(values)) if (value !== "unknown") result[key] = value;
-  if (!result.software) throw new Error(`${record.id}: software could not be classified without inventing a value`);
+  for (const [key, value] of Object.entries(classifyFailure(record))) {
+    if (value !== "unknown") result[key] = value;
+  }
+  if (strict && !result.software) throw new Error(`${record.id}: software could not be classified without inventing a value`);
   return result;
 }
 
@@ -102,23 +104,30 @@ function remedies(record) {
   return values;
 }
 
-export function migrateRecord(record) {
-  if (!currentUnityVersions.has(record.unity_version)) return null;
-  const migrated = {
+function commonRecord(record, strictClassification = false) {
+  const item = {
     id: record.id,
     title: record.title,
     date: record.date,
     date_kind: record.date_kind,
     evidence: evidence(record),
     environment: environment(record),
-    classification: classification(record),
-    symptom: record.symptom
+    classification: classification(record, strictClassification)
   };
-  if (known(record.error_signature)) migrated.error_signature = record.error_signature;
-  if (known(record.trigger)) migrated.trigger = record.trigger;
-  if (known(record.root_cause)) migrated.root_cause = record.root_cause;
+  if (known(record.symptom)) item.symptom = record.symptom;
+  if (known(record.error_signature)) item.error_signature = record.error_signature;
+  if (known(record.trigger)) item.trigger = record.trigger;
+  if (known(record.root_cause)) item.root_cause = record.root_cause;
   const migratedRemedies = remedies(record);
-  if (migratedRemedies.length) migrated.remedies = migratedRemedies;
+  if (migratedRemedies.length) item.remedies = migratedRemedies;
+  return item;
+}
+
+export function migrateRecord(record) {
+  if (!currentUnityVersions.has(record.unity_version)) return null;
+  const migrated = commonRecord(record, true);
+  // The strict canonical schema requires the scoped Unity version.
+  migrated.environment.unity_version = record.unity_version;
   return migrated;
 }
 
@@ -134,9 +143,37 @@ export function migrateRecords(records) {
   return migrated.sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
 }
 
+export function browseRecord(record) {
+  const item = commonRecord(record, false);
+  const unityVersion = record.unity_version;
+  item.verification = {
+    current_scope: currentUnityVersions.has(unityVersion),
+    unity_version_status: currentUnityVersions.has(unityVersion)
+      ? "current"
+      : legacyUnityVersions.has(unityVersion)
+        ? "legacy"
+        : known(unityVersion)
+          ? "other"
+          : "unverified"
+  };
+  return item;
+}
+
+export function browseRecords(records) {
+  const ids = new Set();
+  const browsable = records.map((record) => {
+    if (ids.has(record.id)) throw new Error(`duplicate raw record id: ${record.id}`);
+    ids.add(record.id);
+    return browseRecord(record);
+  });
+  return browsable.sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+}
+
 const current = migrateRecords(rawRecords);
+const browsable = browseRecords(rawRecords);
 const summary = {
   raw_records: rawRecords.length,
+  browsable_records: browsable.length,
   current_canonical_records: current.length,
   excluded_records: rawRecords.length - current.length,
   current_unity_versions: [...currentUnityVersions].sort(),
@@ -152,18 +189,25 @@ function assertNoUnknown(value, at = "record") {
 }
 
 for (const record of current) assertNoUnknown(record, record.id);
+for (const record of browsable) assertNoUnknown(record, record.id);
+if (browsable.length !== rawRecords.length) throw new Error(`browse/raw count invariant violated: ${browsable.length} != ${rawRecords.length}`);
 if (rawRecords.length < current.length) throw new Error(`raw/current count invariant violated: ${rawRecords.length} < ${current.length}`);
 if (summary.excluded_records !== rawRecords.length - current.length) throw new Error("excluded record count invariant violated");
 if (!current.length) throw new Error("current canonical corpus must not be empty");
+const browseIds = new Set(browsable.map((record) => record.id));
+for (const record of current) if (!browseIds.has(record.id)) throw new Error(`${record.id}: current record missing from browse corpus`);
 
 if (process.argv.includes("--write")) {
   fs.mkdirSync(staticRoot, { recursive: true });
-  const content = `${JSON.stringify(current, null, 2)}\n`;
+  const currentContent = `${JSON.stringify(current, null, 2)}\n`;
+  const browseContent = `${JSON.stringify(browsable, null, 2)}\n`;
   const summaryContent = `${JSON.stringify(summary, null, 2)}\n`;
-  fs.writeFileSync(path.join(dataRoot, "current-2026.json"), content);
-  fs.writeFileSync(path.join(staticRoot, "current-2026.json"), content);
+  fs.writeFileSync(path.join(dataRoot, "current-2026.json"), currentContent);
+  fs.writeFileSync(path.join(dataRoot, "browse-2026.json"), browseContent);
+  fs.writeFileSync(path.join(staticRoot, "current-2026.json"), currentContent);
+  fs.writeFileSync(path.join(staticRoot, "browse-2026.json"), browseContent);
   fs.writeFileSync(path.join(staticRoot, "migration-summary-2026.json"), summaryContent);
 }
 
-if (process.argv.includes("--json")) process.stdout.write(`${JSON.stringify({ summary, records: current }, null, 2)}\n`);
+if (process.argv.includes("--json")) process.stdout.write(`${JSON.stringify({ summary, records: current, browsable }, null, 2)}\n`);
 else console.log(JSON.stringify(summary, null, 2));
