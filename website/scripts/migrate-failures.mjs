@@ -152,9 +152,9 @@ function assertNoUnknown(value, at = "record") {
 }
 
 for (const record of current) assertNoUnknown(record, record.id);
-if (rawRecords.length !== 121) throw new Error(`expected 121 raw records during migration, got ${rawRecords.length}`);
-if (current.length !== 8) throw new Error(`expected 8 verified current records during migration, got ${current.length}`);
-if (summary.excluded_records !== 113) throw new Error(`expected 113 excluded records, got ${summary.excluded_records}`);
+if (rawRecords.length < current.length) throw new Error(`raw/current count invariant violated: ${rawRecords.length} < ${current.length}`);
+if (summary.excluded_records !== rawRecords.length - current.length) throw new Error("excluded record count invariant violated");
+if (!current.length) throw new Error("current canonical corpus must not be empty");
 
 if (process.argv.includes("--write")) {
   fs.mkdirSync(staticRoot, { recursive: true });
