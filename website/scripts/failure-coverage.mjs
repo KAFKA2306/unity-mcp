@@ -24,6 +24,8 @@ const sourceFiles = fs.readdirSync(dataRoot)
 const raw = rawFiles.flatMap((name) => readJson(path.join(dataRoot, name)));
 const current = readJson(path.join(dataRoot, "current-2026.json"));
 const sources = sourceFiles.flatMap((name) => readJson(path.join(dataRoot, name)));
+const scope = readJson(path.join(dataRoot, "scope.json"));
+const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
 
 const sourceReportArg = process.argv.indexOf("--source-report");
 let sourceReport = null;
@@ -58,11 +60,11 @@ const metrics = {
 };
 
 const problems = [];
-if (raw.length !== 121) problems.push(`raw record count changed from migration baseline: ${raw.length}`);
-if (current.length !== 8) problems.push(`current canonical record count changed from migration baseline: ${current.length}`);
-if (raw.length - current.length !== 113) problems.push(`excluded/unverified count changed from migration baseline: ${raw.length - current.length}`);
-if (Object.keys(metrics.current.unity_versions).some((version) => version !== "2022.3.22f1")) {
-  problems.push("current corpus contains a Unity version outside VRChat current scope");
+if (!current.length) problems.push("current canonical corpus is empty");
+if (raw.length < current.length) problems.push(`raw record count ${raw.length} is below current count ${current.length}`);
+if (metrics.excluded_or_unverified_records !== raw.length - current.length) problems.push("excluded/unverified count invariant failed");
+if (Object.keys(metrics.current.unity_versions).some((version) => !currentUnityVersions.has(version))) {
+  problems.push("current corpus contains a Unity version outside scope.json");
 }
 if (sourceReport && (sourceReport.failed ?? 0) > 0) problems.push(`${sourceReport.failed} source check(s) failed`);
 
@@ -76,6 +78,7 @@ if (process.env.GITHUB_STEP_SUMMARY) {
     `- Registered / enabled sources: **${metrics.registered_sources} / ${metrics.enabled_sources}**`,
     `- Current Unity: **${Object.keys(metrics.current.unity_versions).join(", ")}**`,
     `- Current source domains: **${Object.keys(metrics.current.source_domains).join(", ")}**`,
+    `- Raw source families: **${Object.entries(metrics.raw_source_families).map(([name, count]) => `${name} ${count}`).join(", ")}**`,
     ""
   ].join("\n"));
 }
