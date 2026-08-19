@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dataRoot = path.join(root, "data", "failures");
+const excludedNonVrchatFamilies = new Set(["MCP for Unity", "Unity Release Notes"]);
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, "utf8"));
@@ -66,6 +67,10 @@ if (metrics.excluded_or_unverified_records !== raw.length - current.length) prob
 if (Object.keys(metrics.current.unity_versions).some((version) => !currentUnityVersions.has(version))) {
   problems.push("current corpus contains a Unity version outside scope.json");
 }
+const excludedRawFamilies = [...excludedNonVrchatFamilies].filter((family) => metrics.raw_source_families[family]);
+if (excludedRawFamilies.length) problems.push(`non-VRChat source families returned to raw corpus: ${excludedRawFamilies.join(", ")}`);
+const excludedRegisteredFamilies = [...excludedNonVrchatFamilies].filter((family) => sources.some((source) => source.source_family === family));
+if (excludedRegisteredFamilies.length) problems.push(`non-VRChat source families returned to source registry: ${excludedRegisteredFamilies.join(", ")}`);
 if (sourceReport && (sourceReport.failed ?? 0) > 0) problems.push(`${sourceReport.failed} source check(s) failed`);
 
 if (process.env.GITHUB_STEP_SUMMARY) {
