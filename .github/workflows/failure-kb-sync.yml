@@ -151,12 +151,6 @@ jobs:
         working-directory: website
         run: node scripts/collect-web-failures.mjs --live > web-failure-source-report.json
 
-      - name: Audit Unity official raw corpus
-        id: unity
-        continue-on-error: true
-        working-directory: website
-        run: node scripts/collect-unity-official-failures.mjs --live > unity-failure-source-report.json
-
       - name: Generate coverage report
         if: always()
         working-directory: website
@@ -180,7 +174,6 @@ jobs:
             website/note-failure-candidates.md
             website/note-discovery.log
             website/web-failure-source-report.json
-            website/unity-failure-source-report.json
             website/failure-coverage.json
 
       - name: Commit official source updates

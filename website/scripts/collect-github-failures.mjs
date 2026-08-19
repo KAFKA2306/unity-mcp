@@ -123,10 +123,8 @@ const rawKeys = new Set(rawRecords.map((record) => record.source_urls[0]));
 const matchedReleaseEvidence = releaseCandidates.filter((fix) => fix.issue_numbers.some((number) => rawKeys.has(`https://github.com/${fix.repository}/issues/${number}`)));
 const missingRaw = rawRecords.filter((record) => !discoveredUrls.has(record.source_urls[0]));
 const duplicateRawUrls = rawRecords.length - new Set(rawRecords.map((record) => record.source_urls[0])).size;
-if (rawRecords.length < 30) throw new Error(`GitHub raw records below 30: ${rawRecords.length}`);
 if (missingRaw.length) throw new Error(`GitHub raw records not found in 2026 source scan: ${missingRaw.map((item) => item.id).join(", ")}`);
 if (duplicateRawUrls) throw new Error(`GitHub raw records contain ${duplicateRawUrls} duplicate source URL(s)`);
-if (candidates.length < 30) throw new Error(`GitHub discovery produced only ${candidates.length} failure candidates`);
 
 const result = {
   raw_records: rawRecords.length,

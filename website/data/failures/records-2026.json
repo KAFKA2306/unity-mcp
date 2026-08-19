@@ -162,44 +162,6 @@
     ]
   },
   {
-    "id": "2026-unity-mcp-1186-bom-execute-code",
-    "title": "MCP for Unity execute_code fails when code begins with UTF-8 BOM",
-    "date": "2026-05-31",
-    "date_kind": "published",
-    "source_urls": [
-      "https://github.com/CoplayDev/unity-mcp/issues/1186"
-    ],
-    "source_type": "github_issue",
-    "source_family": "MCP for Unity",
-    "component": "execute_code",
-    "unity_version": "2022.3.8f1",
-    "vrcsdk_version": "unknown",
-    "packages": [
-      {
-        "name": "MCP for Unity",
-        "version": "9.7.1"
-      }
-    ],
-    "platforms": [
-      "Windows 10"
-    ],
-    "stage": "code execution",
-    "error_signature": "Compilation failed: Line 1 contains U+FEFF",
-    "symptom": "Valid C# sent through execute_code fails CodeDom compilation when the code parameter begins with a UTF-8 BOM character.",
-    "trigger": "Call execute_code with otherwise valid C# whose first character is U+FEFF.",
-    "root_cause": "unknown",
-    "solution": "unknown",
-    "workaround": "Strip a leading U+FEFF character from the code input before compilation.",
-    "status": "workaround",
-    "tags": [
-      "unity",
-      "mcp",
-      "codedom",
-      "bom",
-      "compile"
-    ]
-  },
-  {
     "id": "2026-alcom-3061-redirectionguard-junction",
     "title": "ALCOM update restart can make Unity and child tools unable to traverse junctions",
     "date": "2026-07-14",
