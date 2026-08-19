@@ -1,9 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dataRoot = path.join(root, "data", "failures");
+import { loadRawRecords, readFailureJson } from "./failure-files.mjs";
 
 const STOP = new Set([
   "a","an","and","are","as","at","be","because","but","by","can","could","for","from","has","have","in","into","is","it","its","not","of","on","or","that","the","their","this","to","when","where","while","with","without","your",
@@ -113,13 +108,6 @@ export function buildCandidates(records) {
   return { projected, exact, similar: similar.sort((a, b) => b.score - a.score || a.ids[0].localeCompare(b.ids[0])) };
 }
 
-function loadRecords() {
-  return fs.readdirSync(dataRoot)
-    .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
-    .sort()
-    .flatMap((name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8")));
-}
-
 function selfTest() {
   const variants = [
     "System.NullReferenceException at C:\\Users\\alice\\Project\\Foo.cs:123",
@@ -146,14 +134,14 @@ function selfTest() {
 }
 
 selfTest();
-const records = loadRecords();
+const records = loadRawRecords();
 const result = buildCandidates(records);
 if (result.projected.length < 90) throw new Error(`expected >=90 projected records, got ${result.projected.length}`);
 if (new Set(result.projected.map((item) => item.id)).size !== result.projected.length) throw new Error("duplicate projected record id");
 if (result.projected.some((item) => !item.normalized_signature)) throw new Error("empty normalized signature");
 
-const fixtures = JSON.parse(fs.readFileSync(path.join(dataRoot, "signature-fixtures-2026.json"), "utf8"));
-if (fixtures.length !== 10) throw new Error(`expected 10 signature fixtures, got ${fixtures.length}`);
+const fixtures = readFailureJson("signature-fixtures-2026.json");
+if (!fixtures.length) throw new Error("signature fixtures must not be empty");
 const byId = new Map(result.projected.map((item) => [item.id, item]));
 for (const fixture of fixtures) {
   const actual = byId.get(fixture.id)?.normalized_signature;

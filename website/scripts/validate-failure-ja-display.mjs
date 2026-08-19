@@ -1,26 +1,9 @@
 import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { dataRoot, rawRecordFiles, readFailureJson } from "./failure-files.mjs";
 
-const here = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = path.resolve(here, "../data/failures");
 const fields = ["title", "symptom", "trigger", "root_cause", "solution", "workaround"];
 const japanese = /[\u3040-\u30ff\u3400-\u9fff]/u;
-
-const translated = [
-  ["records-2026.json", "display-ja-seed-2026.json"],
-  ["records-feedback-2026.json", "display-ja-feedback-2026.json"],
-  ["records-github-2026.json", "display-ja-github-2026.json"],
-  ["records-modular-avatar-2026.json", "display-ja-modular-avatar-2026.json"],
-  ["records-vrcfury-2026.json", "display-ja-vrcfury-2026.json"],
-  ["records-vrchat-official-2026.json", "display-ja-vrchat-official-2026.json"],
-  ["records-web-2026.json", "display-ja-web-2026.json"],
-];
-const translatedFiles = new Set(translated.map(([recordsFile]) => recordsFile));
-
-function readJson(name) {
-  return JSON.parse(fs.readFileSync(path.join(dataDir, name), "utf8"));
-}
+const displayPattern = /^display-ja-([a-z0-9-]+)-2026\.json$/;
 
 function needsTranslation(value) {
   return typeof value === "string" && value.length > 0 && value !== "unknown" && !japanese.test(value);
@@ -35,9 +18,27 @@ const failures = [];
 let checkedRecords = 0;
 let checkedFields = 0;
 
+const recordFiles = rawRecordFiles();
+const recordSet = new Set(recordFiles);
+const displayFiles = fs.readdirSync(dataRoot)
+  .filter((name) => displayPattern.test(name))
+  .sort();
+
+const translated = [];
+for (const displayFile of displayFiles) {
+  const family = displayFile.match(displayPattern)[1];
+  const recordsFile = `records-${family}-2026.json`;
+  if (!recordSet.has(recordsFile)) {
+    failures.push(`${displayFile}: matching source file not found: ${recordsFile}`);
+    continue;
+  }
+  translated.push([recordsFile, displayFile]);
+}
+const translatedFiles = new Set(translated.map(([recordsFile]) => recordsFile));
+
 for (const [recordsFile, displayFile] of translated) {
-  const records = readJson(recordsFile);
-  const display = readJson(displayFile);
+  const records = readFailureJson(recordsFile);
+  const display = readFailureJson(displayFile);
   const ids = new Set(records.map((record) => record.id));
 
   for (const id of Object.keys(display)) {
@@ -59,13 +60,8 @@ for (const [recordsFile, displayFile] of translated) {
   }
 }
 
-const nativeJapaneseFiles = fs.readdirSync(dataDir)
-  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
-  .filter((name) => !translatedFiles.has(name))
-  .sort();
-
-for (const recordsFile of nativeJapaneseFiles) {
-  for (const record of readJson(recordsFile)) {
+for (const recordsFile of recordFiles.filter((name) => !translatedFiles.has(name))) {
+  for (const record of readFailureJson(recordsFile)) {
     if (!isJapaneseRecord(record)) continue;
     checkedRecords += 1;
     for (const field of fields) {

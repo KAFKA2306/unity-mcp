@@ -1,14 +1,7 @@
 import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { loadRawRecords, loadSources, rawRecordFiles, readFailureJson, sourceRegistryFiles } from "./failure-files.mjs";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dataRoot = path.join(root, "data", "failures");
 const excludedNonVrchatFamilies = new Set(["MCP for Unity", "Unity Release Notes"]);
-
-function readJson(file) {
-  return JSON.parse(fs.readFileSync(file, "utf8"));
-}
 
 function countBy(values) {
   const counts = {};
@@ -16,22 +9,18 @@ function countBy(values) {
   return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
 }
 
-const rawFiles = fs.readdirSync(dataRoot)
-  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
-  .sort();
-const sourceFiles = fs.readdirSync(dataRoot)
-  .filter((name) => /^sources(?:-[a-z0-9-]+)?\.json$/.test(name))
-  .sort();
-const raw = rawFiles.flatMap((name) => readJson(path.join(dataRoot, name)));
-const current = readJson(path.join(dataRoot, "current-2026.json"));
-const sources = sourceFiles.flatMap((name) => readJson(path.join(dataRoot, name)));
-const scope = readJson(path.join(dataRoot, "scope.json"));
+const rawFiles = rawRecordFiles();
+const sourceFiles = sourceRegistryFiles();
+const raw = loadRawRecords(rawFiles);
+const current = readFailureJson("current-2026.json");
+const sources = loadSources(sourceFiles);
+const scope = readFailureJson("scope.json");
 const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
 
 const sourceReportArg = process.argv.indexOf("--source-report");
 let sourceReport = null;
 if (sourceReportArg >= 0 && process.argv[sourceReportArg + 1] && fs.existsSync(process.argv[sourceReportArg + 1])) {
-  sourceReport = readJson(process.argv[sourceReportArg + 1]);
+  sourceReport = JSON.parse(fs.readFileSync(process.argv[sourceReportArg + 1], "utf8"));
 }
 
 const metrics = {
