@@ -3,7 +3,6 @@ import { dataRoot, rawRecordFiles, readFailureJson } from "./failure-files.mjs";
 
 const fields = ["title", "symptom", "trigger", "root_cause", "solution", "workaround"];
 const japanese = /[\u3040-\u30ff\u3400-\u9fff]/u;
-const recordPattern = /^records-([a-z0-9-]+)-2026\.json$/;
 const displayPattern = /^display-ja-([a-z0-9-]+)-2026\.json$/;
 
 function needsTranslation(value) {
