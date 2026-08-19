@@ -1,27 +1,13 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { loadRawRecords, loadSources, rawRecordFiles, readFailureJson, sourceRegistryFiles } from "./failure-files.mjs";
 
-const websiteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dataRoot = path.join(websiteRoot, "data", "failures");
 const errors = [];
-
-function readJson(name) {
-  return JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8"));
-}
-
-const recordSchema = readJson("schema.json");
-const scope = readJson("scope.json");
-const recordFiles = fs.readdirSync(dataRoot)
-  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
-  .sort();
-const records = recordFiles.flatMap((name) => readJson(name));
-const sourceSchema = readJson("source-schema.json");
-const sourceFiles = fs.readdirSync(dataRoot)
-  .filter((name) => /^sources(?:-[a-z0-9-]+)?\.json$/.test(name))
-  .sort();
-const sources = sourceFiles.flatMap((name) => readJson(name));
-
+const recordSchema = readFailureJson("schema.json");
+const scope = readFailureJson("scope.json");
+const recordFiles = rawRecordFiles();
+const records = loadRawRecords(recordFiles);
+const sourceSchema = readFailureJson("source-schema.json");
+const sourceFiles = sourceRegistryFiles();
+const sources = loadSources(sourceFiles);
 const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
 
 function isCurrentRecord(record) {
@@ -112,14 +98,12 @@ const currentRecords = records.filter(isCurrentRecord);
 const excludedRecords = records.filter((record) => !isCurrentRecord(record));
 if (currentRecords.length < 1) errors.push("current records: no record explicitly targets the supported Unity version");
 
-if (Array.isArray(sources)) {
-  const families = new Set(sources.map((source) => source.source_family));
-  if (families.size < 6) errors.push(`sources: expected at least 6 source families, got ${families.size}`);
-  const canonicalUrls = new Set();
-  for (const source of sources) {
-    if (canonicalUrls.has(source.canonical_url)) errors.push(`sources: duplicate canonical URL ${source.canonical_url}`);
-    canonicalUrls.add(source.canonical_url);
-  }
+const families = new Set(sources.map((source) => source.source_family));
+if (families.size < 6) errors.push(`sources: expected at least 6 source families, got ${families.size}`);
+const canonicalUrls = new Set();
+for (const source of sources) {
+  if (canonicalUrls.has(source.canonical_url)) errors.push(`sources: duplicate canonical URL ${source.canonical_url}`);
+  canonicalUrls.add(source.canonical_url);
 }
 
 if (errors.length) {
@@ -132,7 +116,7 @@ console.log(
   `Failure KB validation passed: ${currentRecords.length} current record(s), ${excludedRecords.length} excluded by Unity scope, ` +
   `${records.length} raw record(s) in ${recordFiles.length} file(s), ` +
   `${sources.length} source endpoint(s) in ${sourceFiles.length} file(s), ` +
-  `${new Set(sources.map((source) => source.source_family)).size} source families.`
+  `${families.size} source families.`
 );
 
 async function checkUrl(source) {
