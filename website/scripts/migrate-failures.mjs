@@ -1,18 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { classifyFailure } from "./failure-classification.mjs";
+import { dataRoot, loadRawRecords, rawRecordFiles, readFailureJson, staticFailureRoot as staticRoot } from "./failure-files.mjs";
 
-const websiteRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dataRoot = path.join(websiteRoot, "data", "failures");
-const staticRoot = path.join(websiteRoot, "static", "data", "failures");
-const scope = JSON.parse(fs.readFileSync(path.join(dataRoot, "scope.json"), "utf8"));
+const scope = readFailureJson("scope.json");
 const currentUnityVersions = new Set(scope.current_unity_versions ?? []);
 const legacyUnityVersions = new Set(scope.legacy_unity_versions ?? []);
-const recordFiles = fs.readdirSync(dataRoot)
-  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
-  .sort();
-const rawRecords = recordFiles.flatMap((name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8")));
+const recordFiles = rawRecordFiles();
+const rawRecords = loadRawRecords(recordFiles);
 
 function known(value) {
   return typeof value === "string" && value.trim() !== "" && value !== "unknown";
@@ -126,7 +121,6 @@ function commonRecord(record, strictClassification = false) {
 export function migrateRecord(record) {
   if (!currentUnityVersions.has(record.unity_version)) return null;
   const migrated = commonRecord(record, true);
-  // The strict canonical schema requires the scoped Unity version.
   migrated.environment.unity_version = record.unity_version;
   return migrated;
 }
