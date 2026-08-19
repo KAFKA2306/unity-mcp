@@ -1,17 +1,10 @@
 import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { dataRoot, rawRecordFiles, readFailureJson } from "./failure-files.mjs";
 
-const here = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = path.resolve(here, "../data/failures");
 const fields = ["title", "symptom", "trigger", "root_cause", "solution", "workaround"];
 const japanese = /[\u3040-\u30ff\u3400-\u9fff]/u;
 const recordPattern = /^records-([a-z0-9-]+)-2026\.json$/;
 const displayPattern = /^display-ja-([a-z0-9-]+)-2026\.json$/;
-
-function readJson(name) {
-  return JSON.parse(fs.readFileSync(path.join(dataDir, name), "utf8"));
-}
 
 function needsTranslation(value) {
   return typeof value === "string" && value.length > 0 && value !== "unknown" && !japanese.test(value);
@@ -26,11 +19,9 @@ const failures = [];
 let checkedRecords = 0;
 let checkedFields = 0;
 
-const recordFiles = fs.readdirSync(dataDir)
-  .filter((name) => recordPattern.test(name))
-  .sort();
+const recordFiles = rawRecordFiles();
 const recordSet = new Set(recordFiles);
-const displayFiles = fs.readdirSync(dataDir)
+const displayFiles = fs.readdirSync(dataRoot)
   .filter((name) => displayPattern.test(name))
   .sort();
 
@@ -47,8 +38,8 @@ for (const displayFile of displayFiles) {
 const translatedFiles = new Set(translated.map(([recordsFile]) => recordsFile));
 
 for (const [recordsFile, displayFile] of translated) {
-  const records = readJson(recordsFile);
-  const display = readJson(displayFile);
+  const records = readFailureJson(recordsFile);
+  const display = readFailureJson(displayFile);
   const ids = new Set(records.map((record) => record.id));
 
   for (const id of Object.keys(display)) {
@@ -71,7 +62,7 @@ for (const [recordsFile, displayFile] of translated) {
 }
 
 for (const recordsFile of recordFiles.filter((name) => !translatedFiles.has(name))) {
-  for (const record of readJson(recordsFile)) {
+  for (const record of readFailureJson(recordsFile)) {
     if (!isJapaneseRecord(record)) continue;
     checkedRecords += 1;
     for (const field of fields) {
