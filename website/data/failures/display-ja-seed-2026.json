@@ -21,12 +21,6 @@
     "symptom": "Manual Bake中にCopyAssetはtrueを返すが、直後のLoadAssetAtPathではコピー先がnullになる。同じプラグイン処理はPlay Modeの自動ビルドでは成功する。",
     "trigger": "Manual Bake中に出力フォルダを作成し、新規アセットをCopyAssetで複製して直後に読み込むNDMF生成パスを実行する。"
   },
-  "2026-unity-mcp-1186-bom-execute-code": {
-    "title": "MCP for Unityのexecute_codeはUTF-8 BOMで始まるコードをコンパイルできない",
-    "symptom": "execute_codeへ渡した正しいC#でも、先頭にUTF-8 BOM文字があるとCodeDomコンパイルに失敗する。",
-    "trigger": "先頭文字がU+FEFFのC#をexecute_codeへ渡す。",
-    "workaround": "コンパイル前に入力コード先頭のU+FEFFを除去する。"
-  },
   "2026-alcom-3061-redirectionguard-junction": {
     "title": "ALCOMの更新後再起動でUnityや子プロセスがNTFSジャンクションをたどれなくなる",
     "symptom": "アプリ内更新からの再起動後、Unity Package Managerや子のuvプロセスがユーザー作成のNTFSジャンクションをたどれなくなる。",
