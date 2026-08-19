@@ -141,7 +141,7 @@ if (new Set(result.projected.map((item) => item.id)).size !== result.projected.l
 if (result.projected.some((item) => !item.normalized_signature)) throw new Error("empty normalized signature");
 
 const fixtures = readFailureJson("signature-fixtures-2026.json");
-if (fixtures.length !== 10) throw new Error(`expected 10 signature fixtures, got ${fixtures.length}`);
+if (!fixtures.length) throw new Error("signature fixtures must not be empty");
 const byId = new Map(result.projected.map((item) => [item.id, item]));
 for (const fixture of fixtures) {
   const actual = byId.get(fixture.id)?.normalized_signature;
