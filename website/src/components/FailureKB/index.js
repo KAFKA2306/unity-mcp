@@ -10,7 +10,6 @@ import jaModularAvatar from "@site/data/failures/display-ja-modular-avatar-2026.
 import jaVrcfury from "@site/data/failures/display-ja-vrcfury-2026.json";
 import jaVrchat from "@site/data/failures/display-ja-vrchat-official-2026.json";
 import jaWeb from "@site/data/failures/display-ja-web-2026.json";
-import jaUnity from "@site/data/failures/display-ja-unity-official-2026.json";
 import {
   evidenceViews,
   filterKeys,
@@ -31,7 +30,6 @@ const japaneseDisplay = {
   ...jaVrcfury,
   ...jaVrchat,
   ...jaWeb,
-  ...jaUnity,
 };
 
 const emptyFilters = Object.fromEntries(filterKeys.map((key) => [key, ""]));
