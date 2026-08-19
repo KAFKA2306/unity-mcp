@@ -1,0 +1,58 @@
+{
+  "2026-modular-avatar-reaction-debugger-open-nre": {
+    "title": "Reaction Debuggerを初期化前に開くとNullReferenceExceptionが発生する場合がある",
+    "symptom": "Reaction Debuggerを開いた際、refresh処理でNullReferenceExceptionが発生する場合がある。",
+    "trigger": "遅延されたOnEnable初期化がproperty/menu override状態を設定する前にReaction Debuggerを開く。",
+    "root_cause": "OpenDebuggerが遅延初期化より先にUIをrefreshし、ResolveToggleInitialStates実行時にForcePropertyOverridesまたはoverride dictionaryがnullのままになる。",
+    "solution": "RefreshUIで空のoverride dictionaryを初期化し、nullのForcePropertyOverridesも許容する修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-blendshape-migration-curve-corruption": {
+    "title": "旧Modular Avatarから移行するとBlendshape Syncのcurve設定が不正になる場合がある",
+    "symptom": "古いModular Avatarで作成したBlendshape Syncを移行すると、remap curveが不正になる場合がある。",
+    "trigger": "RemapCurveの有効フラグ導入前に作成されたBlendshape Syncデータを開く、または移行する。",
+    "root_cause": "旧bindingにはcurveの有効性を示す明示的な状態がなく、未初期化のserialized curveを有効なremap curveとして扱う場合があった。",
+    "solution": "旧bindingを0→100のlinear identity curveとして初期化するRemapCurveIsValid migration修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-blendshape-preview-missing-target-stops-loop": {
+    "title": "Blendshape Syncで1つのtarget meshが欠落すると後続bindingのpreviewまで止まる",
+    "symptom": "1つのBlendshape Sync bindingのtarget meshが欠落していると、それより後ろの正常なbindingもeditor previewで更新されなくなる。",
+    "trigger": "nullまたはdestroy済みTargetMeshを、後続の正常bindingより前に含むBlendshape Syncをpreviewする。",
+    "root_cause": "EditorUpdateがTargetMesh == nullのとき、そのbindingだけをskipせずbinding loop全体からreturnしていた。",
+    "solution": "null TargetMeshをcontinueでskipするpreview修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-inverted-constant-reaction-analysis": {
+    "title": "反転されたconstant conditionでReactiveのIsConstantActive判定が逆になる",
+    "symptom": "反転されたconstant conditionを持つReactive ruleが、本来inactiveなのにactiveと判定される場合がある。",
+    "trigger": "conditionがinvertedされたconstant reaction ruleを解析する。",
+    "root_cause": "InitiallyActive側ですでにinversionを反映しているのに、旧IsConstantActive式がInvertedを再度XORして結果をもう一度反転していた。",
+    "solution": "inversion済みのInitiallyActive値をそのまま使うIsConstantActive修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-merge-armature-mapbone-missing-target-nre": {
+    "title": "Merge Armatureのmerge targetや途中のboneが欠落するとMapBoneでNullReferenceExceptionが起きる場合がある",
+    "symptom": "merge target未設定またはtarget hierarchyの途中bone欠落時、unmappableとして扱われずMapBoneがNullReferenceExceptionを投げる場合がある。",
+    "trigger": "mergeTarget未設定のMerge Armature、または対応するtarget hierarchyに中間boneがない状態でchild boneをmapする。",
+    "root_cause": "MapBoneがmergeTarget.Get(this)をnull checkせずdereferenceし、さらにTransform.Findがnullを返した後も次のFindを呼び続けていた。",
+    "solution": "merge targetまたは中間transformが見つからない場合にnullを返すMapBone修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-visible-head-accessory-bindpose": {
+    "title": "Visible Head Accessoryのmesh retargetでbindpose計算が不正になる場合がある",
+    "symptom": "visible boneとnon-visible boneのweightが混在するmeshをretargetすると、Visible Head Accessoryのskinned mesh処理結果が不正になる場合がある。",
+    "trigger": "visible/non-visible boneにweightされたvertexが同一primitive内にあり、proxy boneへのretargetが必要なVisible Head Accessory meshをbuildする。",
+    "root_cause": "従来のmesh retarget pathでは影響boneのremap時にbindpose処理が正しくなく、maintainer修正ではvertex clone、bone remap、bindpose生成を明示的に組み直している。",
+    "solution": "Visible Head Accessoryのmesh/bindpose処理修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-mmd-original-first-fx-layer-disabled": {
+    "title": "MAがlayerを前方挿入するとMMD worldで元の先頭FX layerが無効化される場合がある",
+    "symptom": "Reactive Componentやmerged layerによって元の先頭FX layerがindex 0からずれると、MMD world内でそのlayerが無効化される場合がある。",
+    "trigger": "avatar本来の先頭FX layerより前にModular Avatarのlayerを挿入し、そのavatarをMMD worldで使用する。",
+    "root_cause": "MMD relayが移動後の元先頭layerをMMD modeで無効化可能なlayerとして扱っていたが、未加工avatarの先頭FX layerは実質weight 1固定でMMD world側から無効化できず、元挙動と乖離していた。",
+    "solution": "元の先頭FX layerを追跡し、明示opt-inがない限り暗黙のMMD無効化対象から外す修正を含むModular Avatarを使用する。"
+  },
+  "2026-modular-avatar-world-project-harmony-compile-error": {
+    "title": "VRChat World projectへModular Avatarをimportするとcompile errorになる場合がある",
+    "symptom": "VRChat World projectへModular Avatarをimportした後、projectがcompileできなくなる場合がある。",
+    "trigger": "VRChat base/world packageはあるがavatars packageはないWorld projectへModular Avatarをimportする。",
+    "root_cause": "harmony-patches assemblyのMA_VRCSDK3_AVATARS version defineがcom.vrchat.baseを条件にしており、World projectでもavatar用symbolが有効化されていた。修正ではcom.vrchat.avatarsを条件に変更している。",
+    "solution": "harmony-patches asmdefのversionDefinesをcom.vrchat.avatars基準に直したModular Avatarを使用する。"
+  }
+}

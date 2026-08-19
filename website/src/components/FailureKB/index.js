@@ -6,6 +6,7 @@ import taxonomy from "@site/data/failures/taxonomy.json";
 import jaSeed from "@site/data/failures/display-ja-seed-2026.json";
 import jaFeedback from "@site/data/failures/display-ja-feedback-2026.json";
 import jaGithub from "@site/data/failures/display-ja-github-2026.json";
+import jaModularAvatar from "@site/data/failures/display-ja-modular-avatar-2026.json";
 import jaVrcfury from "@site/data/failures/display-ja-vrcfury-2026.json";
 import jaVrchat from "@site/data/failures/display-ja-vrchat-official-2026.json";
 import jaWeb from "@site/data/failures/display-ja-web-2026.json";
@@ -26,6 +27,7 @@ const japaneseDisplay = {
   ...jaSeed,
   ...jaFeedback,
   ...jaGithub,
+  ...jaModularAvatar,
   ...jaVrcfury,
   ...jaVrchat,
   ...jaWeb,
