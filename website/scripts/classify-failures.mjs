@@ -1,15 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { classifyFailure, classifyPhase, classifySoftware } from "./failure-classification.mjs";
+import { loadRawRecords, readFailureJson } from "./failure-files.mjs";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dataRoot = path.join(root, "data", "failures");
-const taxonomy = JSON.parse(fs.readFileSync(path.join(dataRoot, "taxonomy.json"), "utf8"));
-const records = fs.readdirSync(dataRoot)
-  .filter((name) => /^records(?:-[a-z0-9-]+)?-2026\.json$/.test(name))
-  .sort()
-  .flatMap((name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8")));
+const taxonomy = readFailureJson("taxonomy.json");
+const records = loadRawRecords();
 
 function assertVocabulary(axis, value, id) {
   if (!taxonomy.axes[axis].includes(value)) throw new Error(`${id}: invalid ${axis} ${value}`);
