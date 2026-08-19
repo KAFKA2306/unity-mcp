@@ -1,14 +1,7 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { loadSources, sourceRegistryFiles } from "./failure-files.mjs";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dataRoot = path.join(root, "data", "failures");
-const sourceFiles = fs.readdirSync(dataRoot)
-  .filter((name) => /^sources(?:-[a-z0-9-]+)?\.json$/.test(name))
-  .sort();
-const sources = sourceFiles.flatMap((name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8")))
-  .filter((source) => source.enabled);
+const sourceFiles = sourceRegistryFiles();
+const sources = loadSources(sourceFiles).filter((source) => source.enabled);
 
 function requestHeaders(url) {
   const headers = { "user-agent": "unity-mcp-failure-kb-source-check/1.0" };
