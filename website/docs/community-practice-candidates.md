@@ -1,13 +1,13 @@
 ---
 id: community-practice-candidates
 title: VRChat / Unity 実践記事 — 自動収集候補
-description: GitHub Actions が定期探索し、技術実践性スコアとタイトルpolicyを通過したVRChat、Unity、Blender記事候補。
+description: GitHub Actions が定期探索し、技術実践性スコアを通過したVRChat、Unity、Blender記事候補。
 slug: /community-practice/candidates
 ---
 
 # VRChat / Unity 実践記事 — 自動収集候補
 
-このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierとタイトルpolicyでイベント・日記・商品レビュー・販売告知などを除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
+このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
 現在の候補: **55件**
 
