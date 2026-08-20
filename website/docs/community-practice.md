@@ -11,7 +11,7 @@ slug: /community-practice
 
 このページの情報は **community-authored practical evidence** です。VRChat、Unity、Blender、Modular Avatar などの正式仕様そのものではありません。仕様判断が必要な場合は各プロジェクトの公式ドキュメントを優先してください。
 
-機械可読データは [`/data/community-practice.json`](../data/community-practice.json) で公開します。
+機械可読データは [community-practice.json](https://kafka2306.github.io/unity-mcp/data/community-practice.json) で公開します。
 
 ## 収録方針
 
