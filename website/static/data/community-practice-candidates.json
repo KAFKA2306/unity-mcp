@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-20T10:23:32.715Z",
+  "generated_at": "2026-08-20T11:11:23.636Z",
   "review_policy": "Automated discovery only. Promote to community-practice.json only after source metadata and practical content are verified.",
   "items": [
     {
@@ -226,6 +226,26 @@
       "evidence_type": "community-practice-candidate"
     },
     {
+      "title": "【Unity / VRChat】UnityでModular Avatarの設定項目が表示されなくなった時の対処方法備忘録",
+      "url": "https://blog.yu-suz.com/archives/8258",
+      "author": "ゆうすず",
+      "source": "ゆうすずみっ！",
+      "source_id": "yu-suz-vrchat-index",
+      "published_at": "2026-07-22",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar"
+      ],
+      "tools": [
+        "Modular Avatar",
+        "NDMF"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
       "title": "【VRChat】アバターもワールドも改変せず、OSCで腕振り移動を自作してVR酔い対策",
       "url": "https://zenn.dev/augma/articles/9012eed92a0956",
       "author": "augma",
@@ -240,6 +260,44 @@
       ],
       "tools": [],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【2026年】Amazonプライムデーで買うべきVRChat関連おすすめ商品まとめ | こはろぐ",
+      "url": "https://kohavrog.com/prime_day_sale_2026",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2026-07-07",
+      "topics": [
+        "VRChat",
+        "lighting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】目元の印象アップ！前髪を自然に透かしてFakeShadowも導入できる「See Through Hair」 | こはろぐ",
+      "url": "https://kohavrog.com/see-through-hair",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2026-07-06",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "shader"
+      ],
+      "tools": [
+        "lilToon"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     },
@@ -385,6 +443,24 @@
       "evidence_type": "community-practice-candidate"
     },
     {
+      "title": "【VRChat】ミュート状態でも口パクできる「MuteLip」をライブイベントで使ってみた！ | こはろぐ",
+      "url": "https://kohavrog.com/mutelip",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2026-05-26",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
       "title": "音声認識OSS「Parapper」を使ってVRChatにAI同時通訳をつけよう！",
       "url": "https://zenn.dev/parakeet_tech/articles/df97ddebc7b01e",
       "author": "nadare",
@@ -397,6 +473,61 @@
       ],
       "tools": [],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】落下したプレイヤーをリスポーンさせる：範囲外トリガーで安全地点へ戻す | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-fall-respawn",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-05-22",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "えっ、朝まで使えるの！？ 自分の声がこもらないVRChat向けイヤホン「EarFun Clip 2」をレビュー！ | こはろぐ",
+      "url": "https://kohavrog.com/earfun-clip2",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2026-05-21",
+      "topics": [
+        "VRChat"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "ワンクリックで「マイアバター」の新着衣装をチェック！BOOTH検索用Chrome拡張を作ってみた | こはろぐ",
+      "url": "https://kohavrog.com/booth-avatar-tracker",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2026-04-29",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     },
@@ -481,6 +612,26 @@
       "evidence_type": "community-practice-candidate"
     },
     {
+      "title": "【謹賀新年】2026！ハッピーサンライズ！",
+      "url": "https://blog.yu-suz.com/archives/8227",
+      "author": "ゆうすず",
+      "source": "ゆうすずみっ！",
+      "source_id": "yu-suz-vrchat-index",
+      "published_at": "2026-01-06",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "outfit fitting"
+      ],
+      "tools": [
+        "Modular Avatar"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
       "title": "2025年を振り返って - 一年中こたつ出てる",
       "url": "https://kxn4t.hatenablog.com/entry/2025/12/31/002721",
       "author": null,
@@ -506,6 +657,483 @@
         "Continuous Avatar Uploader"
       ],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】配列とデータ構造：List/Dictionaryなしで設計するテクニック | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-arrays-data-structures",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】Attributesを活用する：UdonSynced・Header・Rangeの使い方 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-attributes",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】UdonSharpで使えるC#機能と制限を徹底解説 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-csharp-features",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】デバッグとテストの基本：Debug.Log・ClientSimの使い方 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-debugging-testing",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】UdonSharpのライフサイクル：Start・Update・Interactを理解する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-events-lifecycle",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】同期ボタンを実装する：ローカル・トグル・ワンタイムの作り分け | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-button",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】ドアギミックを作る：自動ドア・手動ドアの同期実装 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-door",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Animator",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】ミラーシステムを作る：ON/OFF切替と品質設定 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-mirror",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】VRCObjectPoolで効率化：弾・エフェクトの生成管理 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-object-pool",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "optimization"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】ピックアップオブジェクト入門：掴める・使えるアイテムを作る | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-pickup",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "shader",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】ステーションを実装する：椅子・乗り物・座れるオブジェクト | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-station",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】テレポーターを作る：プレイヤーを瞬間移動させる方法 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-teleporter",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】UdonSharpとは？VRChatワールド制作の心臓部を理解する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-introduction",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】メソッドとカスタムイベント:SendCustomEventでスクリプト間連携 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-methods-events",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】ネットワーク同期入門：所有権とUdonSyncedを理解する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-networking-basics",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】パフォーマンス最適化：Update削減とネットワーク負荷を軽減する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-performance-optimization",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "UdonSharp",
+        "networking",
+        "optimization"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】プレイヤーイベント完全ガイド：Join・Leave・Respawnを検出する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-player-events",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "avatar",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】UdonSharp開発環境の構築：VCC導入からインタラクトオブジェクト作成まで | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-setup",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】ユーザー入力の検出をマスター：Interact・Input Eventsの活用法 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-user-interaction",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】UdonSharpの変数とデータ型：int・float・GameObjectの基礎 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-variables-datatypes",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2025-12-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "衣装の貫通をつまんで直せる！「EreMorph」でメッシュを直感的に編集しちゃおう！【VRChat】 | こはろぐ",
+      "url": "https://kohavrog.com/eremorph",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2025-12-14",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "weight editing",
+        "armature",
+        "shape keys",
+        "Expression Menu",
+        "PhysBone"
+      ],
+      "tools": [
+        "NDMF"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "VRChatアバター改変やレタッチに液タブは使えるのか…！？HUION Kamvas 13 (Gen 3) をレビュー | こはろぐ",
+      "url": "https://kohavrog.com/kamvas-13",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2025-08-28",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "lighting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     },
@@ -727,6 +1355,56 @@
         "Modular Avatar"
       ],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】『あなたらしさ』は髪色から！アバターの髪色を簡単＆自由に改変する方法と最強ツールを紹介します！ | こはろぐ",
+      "url": "https://kohavrog.com/hair_customize",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2025-02-03",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "shader",
+        "lighting",
+        "optimization"
+      ],
+      "tools": [
+        "lilToon"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【MA対応】『lilycalInventory』で簡単！アクションメニューから複数の衣装 ＆ 小物を自由に着せ替えちゃおう！ | こはろぐ",
+      "url": "https://kohavrog.com/lilycalinventory",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2025-01-24",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "shape keys",
+        "Animator",
+        "networking",
+        "shader",
+        "lighting"
+      ],
+      "tools": [
+        "lilToon"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     },
@@ -978,6 +1656,70 @@
       "evidence_type": "community-practice-candidate"
     },
     {
+      "title": "あなたのBOOTHの商品、こはろぐでPRしませんか？ | こはろぐ",
+      "url": "https://kohavrog.com/shopr",
+      "author": null,
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2024-03-03",
+      "topics": [
+        "VRChat",
+        "outfit fitting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "たったの5秒！「JustSS」を使ってアバターの透過画像を超簡単に撮影しよう！【Unity・VRChat】 | こはろぐ",
+      "url": "https://kohavrog.com/justss",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2024-02-23",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "【VRChat】もはや必須！？軽量化をワンタッチで行ってくれる「Avatar Optimizer」で軽いアバターになろう！ | こはろぐ",
+      "url": "https://kohavrog.com/avatar-optimizer",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2024-02-07",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "armature",
+        "shape keys",
+        "PhysBone",
+        "shader",
+        "lighting",
+        "optimization",
+        "automation"
+      ],
+      "tools": [
+        "Modular Avatar",
+        "Avatar Optimizer",
+        "lilToon"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
       "title": "【VRChat】VIVEトラッカー(Ultimate) をQuest3で使ってみた - 一年中こたつ出てる",
       "url": "https://kxn4t.hatenablog.com/entry/2024/02/02/044322",
       "author": null,
@@ -991,6 +1733,22 @@
       ],
       "tools": [],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "公式よりも安価で目にも優しい！マグネット脱着対応のQuest 3専用オーダーメイド近視補正レンズをレビュー！【ROOX】 | こはろぐ",
+      "url": "https://kohavrog.com/rooxlens-quest3",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2023-12-21",
+      "topics": [
+        "VRChat",
+        "lighting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     },
@@ -1025,6 +1783,29 @@
         "Poiyomi"
       ],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "おはツイ勢必見！標準カメラよりも綺麗なボケ味で撮れる「Virtual Lens2」と、セルフィー機能を充実させる「PVLController」の組み合わせが最強すぎた！【VRChat】 | こはろぐ",
+      "url": "https://kohavrog.com/vl2-pvl",
+      "author": "桜乃こはく",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2023-12-03",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "Animator",
+        "shader"
+      ],
+      "tools": [
+        "Modular Avatar"
+      ],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     },
@@ -1159,6 +1940,58 @@
       ],
       "tools": [],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "広告掲載について | こはろぐ",
+      "url": "https://kohavrog.com/koukoku",
+      "author": null,
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2022-12-19",
+      "topics": [
+        "VRChat"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "「こはろぐ」とは？ | こはろぐ",
+      "url": "https://kohavrog.com/kohvrog",
+      "author": null,
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2020-12-10",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "outfit fitting",
+        "optimization"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate"
+    },
+    {
+      "title": "お問い合わせフォーム | こはろぐ",
+      "url": "https://kohavrog.com/form",
+      "author": null,
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2020-10-27",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "outfit fitting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-20T11:11:23.636Z",
       "review_status": "discovered",
       "evidence_type": "community-practice-candidate"
     }
