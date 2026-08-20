@@ -15,16 +15,19 @@ slug: /community-practice
 
 ## 継続収集
 
-GitHub Actions の `Community Practice — Continuous Discovery` が6時間ごとに公開ソースを探索します。自動探索で見つかった記事は、検証済みデータへ直接追加せず [自動収集候補](/community-practice/candidates) に保存します。
+GitHub Actions の `Community Practice — Continuous Discovery` が **6時間ごと** に公開ソースを探索します。自動探索で見つかった記事は検証済みデータへ直接追加せず、第二世代classifierを通過したものだけ [自動収集候補](/community-practice/candidates) に保存します。
 
-現在の探索元は次のとおりです。
+探索経路は3種類です。
 
-- kxn4t の Hatena Blog RSS
-- Zenn の VRChat / VR topic feed
-- Qiita の Unity tag feed（VRChat関連記事だけを抽出）
-- note の公開 sitemap（取得件数を制限した探索）
+- **feed**: kxn4t Hatena Blog、Zenn VRChat / VR、Qiita Unity
+- **sitemap**: note の公開 sitemap をbounded discoveryとして使用
+- **index**: こはろぐ Unity・Blender、ゆうすずみっ！ VRChat、ういやまラボ VRChat technical notes の同一origin記事索引
 
-URLは検証済みカタログと重複排除し、VRChatに加えて Unity / Blender / avatar / world / UdonSharp / shader / PhysBone / 最適化など実作業を示す語を含む記事だけを候補化します。候補キューが変化した場合はPages用データと候補ページを更新し、GitHub Issueにも処理待ち一覧を同期します。
+classifierは単純な「VRChatという単語がある」判定ではありません。タイトルの手順性、Unity / Blender / UdonSharp / PhysBone / Modular Avatar等の技術固有語、本文の設定・実装証拠、コード/設定断片を加点し、イベント参加、登壇、集会、日記、キャリア記事などを減点・除外します。候補には `quality_score`、`quality_decision`、`quality_signals`、`quality_version` を保存するため、なぜ候補化されたかを後から監査できます。
+
+一度評価したURLはboundedなdiscovery stateへ保存します。VRChat関連だが実践記事基準を満たさなかったURLはrejection registryにも保存し、6時間ごとに同じfalse positiveを再取得・再追加しません。取得エラーだけは確定rejectにせず、後続runで再試行します。
+
+候補キューが変化した場合だけDocusaurusをbuildし、成功後に候補JSON・Pages候補ページ・GitHub Issueを同期します。stateだけが増えたrunではPagesを再deployしません。
 
 ## 収録方針
 
@@ -53,8 +56,6 @@ URLは検証済みカタログと重複排除し、VRChatに加えて Unity / Bl
 
 ## 重点的に集めるテーマ
 
-今後は次の実務テーマを優先して追加します。
-
 - 非対応衣装、ウェイト転送、ウェイトペイント
 - Armature / bone / rest pose
 - Shape Keys と modifier
@@ -69,17 +70,6 @@ URLは検証済みカタログと重複排除し、VRChatに加えて Unity / Bl
 
 ## データ形式
 
-`community-practice.json` の各項目は、少なくとも以下を保持します。
+検証済み `community-practice.json` は `title`、`url`、`author`、`source`、`published_at`、`topics`、`tools`、`versions`、`summary`、`evidence_type` を保持します。自動候補JSONにはこれに加えてclassifierの品質フィールドを保持します。
 
-- `title`
-- `url`
-- `author`
-- `source`
-- `published_at`
-- `topics`
-- `tools`
-- `versions`
-- `summary`
-- `evidence_type`
-
-この形式にしておくことで、Pages の表示だけでなく、将来的に MCP resource、検索、タグ別集計、ツール別の失敗知識への接続にも再利用できます。
+この形式にしておくことで、Pages の表示だけでなく、MCP resource、検索、タグ別集計、ツール別の失敗知識への接続にも再利用できます。
