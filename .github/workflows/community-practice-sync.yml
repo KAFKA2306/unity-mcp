@@ -6,6 +6,7 @@ on:
     paths:
       - website/data/community-practice-sources.json
       - website/scripts/collect-community-practice.mjs
+      - website/scripts/collect-community-practice-indexes.mjs
       - website/static/data/community-practice.json
       - website/package.json
       - .github/workflows/community-practice-sync.yml
@@ -13,7 +14,9 @@ on:
     branches: [beta]
     paths:
       - website/data/community-practice-sources.json
+      - website/data/community-practice-index-state.json
       - website/scripts/collect-community-practice.mjs
+      - website/scripts/collect-community-practice-indexes.mjs
       - website/static/data/community-practice.json
       - website/static/data/community-practice-candidates.json
       - website/docs/community-practice*.md
@@ -47,9 +50,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Run offline collector self-test
+      - name: Run offline collector self-tests
         working-directory: website
-        run: node scripts/collect-community-practice.mjs
+        run: |
+          node scripts/collect-community-practice.mjs
+          node scripts/collect-community-practice-indexes.mjs
 
   sync:
     if: github.event_name != 'pull_request'
@@ -73,39 +78,53 @@ jobs:
         working-directory: website
         run: |
           node scripts/collect-community-practice.mjs --live | tee community-practice-discovery.log
+          node scripts/collect-community-practice-indexes.mjs --live | tee community-practice-index-discovery.log
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const report = JSON.parse(fs.readFileSync('community-practice-discovery-report.json', 'utf8'));
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_candidates=${report.new_candidates ?? 0}\n`);
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `candidate_count=${report.candidate_count ?? 0}\n`);
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `status=${report.status ?? 'unknown'}\n`);
+          const feed = JSON.parse(fs.readFileSync('community-practice-discovery-report.json', 'utf8'));
+          const index = JSON.parse(fs.readFileSync('community-practice-index-discovery-report.json', 'utf8'));
+          const newCandidates = (feed.new_candidates ?? 0) + (index.new_candidates ?? 0);
+          const candidateCount = Math.max(feed.candidate_count ?? 0, index.candidate_count ?? 0);
+          const statuses = [feed.status, index.status].filter(Boolean);
+          const status = statuses.includes('failed') ? 'partial' : statuses.includes('partial') ? 'partial' : 'success';
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_candidates=${newCandidates}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `candidate_count=${candidateCount}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `status=${status}\n`);
           NODE
 
       - name: Detect persistent changes
         id: changes
         run: |
           if git diff --quiet -- website/static/data/community-practice-candidates.json website/docs/community-practice-candidates.md; then
+            echo "candidate_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "candidate_changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          if git diff --quiet -- website/data/community-practice-index-state.json; then
+            echo "state_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "state_changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          if git diff --quiet -- website/static/data/community-practice-candidates.json website/docs/community-practice-candidates.md website/data/community-practice-index-state.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Prepare candidate queue issue
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.candidate_changed == 'true'
         working-directory: website
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const data = JSON.parse(fs.readFileSync('static/data/community-practice-candidates.json', 'utf8'));
-          const report = JSON.parse(fs.readFileSync('community-practice-discovery-report.json', 'utf8'));
           const items = data.items ?? [];
           const lines = [
             '## Community practice discovery queue',
             '',
-            `Discovery status: **${report.status ?? 'unknown'}**`,
-            `New candidates this run: **${report.new_candidates ?? 0}**`,
+            `Discovery status: **${process.env.DISCOVERY_STATUS}**`,
+            `New candidates this run: **${process.env.NEW_CANDIDATES}**`,
             `Pending candidates: **${items.length}**`,
-            `Discovered at: ${report.discovered_at ?? 'unknown'}`,
             '',
             'このIssueは定期collectorが更新する候補キューです。記事URL・公開日・本文の実務性を確認し、採用するものだけ `website/static/data/community-practice.json` へ昇格してください。コミュニティ記事を公式仕様として扱わないでください。',
             '',
@@ -119,9 +138,12 @@ jobs:
           if (items.length > 60) lines.push('', `... ${items.length - 60} more candidates are available on the Pages candidate view.`);
           fs.writeFileSync('community-practice-candidates-issue.md', `${lines.join('\n')}\n`);
           NODE
+        env:
+          DISCOVERY_STATUS: ${{ steps.discover.outputs.status }}
+          NEW_CANDIDATES: ${{ steps.discover.outputs.new_candidates }}
 
       - name: Create or update candidate queue Issue
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.candidate_changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           QUEUE_TITLE: "[auto] Community practice candidates"
@@ -135,16 +157,16 @@ jobs:
           fi
 
       - name: Install docs dependencies
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.candidate_changed == 'true'
         working-directory: website
         run: npm ci
 
       - name: Build Pages site with updated candidates
-        if: steps.changes.outputs.changed == 'true'
+        if: steps.changes.outputs.candidate_changed == 'true'
         working-directory: website
         run: npm run build
 
-      - name: Upload discovery report
+      - name: Upload discovery reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -153,20 +175,22 @@ jobs:
           path: |
             website/community-practice-discovery-report.json
             website/community-practice-discovery.log
+            website/community-practice-index-discovery-report.json
+            website/community-practice-index-discovery.log
 
-      - name: Commit candidate queue updates
+      - name: Commit discovery updates
         id: commit
         if: github.ref == 'refs/heads/beta' && steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add website/static/data/community-practice-candidates.json website/docs/community-practice-candidates.md
+          git add website/static/data/community-practice-candidates.json website/docs/community-practice-candidates.md website/data/community-practice-index-state.json
           git commit -m "chore(community-practice): sync discovered article candidates"
           git push origin HEAD:beta
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Re-deploy Pages after candidate update
-        if: github.ref == 'refs/heads/beta' && steps.commit.outputs.changed == 'true'
+        if: github.ref == 'refs/heads/beta' && steps.commit.outputs.changed == 'true' && steps.changes.outputs.candidate_changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run docs-deploy.yml --ref beta
