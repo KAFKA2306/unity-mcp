@@ -3,6 +3,48 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://kohavrog.com/kamvas-13",
+      "title": "VRChatアバター改変やレタッチに液タブは使えるのか…！？HUION Kamvas 13 (Gen 3) をレビュー | こはろぐ",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "rejected_at": "2026-08-20T11:57:15.354Z",
+      "classifier_version": 2,
+      "score": 13,
+      "decision": "reject-title-policy:product-review",
+      "signals": [
+        "title-policy:product-review"
+      ],
+      "policy_version": 1
+    },
+    {
+      "url": "https://kxn4t.hatenablog.com/entry/2025/12/31/002721",
+      "title": "2025年を振り返って - 一年中こたつ出てる",
+      "source": "Hatena Blog",
+      "source_id": "hatena-kxn4t",
+      "rejected_at": "2026-08-20T11:57:15.354Z",
+      "classifier_version": 2,
+      "score": 10,
+      "decision": "reject-title-policy:retrospective",
+      "signals": [
+        "title-policy:retrospective"
+      ],
+      "policy_version": 1
+    },
+    {
+      "url": "https://kxn4t.hatenablog.com/entry/2024/06/25/195500",
+      "title": "【VRChat】ワールドの販売を始めてみました - 一年中こたつ出てる",
+      "source": "Hatena Blog",
+      "source_id": "hatena-kxn4t",
+      "rejected_at": "2026-08-20T11:57:15.354Z",
+      "classifier_version": 2,
+      "score": 10,
+      "decision": "reject-title-policy:commerce",
+      "signals": [
+        "title-policy:commerce"
+      ],
+      "policy_version": 1
+    },
+    {
       "url": "https://kxn4t.hatenablog.com/entry/2026/08/14/165836",
       "title": "【VRChat】Light Limit Changerの逆光ライトをバッチリ光らせる設定方法 - 一年中こたつ出てる",
       "source": "Hatena Blog",
@@ -506,5 +548,6 @@
         "procedure-evidence>=3:+2"
       ]
     }
-  ]
+  ],
+  "title_policy_version": 1
 }

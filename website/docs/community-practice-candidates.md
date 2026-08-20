@@ -1,15 +1,15 @@
 ---
 id: community-practice-candidates
 title: VRChat / Unity 実践記事 — 自動収集候補
-description: GitHub Actions が定期探索し、技術実践性スコアを通過したVRChat、Unity、Blender記事候補。
+description: GitHub Actions が定期探索し、技術実践性スコアとタイトルpolicyを通過したVRChat、Unity、Blender記事候補。
 slug: /community-practice/candidates
 ---
 
 # VRChat / Unity 実践記事 — 自動収集候補
 
-このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
+このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierとタイトルpolicyでイベント・日記・商品レビュー・販売告知などを除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **58件**
+現在の候補: **55件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -46,7 +46,6 @@ slug: /community-practice/candidates
 | 13 | 2026-05-31 | [【VRChat】AAP / Animator解析とMAパーティクル共通化 技術メモ](https://zenn.dev/yrd_gs/articles/00a4633ae8da00) | Zenn | VRChat, Unity, avatar, weight editing, Animator |
 | 13 | 2026-05-31 | [【VRChat】VRC Parent Constraintと関連技術情報](https://zenn.dev/yrd_gs/articles/80a2a8d965ebbb) | Zenn | VRChat, Unity, avatar, weight editing, armature, Animator |
 | 13 | 2025-12-19 | [【VRChat】ピックアップオブジェクト入門：掴める・使えるアイテムを作る \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-pickup) | ういやまラボ | VRChat, Unity, UdonSharp, networking, shader, lighting |
-| 13 | 2025-08-28 | [VRChatアバター改変やレタッチに液タブは使えるのか…！？HUION Kamvas 13 (Gen 3) をレビュー \| こはろぐ](https://kohavrog.com/kamvas-13) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, lighting |
 | 13 | 2025-05-02 | [【VRChat】Parent Constraintを使ってボーンをHeadから別のボーンに設定するときの注意点 - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/05/02/184102) | Hatena Blog | VRChat, avatar, weight editing, armature, PhysBone, automation |
 | 13 | 2025-04-20 | [【VRChat】Unityエディタ拡張をVPMリポジトリで配布するには - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/04/20/174352) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, armature, lighting, automation |
 | 12 | 2025-08-24 | [【VRChat】フェイストラッキング時の表情をいい感じに調整する - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/08/24/190610) | Hatena Blog | VRChat, Unity, Blender, avatar, shape keys |
@@ -62,11 +61,9 @@ slug: /community-practice/candidates
 | 11 | 2025-12-19 | [【VRChat】ユーザー入力の検出をマスター：Interact・Input Eventsの活用法 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-user-interaction) | ういやまラボ | VRChat, Unity, UdonSharp |
 | 11 | 2023-12-03 | [おはツイ勢必見！標準カメラよりも綺麗なボケ味で撮れる「Virtual Lens2」と、セルフィー機能を充実させる「PVLController」の組み合わせが最強すぎた！【VRChat】 \| こはろぐ](https://kohavrog.com/vl2-pvl) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, Animator, shader |
 | 10 | 2026-08-03 | [iFacialMocap(iPhone)を使ってVRChatのアバターのフェイストラッキングをする](https://zenn.dev/kagahirokasumi/articles/4f117e67e33d88) | Zenn | VRChat, avatar |
-| 10 | 2025-12-30 | [2025年を振り返って - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/12/31/002721) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, weight editing, armature, shape keys, Expression Menu, lighting, automation |
 | 10 | 2025-12-19 | [【VRChat】パフォーマンス最適化：Update削減とネットワーク負荷を軽減する \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-performance-optimization) | ういやまラボ | VRChat, Unity, avatar, UdonSharp, networking, optimization |
 | 10 | 2024-11-19 | [【VRChat】選択したメッシュの情報を合計して表示してくれる君を作った - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2024/11/19/121414) | Hatena Blog | VRChat, Unity |
 | 10 | 2024-09-26 | [【VRChat】複数のアニメーションファイル間で操作するBlendShapeの対象を統一する君を作った - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2024/09/26/232100) | Hatena Blog | VRChat, Unity, avatar, shape keys |
-| 10 | 2024-06-25 | [【VRChat】ワールドの販売を始めてみました - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2024/06/25/195500) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, lighting |
 | 10 | 2024-02-23 | [たったの5秒！「JustSS」を使ってアバターの透過画像を超簡単に撮影しよう！【Unity・VRChat】 \| こはろぐ](https://kohavrog.com/justss) | こはろぐ | VRChat, Unity, Blender, avatar |
 | 9 | 2025-12-19 | [【VRChat】配列とデータ構造：List/Dictionaryなしで設計するテクニック \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-arrays-data-structures) | ういやまラボ | VRChat, UdonSharp, networking |
 | 9 | 2025-12-19 | [【VRChat】メソッドとカスタムイベント:SendCustomEventでスクリプト間連携 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-methods-events) | ういやまラボ | VRChat, UdonSharp, networking |

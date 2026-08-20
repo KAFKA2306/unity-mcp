@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-08-20T11:47:18.580Z",
+  "generated_at": "2026-08-20T11:57:15.354Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -1262,38 +1262,6 @@
       ]
     },
     {
-      "title": "VRChatアバター改変やレタッチに液タブは使えるのか…！？HUION Kamvas 13 (Gen 3) をレビュー | こはろぐ",
-      "url": "https://kohavrog.com/kamvas-13",
-      "author": "桜乃こはく",
-      "source": "こはろぐ",
-      "source_id": "kohavrog-unity-blender-index",
-      "published_at": "2025-08-28",
-      "topics": [
-        "VRChat",
-        "Unity",
-        "Blender",
-        "avatar",
-        "outfit fitting",
-        "lighting"
-      ],
-      "tools": [],
-      "first_discovered_at": "2026-08-20T11:11:23.636Z",
-      "last_verified_at": "2026-08-20T11:47:18.580Z",
-      "review_status": "discovered",
-      "evidence_type": "community-practice-candidate",
-      "quality_version": 2,
-      "quality_status": "accepted",
-      "quality_score": 13,
-      "quality_decision": "accept",
-      "quality_signals": [
-        "vrchat-in-title:+3",
-        "technical-title:+3",
-        "procedural-title:+3",
-        "technical-evidence>=2:+2",
-        "procedure-evidence>=3:+2"
-      ]
-    },
-    {
       "title": "【VRChat】Parent Constraintを使ってボーンをHeadから別のボーンに設定するときの注意点 - 一年中こたつ出てる",
       "url": "https://kxn4t.hatenablog.com/entry/2025/05/02/184102",
       "author": null,
@@ -1781,47 +1749,6 @@
       ]
     },
     {
-      "title": "2025年を振り返って - 一年中こたつ出てる",
-      "url": "https://kxn4t.hatenablog.com/entry/2025/12/31/002721",
-      "author": null,
-      "source": "Hatena Blog",
-      "source_id": "hatena-kxn4t",
-      "published_at": "2025-12-30",
-      "topics": [
-        "VRChat",
-        "Unity",
-        "Blender",
-        "avatar",
-        "outfit fitting",
-        "weight editing",
-        "armature",
-        "shape keys",
-        "Expression Menu",
-        "lighting",
-        "automation"
-      ],
-      "tools": [
-        "Modular Avatar",
-        "SKKeeper",
-        "Continuous Avatar Uploader"
-      ],
-      "first_discovered_at": "2026-08-20T10:23:32.715Z",
-      "last_verified_at": "2026-08-20T11:47:18.580Z",
-      "review_status": "discovered",
-      "evidence_type": "community-practice-candidate",
-      "quality_version": 2,
-      "quality_status": "accepted",
-      "quality_score": 10,
-      "quality_decision": "accept",
-      "quality_signals": [
-        "vrchat-in-body:+2",
-        "technical-evidence>=2:+2",
-        "technical-evidence>=5:+2",
-        "implementation-evidence>=2:+2",
-        "procedure-evidence>=3:+2"
-      ]
-    },
-    {
       "title": "【VRChat】パフォーマンス最適化：Update削減とネットワーク負荷を軽減する | ういやまラボ",
       "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-performance-optimization",
       "author": "Uhiyama",
@@ -1894,37 +1821,6 @@
         "Unity",
         "avatar",
         "shape keys"
-      ],
-      "tools": [],
-      "first_discovered_at": "2026-08-20T10:23:32.715Z",
-      "last_verified_at": "2026-08-20T11:47:18.580Z",
-      "review_status": "discovered",
-      "evidence_type": "community-practice-candidate",
-      "quality_version": 2,
-      "quality_status": "accepted",
-      "quality_score": 10,
-      "quality_decision": "accept",
-      "quality_signals": [
-        "vrchat-in-title:+3",
-        "technical-title:+3",
-        "technical-evidence>=2:+2",
-        "procedure-evidence>=3:+2"
-      ]
-    },
-    {
-      "title": "【VRChat】ワールドの販売を始めてみました - 一年中こたつ出てる",
-      "url": "https://kxn4t.hatenablog.com/entry/2024/06/25/195500",
-      "author": null,
-      "source": "Hatena Blog",
-      "source_id": "hatena-kxn4t",
-      "published_at": "2024-06-25",
-      "topics": [
-        "VRChat",
-        "Unity",
-        "Blender",
-        "avatar",
-        "outfit fitting",
-        "lighting"
       ],
       "tools": [],
       "first_discovered_at": "2026-08-20T10:23:32.715Z",
@@ -2065,5 +1961,6 @@
         "code-block:+1"
       ]
     }
-  ]
+  ],
+  "title_policy_version": 1
 }
