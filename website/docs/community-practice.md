@@ -13,6 +13,19 @@ slug: /community-practice
 
 機械可読データは [community-practice.json](https://kafka2306.github.io/unity-mcp/data/community-practice.json) で公開します。
 
+## 継続収集
+
+GitHub Actions の `Community Practice — Continuous Discovery` が6時間ごとに公開ソースを探索します。自動探索で見つかった記事は、検証済みデータへ直接追加せず [自動収集候補](/community-practice/candidates) に保存します。
+
+現在の探索元は次のとおりです。
+
+- kxn4t の Hatena Blog RSS
+- Zenn の VRChat / VR topic feed
+- Qiita の Unity tag feed（VRChat関連記事だけを抽出）
+- note の公開 sitemap（取得件数を制限した探索）
+
+URLは検証済みカタログと重複排除し、VRChatに加えて Unity / Blender / avatar / world / UdonSharp / shader / PhysBone / 最適化など実作業を示す語を含む記事だけを候補化します。候補キューが変化した場合はPages用データと候補ページを更新し、GitHub Issueにも処理待ち一覧を同期します。
+
 ## 収録方針
 
 - 元記事の URL、タイトル、公開日を確認できたものだけ収録する。
