@@ -1,0 +1,165 @@
+name: Community Practice — Continuous Discovery
+
+on:
+  pull_request:
+    branches: [beta]
+    paths:
+      - website/data/community-practice-sources.json
+      - website/data/community-practice-discovery-state.json
+      - website/scripts/collect-community-practice.mjs
+      - website/static/data/community-practice.json
+      - website/static/data/community-practice-candidates.json
+      - website/docs/community-practice*.md
+      - website/sidebars.js
+      - website/package.json
+      - .github/workflows/community-practice-sync.yml
+  schedule:
+    # Every six hours at :43 JST; off the top of the hour to reduce scheduled-run congestion.
+    - cron: '43 */6 * * *'
+      timezone: 'Asia/Tokyo'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: community-practice-continuous-discovery
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    name: Validate collector contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run offline collector self-test
+        working-directory: website
+        run: node scripts/collect-community-practice.mjs
+
+  sync:
+    if: github.event_name != 'pull_request'
+    name: Discover and persist candidates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Discover practical articles
+        id: discover
+        working-directory: website
+        run: |
+          node scripts/collect-community-practice.mjs --live | tee community-practice-discovery.log
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const report = JSON.parse(fs.readFileSync('community-practice-discovery-report.json', 'utf8'));
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_candidates=${report.new_candidates ?? 0}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `candidate_count=${report.candidate_count ?? 0}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `status=${report.status ?? 'unknown'}\n`);
+          NODE
+
+      - name: Detect persistent changes
+        id: changes
+        run: |
+          if git diff --quiet -- website/static/data/community-practice-candidates.json website/docs/community-practice-candidates.md; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Prepare candidate queue issue
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: website
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const data = JSON.parse(fs.readFileSync('static/data/community-practice-candidates.json', 'utf8'));
+          const report = JSON.parse(fs.readFileSync('community-practice-discovery-report.json', 'utf8'));
+          const items = data.items ?? [];
+          const lines = [
+            '## Community practice discovery queue',
+            '',
+            `Discovery status: **${report.status ?? 'unknown'}**`,
+            `New candidates this run: **${report.new_candidates ?? 0}**`,
+            `Pending candidates: **${items.length}**`,
+            `Discovered at: ${report.discovered_at ?? 'unknown'}`,
+            '',
+            'このIssueは定期collectorが更新する候補キューです。記事URL・公開日・本文の実務性を確認し、採用するものだけ `website/static/data/community-practice.json` へ昇格してください。コミュニティ記事を公式仕様として扱わないでください。',
+            '',
+            '| published | source | title | URL |',
+            '|---|---|---|---|'
+          ];
+          for (const item of items.slice(0, 60)) {
+            const title = (item.title ?? '(title unavailable)').replaceAll('|', '\\|');
+            lines.push(`| ${item.published_at ?? ''} | ${item.source ?? ''} | ${title} | ${item.url} |`);
+          }
+          if (items.length > 60) lines.push('', `... ${items.length - 60} more candidates are available on the Pages candidate view.`);
+          fs.writeFileSync('community-practice-candidates-issue.md', `${lines.join('\n')}\n`);
+          NODE
+
+      - name: Create or update candidate queue Issue
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QUEUE_TITLE: "[auto] Community practice candidates"
+        run: |
+          issue_number="$(gh issue list --state open --search "$QUEUE_TITLE in:title" --json number,title --jq ".[] | select(.title == \"$QUEUE_TITLE\") | .number" | head -n 1)"
+          if [ -n "$issue_number" ]; then
+            gh issue edit "$issue_number" --body-file website/community-practice-candidates-issue.md
+            echo "Updated candidate Issue #$issue_number"
+          else
+            gh issue create --title "$QUEUE_TITLE" --body-file website/community-practice-candidates-issue.md
+          fi
+
+      - name: Install docs dependencies
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: website
+        run: npm ci
+
+      - name: Build Pages site with updated candidates
+        if: steps.changes.outputs.changed == 'true'
+        working-directory: website
+        run: npm run build
+
+      - name: Upload discovery report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: community-practice-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            website/community-practice-discovery-report.json
+            website/community-practice-discovery.log
+
+      - name: Commit candidate queue updates
+        id: commit
+        if: github.ref == 'refs/heads/beta' && steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/static/data/community-practice-candidates.json website/docs/community-practice-candidates.md
+          git commit -m "chore(community-practice): sync discovered article candidates"
+          git push origin HEAD:beta
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Re-deploy Pages after candidate update
+        if: github.ref == 'refs/heads/beta' && steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run docs-deploy.yml --ref beta
