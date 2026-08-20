@@ -47,6 +47,39 @@
       "max_sitemaps": 16,
       "max_unknown_articles": 80,
       "access_note": "Existing bounded sitemap discovery path. Do not crawl the entire platform or store article bodies."
+    },
+    {
+      "id": "kohavrog-unity-blender-index",
+      "name": "こはろぐ Unity・Blender category",
+      "platform": "こはろぐ",
+      "kind": "index",
+      "url": "https://kohavrog.com/category/unity%E3%83%BBblender/",
+      "article_url_regex": "^/[^/]+/?$",
+      "max_links": 60,
+      "enabled": true,
+      "access_note": "High-signal VRChat Unity/Blender category page. Only same-origin root-level article links are fetched and article bodies are used transiently for classification."
+    },
+    {
+      "id": "yu-suz-vrchat-index",
+      "name": "ゆうすずみっ！ VRChat category",
+      "platform": "ゆうすずみっ！",
+      "kind": "index",
+      "url": "https://blog.yu-suz.com/archives/category/pcgame/vrchat",
+      "article_url_regex": "^/archives/\\d+/?$",
+      "max_links": 60,
+      "enabled": true,
+      "access_note": "VRChat category page with field reports and troubleshooting notes. Fetch only article URLs matching /archives/<id>."
+    },
+    {
+      "id": "uhiyama-vrchat-notes-index",
+      "name": "ういやまラボ VRChat technical notes",
+      "platform": "ういやまラボ",
+      "kind": "index",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/",
+      "article_url_regex": "^/ja/notes/vrchat/[^/]+/?$",
+      "max_links": 80,
+      "enabled": true,
+      "access_note": "Curated VRChat world-creation technical-note index with UdonSharp setup, networking, gimmicks, debugging and optimization articles."
     }
   ]
 }
