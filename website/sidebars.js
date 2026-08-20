@@ -34,7 +34,15 @@ const sidebars = {
       ],
     },
     { type: 'doc', id: 'failures', label: '2026 エラー情報' },
-    { type: 'doc', id: 'community-practice', label: 'VRChat / Unity 実践記事' },
+    {
+      type: 'category',
+      label: 'VRChat / Unity 実践記事',
+      collapsed: false,
+      items: [
+        { type: 'doc', id: 'community-practice', label: '検証済み記事' },
+        { type: 'doc', id: 'community-practice-candidates', label: '自動収集候補' },
+      ],
+    },
     {
       type: 'category',
       label: 'リファレンス',
