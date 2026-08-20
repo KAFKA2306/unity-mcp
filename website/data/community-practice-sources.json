@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "hatena-kxn4t",
+      "name": "kxn4t Hatena Blog",
+      "platform": "Hatena Blog",
+      "kind": "feed",
+      "url": "https://kxn4t.hatenablog.com/rss?size=100",
+      "enabled": true,
+      "access_note": "Hatena Blog publishes RSS 2.0 feeds for blogs; this seed author is a high-signal VRChat/Unity/Blender practical source."
+    },
+    {
+      "id": "zenn-vrchat",
+      "name": "Zenn VRChat topic",
+      "platform": "Zenn",
+      "kind": "feed",
+      "url": "https://zenn.dev/topics/vrchat/feed",
+      "enabled": true,
+      "access_note": "Zenn officially supports topic RSS feeds."
+    },
+    {
+      "id": "zenn-vr",
+      "name": "Zenn VR topic",
+      "platform": "Zenn",
+      "kind": "feed",
+      "url": "https://zenn.dev/topics/vr/feed",
+      "enabled": true,
+      "access_note": "Existing repository source, filtered again for VRChat creator practice."
+    },
+    {
+      "id": "qiita-unity",
+      "name": "Qiita Unity tag",
+      "platform": "Qiita",
+      "kind": "feed",
+      "url": "https://qiita.com/tags/unity/feed",
+      "enabled": true,
+      "access_note": "Existing repository source verified for the Failure KB; only VRChat-specific practical articles are retained."
+    },
+    {
+      "id": "note-sitemap",
+      "name": "note sitemap",
+      "platform": "note",
+      "kind": "sitemap",
+      "url": "https://note.com/sitemap.xml.gz",
+      "enabled": true,
+      "max_sitemaps": 16,
+      "max_unknown_articles": 80,
+      "access_note": "Existing bounded sitemap discovery path. Do not crawl the entire platform or store article bodies."
+    }
+  ]
+}
