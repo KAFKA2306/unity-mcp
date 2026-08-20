@@ -34,6 +34,7 @@ const sidebars = {
       ],
     },
     { type: 'doc', id: 'failures', label: '2026 エラー情報' },
+    { type: 'doc', id: 'community-practice', label: 'VRChat / Unity 実践記事' },
     {
       type: 'category',
       label: 'リファレンス',
