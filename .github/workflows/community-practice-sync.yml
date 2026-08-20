@@ -1,6 +1,14 @@
 name: Community Practice — Continuous Discovery
 
 on:
+  push:
+    branches: [beta]
+    paths:
+      - website/data/community-practice-sources.json
+      - website/scripts/collect-community-practice.mjs
+      - website/static/data/community-practice.json
+      - website/package.json
+      - .github/workflows/community-practice-sync.yml
   pull_request:
     branches: [beta]
     paths:
