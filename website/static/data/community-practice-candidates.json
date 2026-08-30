@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-08-20T11:57:15.354Z",
+  "generated_at": "2026-08-30T09:27:56.647Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -1321,6 +1321,39 @@
       "quality_decision": "accept",
       "quality_signals": [
         "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "開発者のためのフリーVRMアバター活用ガイド（選定編）— 入手先とライセンスの選び方",
+      "url": "https://zenn.dev/bunniesfield/articles/free-vrm-avatar-catalog",
+      "author": "bunniesfield",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-08-30",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "armature",
+        "shape keys",
+        "automation"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-08-30T09:27:56.647Z",
+      "last_verified_at": "2026-08-30T09:27:56.647Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 12,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-body:+2",
         "technical-title:+3",
         "technical-evidence>=2:+2",
         "technical-evidence>=5:+2",
