@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-02",
+  "target_environment": "VRChat current Unity 2022.3.22f1",
+  "selection": {
+    "name": "KAFKA2306/unity-mcp (Coplay MCP for Unity)",
+    "verified_version": "10.1.0",
+    "repository_version": "10.1.3-beta.4",
+    "upstream_latest": "v10.2.0"
+  },
+  "criteria": [
+    {"key": "compatibility", "label": "Unity 2022.3"},
+    {"key": "operations", "label": "Editor操作"},
+    {"key": "verification", "label": "検証ループ"},
+    {"key": "observability", "label": "観測"},
+    {"key": "vrchat", "label": "VRChat"},
+    {"key": "runtime", "label": "Build後Runtime"}
+  ],
+  "implementations": [
+    {
+      "id": "kafka-coplay",
+      "name": "KAFKA2306/unity-mcp",
+      "subtitle": "Coplay MCP for Unity + VRChat Failure KB",
+      "decision": "採用中",
+      "overall": "pass",
+      "repository": "https://github.com/KAFKA2306/unity-mcp",
+      "summary": "VRMineのUnity 2022.3.22f1で10.1.0を実機確認済み。forkのpackage metadataは10.1.3-beta.4、upstream latestはv10.2.0。未検証versionをproduction verifiedとして扱わない。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "package metadataはUnity 2021.3+。VRMine 2022.3.22f1で実機確認済み。"},
+        "operations": {"status": "pass", "text": "scene / GameObject / asset / script / build等をMCP toolで操作。"},
+        "verification": {"status": "pass", "text": "Unity Test Runner、build、Console確認をtool化。VRMineでは別gateでClientSim/Build & Testも実施。"},
+        "observability": {"status": "pass", "text": "Console、screenshot、Profiler、editor stateを取得可能。"},
+        "vrchat": {"status": "pass", "text": "VRChat Failure KBとVRMineの実機検証を同じrepository群で運用。"},
+        "runtime": {"status": "warn", "text": "主用途はUnity Editor automation。build後ゲーム内MCPを標準目的にしていない。"}
+      },
+      "evidence": [
+        {"label": "KAFKA2306/unity-mcp README", "url": "https://github.com/KAFKA2306/unity-mcp/blob/beta/README.md"},
+        {"label": "package metadata 10.1.3-beta.4", "url": "https://github.com/KAFKA2306/unity-mcp/blob/beta/MCPForUnity/package.json"},
+        {"label": "VRChat Failure KB", "url": "https://kafka2306.github.io/unity-mcp/failures"},
+        {"label": "VRMine verification research", "url": "https://github.com/KAFKA2306/vrmine/blob/main/docs/research/unity-mcp-and-verification.md"},
+        {"label": "Coplay upstream v10.2.0", "url": "https://github.com/CoplayDev/unity-mcp/releases/tag/v10.2.0"}
+      ]
+    },
+    {
+      "id": "unity-official",
+      "name": "Unity MCP Server",
+      "subtitle": "Unity Technologies official",
+      "decision": "現行VRChatでは除外",
+      "overall": "fail",
+      "repository": "https://unity.com/features/ai",
+      "summary": "Unity公式。Unity 6.0以降を厳密に要求し、下位互換ではないため、Unity 2022.3.22f1固定の現行VRChat projectには導入できない。",
+      "gates": {
+        "compatibility": {"status": "fail", "text": "Unity 6.0+必須。Unity公式FAQが下位互換なしと明記。"},
+        "operations": {"status": "pass", "text": "scene context、script編集、Editor actionなどを公式MCPから利用可能。"},
+        "verification": {"status": "unverified", "text": "Unity Test Frameworkまで含む一連の自動検証能力は今回の一次資料では確認不足。"},
+        "observability": {"status": "pass", "text": "scene / project contextとConsole出力を取得可能。"},
+        "vrchat": {"status": "fail", "text": "現行VRChat Unity 2022.3.22f1とversion要件が一致しない。"},
+        "runtime": {"status": "unverified", "text": "今回確認した公式資料はEditor接続を中心に説明。build後runtimeは未確認。"}
+      },
+      "evidence": [
+        {"label": "Unity MCP Server: how to get started", "url": "https://unity.com/blog/unity-ai-mcp-how-to-get-started"},
+        {"label": "Unity AI tools", "url": "https://unity.com/features/ai"}
+      ]
+    },
+    {
+      "id": "ivanmurzak",
+      "name": "IvanMurzak/Unity-MCP",
+      "subtitle": "AI Game Developer — Skills, MCP, CLI",
+      "decision": "評価対象",
+      "overall": "warn",
+      "repository": "https://github.com/IvanMurzak/Unity-MCP",
+      "summary": "Unity 2022.3+を明示し、70+ tools、tests、screenshots、Profiler、Skills、CLIに加えcompiled game runtimeも対象。VRChat固有の実証は未確認。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "project docsでUnity 2022.3+ minimumを明記。"},
+        "operations": {"status": "pass", "text": "70+ built-in tools。asset / scene / GameObject / script / reflection等。"},
+        "verification": {"status": "pass", "text": "Unity tests、code execution、debug workflowを提供。"},
+        "observability": {"status": "pass", "text": "Console、各種screenshot、Profiler diagnosticsを提供。"},
+        "vrchat": {"status": "unverified", "text": "VRChat / UdonSharp専用の互換性・実機証拠は未確認。"},
+        "runtime": {"status": "pass", "text": "compiled game内でのruntime MCP / AI interactionを明示。"}
+      },
+      "evidence": [
+        {"label": "Repository README", "url": "https://github.com/IvanMurzak/Unity-MCP"},
+        {"label": "Unity 2022.3+ development requirements", "url": "https://github.com/IvanMurzak/Unity-MCP/blob/main/docs/dev/Development.md"},
+        {"label": "Default MCP tools", "url": "https://github.com/IvanMurzak/Unity-MCP/blob/main/docs/default-mcp-tools.md"}
+      ]
+    },
+    {
+      "id": "funplay",
+      "name": "FunplayAI/funplay-unity-mcp",
+      "subtitle": "Editor-embedded HTTP MCP",
+      "decision": "優先評価",
+      "overall": "warn",
+      "repository": "https://github.com/FunplayAI/funplay-unity-mcp",
+      "summary": "Unity 2022.3+、Editor内HTTP server、core/full tool exposure、Play Mode/input/screenshot/performanceまで一体化。VRMineでの実機証拠はまだない。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "READMEでUnity 2022.3+を明記。"},
+        "operations": {"status": "pass", "text": "156 tools。core profileは34 high-signal tools。execute_code中心。"},
+        "verification": {"status": "pass", "text": "Play Mode control、input simulation、compile stateを同一sessionで扱う。"},
+        "observability": {"status": "pass", "text": "screenshots、performance inspection、logs、project contextを提供。"},
+        "vrchat": {"status": "unverified", "text": "VRChat / UdonSharp専用の動作証拠は未確認。"},
+        "runtime": {"status": "warn", "text": "READMEでEditor-onlyを明記。build後runtimeは対象外。"}
+      },
+      "evidence": [
+        {"label": "Repository README", "url": "https://github.com/FunplayAI/funplay-unity-mcp"}
+      ]
+    },
+    {
+      "id": "kitwright",
+      "name": "kitwright/unity-mcp",
+      "subtitle": "Editor-embedded HTTP MCP",
+      "decision": "評価対象",
+      "overall": "warn",
+      "repository": "https://github.com/kitwright/unity-mcp",
+      "summary": "Unity 2022.3+。271 tools、execute_code、Play Mode/input、screenshot diff、performance、Unity Test Framework integrationを広く提供。VRMine実機は未検証。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "READMEでUnity 2022.3+を明記。"},
+        "operations": {"status": "pass", "text": "271 tools。core profileは40 high-signal tools。"},
+        "verification": {"status": "pass", "text": "Play Mode、input simulation、screenshot diff、Test Framework integrationを提供。"},
+        "observability": {"status": "pass", "text": "screenshots、performance、logs、live project resourcesを提供。"},
+        "vrchat": {"status": "unverified", "text": "VRChat / UdonSharp専用の動作証拠は未確認。"},
+        "runtime": {"status": "warn", "text": "READMEでEditor-onlyを明記。build後runtimeは対象外。"}
+      },
+      "evidence": [
+        {"label": "Repository README", "url": "https://github.com/kitwright/unity-mcp"}
+      ]
+    },
+    {
+      "id": "codergamester",
+      "name": "CoderGamester/mcp-unity",
+      "subtitle": "Unity plugin + Node.js MCP server",
+      "decision": "評価対象",
+      "overall": "warn",
+      "repository": "https://github.com/CoderGamester/mcp-unity",
+      "summary": "package metadataはUnity 2022.3。scene / object / material操作、Unity tests、Console、batch execution、MCP App dashboardを備える。VRChat固有実証は未確認。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "package.jsonでUnity 2022.3をminimumとして保持。"},
+        "operations": {"status": "pass", "text": "scene / GameObject / material / package等の細粒度toolとbatch_executeを提供。"},
+        "verification": {"status": "pass", "text": "Unity Test RunnerとPlay Mode status controlを提供。"},
+        "observability": {"status": "pass", "text": "Console logs、scene info、dashboard、diagnostic resourcesを提供。"},
+        "vrchat": {"status": "unverified", "text": "VRChat / UdonSharp専用の動作証拠は未確認。"},
+        "runtime": {"status": "warn", "text": "Unity Editor bridgeが中心。build後runtime対応は今回の資料では確認していない。"}
+      },
+      "evidence": [
+        {"label": "Repository README", "url": "https://github.com/CoderGamester/mcp-unity"},
+        {"label": "Unity package metadata", "url": "https://github.com/CoderGamester/mcp-unity/blob/main/package.json"}
+      ]
+    },
+    {
+      "id": "unitymcp-vrc",
+      "name": "swax/UnityMCP-VRC",
+      "subtitle": "VRChat / UdonSharp focused",
+      "decision": "VRChat参照・評価対象",
+      "overall": "warn",
+      "repository": "https://github.com/swax/UnityMCP-VRC",
+      "summary": "Unity 2022.3〜6、VRChat/UdonSharp重視。bounded state、dynamic port、domain reload耐性、screenshot、UdonSharp helperの知見が強い。CC BY-NC 4.0のためコード再利用には制約がある。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "READMEでUnity 2022.3 through Unity 6を明記。"},
+        "operations": {"status": "pass", "text": "LLM-authored C#実行とEditor/scene state操作を提供。"},
+        "verification": {"status": "warn", "text": "任意C#で検証可能だが、専用Test Runner tool一式は今回のREADMEでは確認していない。"},
+        "observability": {"status": "pass", "text": "bounded editor state、logs、object details、screenshots、Debug Windowを提供。"},
+        "vrchat": {"status": "pass", "text": "VRChat / UdonSharpを明示的な主用途とし、UdonSharp component attachment手順も文書化。"},
+        "runtime": {"status": "warn", "text": "Unity Editor plugin + MCP server構成。build後runtimeは主目的ではない。"}
+      },
+      "evidence": [
+        {"label": "Repository README", "url": "https://github.com/swax/UnityMCP-VRC"},
+        {"label": "UdonSharp component guide", "url": "https://github.com/swax/UnityMCP-VRC/blob/main/docs/006-udonsharp-components.md"}
+      ]
+    },
+    {
+      "id": "akiojin-deprecated",
+      "name": "akiojin/unity-mcp-server",
+      "subtitle": "deprecated — successor: akiojin/unity-cli",
+      "decision": "除外",
+      "overall": "fail",
+      "repository": "https://github.com/akiojin/unity-mcp-server",
+      "summary": "高機能だがrepository自身がdeprecatedを明記し、開発はakiojin/unity-cliへ移行済み。新規採用候補として残さない。",
+      "gates": {
+        "compatibility": {"status": "pass", "text": "旧READMEはUnity 2020.3+を要求。"},
+        "operations": {"status": "pass", "text": "100+ tools、scene/UI/input/Addressables等を提供。"},
+        "verification": {"status": "pass", "text": "Play Mode/input/UI automationを含む。"},
+        "observability": {"status": "pass", "text": "logs、screenshots、code index等を提供。"},
+        "vrchat": {"status": "unverified", "text": "VRChat専用実証は未確認。"},
+        "runtime": {"status": "warn", "text": "Editor automation中心。"}
+      },
+      "evidence": [
+        {"label": "Deprecated notice", "url": "https://github.com/akiojin/unity-mcp-server"},
+        {"label": "Successor: akiojin/unity-cli", "url": "https://github.com/akiojin/unity-cli"}
+      ]
+    }
+  ]
+}
