@@ -34,6 +34,7 @@ const sidebars = {
       ],
     },
     { type: 'doc', id: 'failures', label: '2026 エラー情報' },
+    { type: 'doc', id: 'unity-mcp-comparison', label: 'Unity MCP 比較' },
     {
       type: 'category',
       label: 'VRChat / Unity 実践記事',
