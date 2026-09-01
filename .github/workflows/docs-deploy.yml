@@ -88,7 +88,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   smoke:
-    name: Smoke test published Failure KB
+    name: Smoke test published docs
     needs: deploy
     runs-on: ubuntu-latest
     env:
@@ -99,21 +99,26 @@ jobs:
           curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
             "$SITE_ROOT/failures" -o /tmp/failures.html
           curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
+            "$SITE_ROOT/unity-mcp-comparison" -o /tmp/unity-mcp-comparison.html
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
             "$SITE_ROOT/data/failures/current-2026.json" -o /tmp/current-2026.json
           curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 10 \
             "$SITE_ROOT/data/failures/migration-summary-2026.json" -o /tmp/migration-summary-2026.json
 
-      - name: Validate published Failure KB
+      - name: Validate published docs
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
 
           html = Path('/tmp/failures.html').read_text(encoding='utf-8')
+          comparison_html = Path('/tmp/unity-mcp-comparison.html').read_text(encoding='utf-8')
           current = json.loads(Path('/tmp/current-2026.json').read_text(encoding='utf-8'))
           summary = json.loads(Path('/tmp/migration-summary-2026.json').read_text(encoding='utf-8'))
 
           assert '<html' in html.lower(), 'published /failures is not HTML'
+          assert '<html' in comparison_html.lower(), 'published /unity-mcp-comparison is not HTML'
+          assert 'Unity MCP' in comparison_html, 'published comparison page is missing its expected heading/content'
           assert isinstance(current, list), 'current-2026.json must be a JSON array'
           assert current, 'published current corpus must not be empty'
 
@@ -130,7 +135,7 @@ jobs:
               'published current corpus contains a Unity version outside migration scope'
 
           print(
-              f'Published Failure KB smoke test passed: /failures HTTP OK; '
+              f'Published docs smoke test passed: /failures and /unity-mcp-comparison HTTP OK; '
               f'raw {raw_count} / current {current_count} / excluded {excluded_count}; '
               f'Unity scope {sorted(allowed_unity)}.'
           )
