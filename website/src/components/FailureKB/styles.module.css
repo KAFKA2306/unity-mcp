@@ -133,9 +133,31 @@
   border-radius: 0.8rem;
   padding: 1rem 1.05rem;
   scroll-margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.card h3 { margin: 0.5rem 0; font-size: 1.08rem; line-height: 1.45; }
+.meta { order: 0; }
+.symptom {
+  order: 1;
+  margin: 0.55rem 0 0.15rem;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+.symptom strong { font-weight: 750; }
+.card h3 {
+  order: 2;
+  margin: 0.05rem 0 0.55rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--failure-muted);
+}
+.answer { order: 3; }
+.chips { order: 4; }
+.details { order: 5; }
+
 .meta, .chips { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
 .meta { color: var(--failure-muted); font-size: 0.78rem; }
 
@@ -152,8 +174,6 @@
 .workaround { border-color: #ca8a04; }
 .unresolved { border-color: #ef4444; }
 
-.symptom { margin: 0.45rem 0 0.8rem; }
-
 .answer {
   border-left: 3px solid #22c55e;
   background: var(--ifm-color-emphasis-100);
@@ -166,7 +186,7 @@
 .answer > strong { display: block; font-size: 0.8rem; margin-bottom: 0.2rem; }
 .answer p { margin: 0; }
 
-.chips { margin-top: 0.7rem; }
+.chips { margin-top: 0.2rem; }
 .chips span { color: var(--failure-muted); }
 
 .details {
@@ -211,7 +231,11 @@
 
 @media (max-width: 600px) {
   .summary, .symptomGrid, .searchPanel { grid-template-columns: 1fr; }
+  .summary > div:nth-child(2),
+  .summary > div:nth-child(4) { display: none; }
   .finder { padding: 0.9rem; }
   .resultBar { align-items: flex-start; flex-direction: column; gap: 0.3rem; }
   .details dl { grid-template-columns: 1fr; }
+  .card { padding: 0.9rem; }
+  .symptom { font-size: 1rem; }
 }
