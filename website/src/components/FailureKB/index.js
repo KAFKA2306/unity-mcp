@@ -34,16 +34,45 @@ const japaneseDisplay = {
 
 const emptyFilters = Object.fromEntries(filterKeys.map((key) => [key, ""]));
 
+const quickSymptoms = {
+  ja: [
+    ["compile error", "コンパイルできない"],
+    ["dependency error", "導入・更新で失敗する"],
+    ["validation error", "ビルド・検証で止まる"],
+    ["crash", "Unityが落ちる"],
+    ["hang / timeout", "固まる・終わらない"],
+    ["missing asset / reference", "参照・アセットがない"],
+    ["incorrect behavior", "動きがおかしい"],
+    ["rendering defect", "見た目がおかしい"],
+    ["network / transport error", "接続・通信できない"],
+  ],
+  en: [
+    ["compile error", "Won't compile"],
+    ["dependency error", "Install or update fails"],
+    ["validation error", "Build or validation stops"],
+    ["crash", "Unity crashes"],
+    ["hang / timeout", "Hangs or times out"],
+    ["missing asset / reference", "Missing asset or reference"],
+    ["incorrect behavior", "Behaves incorrectly"],
+    ["rendering defect", "Looks wrong"],
+    ["network / transport error", "Can't connect"],
+  ],
+};
+
 const copyByLocale = {
   en: {
     all: "All",
-    records: "all records",
-    verified: "current verified",
-    sourceDomains: "source domains",
+    records: "known cases",
+    verified: "current Unity verified",
     resolved: "resolved",
-    unresolved: "unresolved",
-    searchLabel: "Error / exception / symptom",
-    searchPlaceholder: "Paste an error string, exception name, symptom, package, or source",
+    workaround: "workaround available",
+    unresolved: "under investigation",
+    symptomHeading: "Find by what is happening",
+    symptomHelp: "You do not need to know the cause. Start from the symptom you can see.",
+    searchLabel: "Search an error or symptom",
+    searchPlaceholder: "Paste an error message, or describe what is happening",
+    searchHint: "Exact error messages are fine. Package names and symptoms also work.",
+    advanced: "Filter by environment or technical details",
     software: "Software",
     component: "Component",
     phase: "Phase",
@@ -57,34 +86,42 @@ const copyByLocale = {
     sourceType: "Source type",
     repository: "GitHub repository",
     clear: "Clear filters",
-    matching: (count) => `matching record${count === 1 ? "" : "s"}`,
-    evidence: "Evidence and resolution",
-    trigger: "Trigger",
-    rootCause: "Root cause",
-    remedies: "Remedies",
+    matching: (count) => `matching case${count === 1 ? "" : "s"}`,
+    symptom: "Symptom",
+    firstAction: "Try this first",
+    investigating: "No verified fix is recorded yet. Check the known conditions and evidence below.",
+    details: "Cause, environment, and evidence",
+    errorText: "Error text",
+    trigger: "When it happens",
+    rootCause: "Cause",
+    remedies: "Fix / workaround",
     packages: "Packages",
     sources: "Evidence",
-    related: "Same / similar signatures",
+    related: "Same / similar error",
     exact: "exact",
     similar: "similar",
     supports: "supports",
-    noRemedy: "No verified remedy recorded.",
+    noRemedy: "No verified fix or workaround recorded.",
     currentVerified: "current Unity verified",
     legacy: "legacy Unity",
     otherVersion: "other Unity version",
     unverified: "Unity version unverified",
-    statusLabels: { resolved: "resolved", workaround: "workaround", unresolved: "unresolved" },
+    statusLabels: { resolved: "resolved", workaround: "workaround", unresolved: "under investigation" },
     remedyLabels: { fix: "fix", workaround: "workaround" },
   },
   ja: {
     all: "すべて",
-    records: "全レコード",
-    verified: "現行Unity検証済み",
-    sourceDomains: "情報源ドメイン",
+    records: "既知事例",
+    verified: "現行Unity確認済み",
     resolved: "解決済み",
-    unresolved: "未解決",
-    searchLabel: "エラー / 例外 / 症状",
-    searchPlaceholder: "エラー文字列、例外名、症状、パッケージ、情報源を検索",
+    workaround: "回避策あり",
+    unresolved: "調査中",
+    symptomHeading: "困っている症状から探す",
+    symptomHelp: "原因が分からなくても大丈夫です。いま見えている症状から選んでください。",
+    searchLabel: "エラーや症状を検索",
+    searchPlaceholder: "エラー文を貼り付ける、または症状を入力",
+    searchHint: "エラー全文、パッケージ名、「アップロードできない」などの症状でも検索できます。",
+    advanced: "環境や技術情報で詳しく絞り込む",
     software: "ソフトウェア",
     component: "コンポーネント",
     phase: "工程",
@@ -98,23 +135,27 @@ const copyByLocale = {
     sourceType: "情報源種別",
     repository: "GitHubリポジトリ",
     clear: "絞り込みを解除",
-    matching: () => "件一致",
-    evidence: "根拠と解決情報",
+    matching: () => "件見つかりました",
+    symptom: "症状",
+    firstAction: "まず試すこと",
+    investigating: "確認済みの解決策はまだありません。分かっている発生条件と根拠を確認してください。",
+    details: "原因・環境・根拠を詳しく見る",
+    errorText: "エラー文字列",
     trigger: "発生条件",
     rootCause: "原因",
     remedies: "解決策・回避策",
     packages: "パッケージ",
     sources: "根拠",
-    related: "同一・類似シグネチャ",
+    related: "同一・類似エラー",
     exact: "完全一致",
     similar: "類似",
     supports: "根拠対象",
     noRemedy: "確認済みの解決策・回避策はありません。",
-    currentVerified: "現行Unity検証済み",
+    currentVerified: "現行Unity確認済み",
     legacy: "旧Unity",
     otherVersion: "別Unity version",
     unverified: "Unity version未確認",
-    statusLabels: { resolved: "解決済み", workaround: "回避策あり", unresolved: "未解決" },
+    statusLabels: { resolved: "解決済み", workaround: "回避策あり", unresolved: "調査中" },
     remedyLabels: { fix: "解決策", workaround: "回避策" },
   },
 };
@@ -290,6 +331,7 @@ export default function FailureKB() {
     ["resolved", "workaround", "unresolved"].map((status) => [status, allRecords.filter((record) => statusFor(record) === status).length])
   ), []);
   const verifiedCount = useMemo(() => allRecords.filter((record) => record.verification?.current_scope).length, []);
+  const symptomOptions = quickSymptoms[locale] ?? quickSymptoms.ja;
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -300,37 +342,72 @@ export default function FailureKB() {
     });
   };
 
+  const chooseSymptom = (failureType) => {
+    setFilters((current) => ({ ...current, failure_type: current.failure_type === failureType ? "" : failureType }));
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.summary}>
         <div><strong>{allRecords.length}</strong><span>{copy.records}</span></div>
         <div><strong>{verifiedCount}</strong><span>{copy.verified}</span></div>
-        <div><strong>{facets.source_domain.length}</strong><span>{copy.sourceDomains}</span></div>
         <div><strong>{statuses.resolved}</strong><span>{copy.resolved}</span></div>
+        <div><strong>{statuses.workaround}</strong><span>{copy.workaround}</span></div>
         <div><strong>{statuses.unresolved}</strong><span>{copy.unresolved}</span></div>
       </div>
 
-      <div className={styles.searchPanel}>
-        <label className={`${styles.field} ${styles.query}`}>
+      <section className={styles.finder}>
+        <h2>{copy.symptomHeading}</h2>
+        <p>{copy.symptomHelp}</p>
+        <div className={styles.symptomGrid}>
+          {symptomOptions.map(([value, label]) => {
+            const count = allRecords.filter((record) => record.classification?.failure_type === value).length;
+            if (!count) return null;
+            const active = filters.failure_type === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                className={`${styles.symptomButton} ${active ? styles.symptomActive : ""}`}
+                onClick={() => chooseSymptom(value)}
+                aria-pressed={active}
+              >
+                <span>{label}</span>
+                <small>{count}</small>
+              </button>
+            );
+          })}
+        </div>
+
+        <label className={styles.mainSearch}>
           <span>{copy.searchLabel}</span>
           <input name="q" value={filters.q} onChange={onChange} placeholder={copy.searchPlaceholder} autoComplete="off" />
+          <small>{copy.searchHint}</small>
         </label>
-        <Select label={copy.software} name="software" value={filters.software} options={facets.software} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.component} name="component" value={filters.component} options={facets.component} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("component", value, locale)} />
-        <Select label={copy.phase} name="phase" value={filters.phase} options={facets.phase} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("phase", value, locale)} />
-        <Select label={copy.failureType} name="failure_type" value={filters.failure_type} options={facets.failure_type} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("failure_type", value, locale)} />
-        <Select label={copy.hostOs} name="host_os" value={filters.host_os} options={facets.host_os} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.targetPlatform} name="target_platform" value={filters.target_platform} options={facets.target_platform} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.unity} name="unity" value={filters.unity} options={facets.unity} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.vrcsdk} name="vrcsdk" value={filters.vrcsdk} options={facets.vrcsdk} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.package} name="package" value={filters.package} options={facets.package} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.sourceDomain} name="source_domain" value={filters.source_domain} options={facets.source_domain} onChange={onChange} allLabel={copy.all} />
-        <Select label={copy.sourceType} name="source_type" value={filters.source_type} options={facets.source_type} onChange={onChange} allLabel={copy.all} optionLabel={(value) => sourceTypeLabel(value, locale)} />
-        <Select label={copy.repository} name="repository" value={filters.repository} options={facets.repository} onChange={onChange} allLabel={copy.all} disabled={Boolean(filters.source_domain && filters.source_domain !== "github.com")} />
-        <button className={styles.reset} type="button" onClick={() => setFilters(emptyFilters)}>{copy.clear}</button>
-      </div>
+      </section>
 
-      <div className={styles.resultHeader}><strong>{filtered.length}</strong> {copy.matching(filtered.length)}</div>
+      <details className={styles.advanced}>
+        <summary>{copy.advanced}</summary>
+        <div className={styles.searchPanel}>
+          <Select label={copy.software} name="software" value={filters.software} options={facets.software} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.component} name="component" value={filters.component} options={facets.component} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("component", value, locale)} />
+          <Select label={copy.phase} name="phase" value={filters.phase} options={facets.phase} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("phase", value, locale)} />
+          <Select label={copy.failureType} name="failure_type" value={filters.failure_type} options={facets.failure_type} onChange={onChange} allLabel={copy.all} optionLabel={(value) => taxonomyLabel("failure_type", value, locale)} />
+          <Select label={copy.hostOs} name="host_os" value={filters.host_os} options={facets.host_os} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.targetPlatform} name="target_platform" value={filters.target_platform} options={facets.target_platform} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.unity} name="unity" value={filters.unity} options={facets.unity} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.vrcsdk} name="vrcsdk" value={filters.vrcsdk} options={facets.vrcsdk} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.package} name="package" value={filters.package} options={facets.package} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.sourceDomain} name="source_domain" value={filters.source_domain} options={facets.source_domain} onChange={onChange} allLabel={copy.all} />
+          <Select label={copy.sourceType} name="source_type" value={filters.source_type} options={facets.source_type} onChange={onChange} allLabel={copy.all} optionLabel={(value) => sourceTypeLabel(value, locale)} />
+          <Select label={copy.repository} name="repository" value={filters.repository} options={facets.repository} onChange={onChange} allLabel={copy.all} disabled={Boolean(filters.source_domain && filters.source_domain !== "github.com")} />
+        </div>
+      </details>
+
+      <div className={styles.resultBar}>
+        <div><strong>{filtered.length}</strong> {copy.matching(filtered.length)}</div>
+        {Object.values(filters).some(Boolean) && <button type="button" onClick={() => setFilters(emptyFilters)}>{copy.clear}</button>}
+      </div>
 
       <div className={styles.records}>
         {filtered.map((record) => {
@@ -339,36 +416,48 @@ export default function FailureKB() {
           const classification = record.classification ?? {};
           const environment = record.environment ?? {};
           const evidence = evidenceViews(record);
+          const remedies = record.remedies ?? [];
+          const primaryRemedy = remedies.find((item) => item.type === "fix") ?? remedies[0];
           return (
             <article className={styles.card} key={record.id} id={`failure-${record.id}`}>
               <div className={styles.meta}>
                 <span className={`${styles.status} ${styles[status]}`}>{copy.statusLabels[status]}</span>
-                <span>{verificationLabel(record, copy)}</span>
-                <span>{record.date}</span>
                 {classification.software && <span>{classification.software}</span>}
+                <span>{record.date}</span>
               </div>
+
               <h3>{localized(record, "title", locale)}</h3>
-              {record.error_signature && <pre className={styles.signature}>{record.error_signature}</pre>}
-              {record.symptom && <p>{localized(record, "symptom", locale)}</p>}
+              {record.symptom && <p className={styles.symptom}><strong>{copy.symptom}:</strong> {localized(record, "symptom", locale)}</p>}
+
+              {primaryRemedy ? (
+                <div className={styles.answer}>
+                  <strong>{copy.firstAction}</strong>
+                  <p>{localizedRemedy(record, primaryRemedy, locale)}</p>
+                </div>
+              ) : (
+                <div className={`${styles.answer} ${styles.answerPending}`}>
+                  <strong>{copy.statusLabels.unresolved}</strong>
+                  <p>{copy.investigating}</p>
+                </div>
+              )}
+
               <div className={styles.chips}>
                 {classification.component && <span>{taxonomyLabel("component", classification.component, locale)}</span>}
                 {classification.phase && <span>{taxonomyLabel("phase", classification.phase, locale)}</span>}
-                {classification.failure_type && <span>{taxonomyLabel("failure_type", classification.failure_type, locale)}</span>}
-                {(environment.host_os ?? []).map((host) => <span key={`${host.name}-${host.version ?? ""}`}>{host.name}{host.version ? ` ${host.version}` : ""}</span>)}
-                {(environment.target_platform ?? []).map((target) => <span key={target}>{target}</span>)}
-                {environment.unity_version ? <span>Unity {environment.unity_version}</span> : <span>{copy.unverified}</span>}
-                {environment.vrchat_sdk_version && <span>VRCSDK {environment.vrchat_sdk_version}</span>}
+                {environment.unity_version && <span>Unity {environment.unity_version}</span>}
               </div>
 
               <details className={styles.details}>
-                <summary>{copy.evidence}</summary>
+                <summary>{copy.details}</summary>
                 <dl>
+                  <dt>Unity</dt><dd>{verificationLabel(record, copy)}{environment.unity_version ? ` / ${environment.unity_version}` : ""}</dd>
+                  {record.error_signature && <><dt>{copy.errorText}</dt><dd><pre className={styles.signature}>{record.error_signature}</pre></dd></>}
                   {record.trigger && <><dt>{copy.trigger}</dt><dd>{localized(record, "trigger", locale)}</dd></>}
                   {record.root_cause && <><dt>{copy.rootCause}</dt><dd>{localized(record, "root_cause", locale)}</dd></>}
                   <dt>{copy.remedies}</dt>
-                  <dd>{(record.remedies ?? []).length ? (
+                  <dd>{remedies.length ? (
                     <ul className={styles.compactList}>
-                      {record.remedies.map((remedy, index) => (
+                      {remedies.map((remedy, index) => (
                         <li key={`${remedy.type}-${index}`}><strong>{copy.remedyLabels[remedy.type]}:</strong> {localizedRemedy(record, remedy, locale)}</li>
                       ))}
                     </ul>
