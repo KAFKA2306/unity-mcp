@@ -1,6 +1,6 @@
 .root {
-  --comparison-border: var(--ifm-color-emphasis-300);
-  --comparison-muted: var(--ifm-color-emphasis-700);
+  --comparison-border: var(--k-color-border);
+  --comparison-muted: var(--k-color-muted-foreground);
 }
 
 .summary {
@@ -48,17 +48,17 @@
   align-items: center;
   border-radius: 0.3rem;
   padding: 0.14rem 0.45rem;
-  color: #fff;
+  color: var(--k-color-surface);
   font-size: 0.7rem;
   font-weight: 800;
   line-height: 1.35;
   white-space: nowrap;
 }
 
-.pass { background: #22c55e; }
-.warn { background: #ca8a04; }
-.fail { background: #ef4444; }
-.unverified { background: #6b7280; }
+.pass { background: var(--k-color-success); }
+.warn { background: var(--k-color-warning); }
+.fail { background: var(--k-color-danger); }
+.unverified { background: var(--k-color-muted-foreground); }
 
 .tableWrap {
   width: 100%;
@@ -91,7 +91,7 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  background: var(--ifm-background-surface-color);
+  background: var(--k-color-surface);
   color: var(--comparison-muted);
   font-size: 0.78rem;
   text-align: left;
@@ -102,9 +102,7 @@
 .matrix th:nth-child(n+3) { width: 165px; }
 
 .decisionCell,
-.nameCell {
-  background: var(--ifm-background-color);
-}
+.nameCell { background: var(--k-color-surface); }
 
 .nameCell strong { overflow-wrap: anywhere; }
 .nameCell p { margin: 0.55rem 0 0; font-size: 0.82rem; line-height: 1.45; }
