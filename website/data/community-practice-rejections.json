@@ -3,6 +3,22 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://zenn.dev/erimgarak/articles/520c5240e07f14",
+      "title": "Unity × AI連携ツール、CLI化の勢力図（2026年9月時点・調査編）",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "rejected_at": "2026-09-03T08:17:26.328Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-low-score",
+      "signals": [
+        "vrchat-in-body:+2",
+        "technical-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "url": "https://kohavrog.com/kamvas-13",
       "title": "VRChatアバター改変やレタッチに液タブは使えるのか…！？HUION Kamvas 13 (Gen 3) をレビュー | こはろぐ",
       "source": "こはろぐ",

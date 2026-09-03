@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-08-30T09:27:56.647Z",
+  "generated_at": "2026-09-03T08:17:26.328Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -777,6 +777,43 @@
         "technical-evidence>=5:+2",
         "implementation-evidence>=2:+2",
         "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "VRChatワールド制作をAIで加速する：Unity-MCP実践編（2026年版アップデート）",
+      "url": "https://zenn.dev/erimgarak/articles/d0b5f65b559ba9",
+      "author": "erimgarak",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-09-03",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "armature",
+        "PhysBone",
+        "UdonSharp",
+        "automation"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-03T08:17:26.328Z",
+      "last_verified_at": "2026-09-03T08:17:26.328Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 15,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
         "procedure-evidence>=3:+2",
         "code-block:+1"
       ]
