@@ -1,0 +1,40 @@
+name: Design sync bootstrap
+
+on:
+  push:
+    branches: [feat/canonical-design-adoption]
+    paths:
+      - design.config.json
+      - website/src/css/custom.css
+      - .github/workflows/design-sync-bootstrap.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout consumer
+        uses: actions/checkout@v4
+        with:
+          ref: feat/canonical-design-adoption
+      - name: Checkout canonical design
+        uses: actions/checkout@v4
+        with:
+          repository: KAFKA2306/design
+          ref: f39a0865cf0342f495bf49f547c7fdf112145d77
+          path: .canonical-design
+          persist-credentials: false
+      - name: Sync canonical assets and lock
+        run: node .canonical-design/scripts/design-sync.mjs --consumer "$GITHUB_WORKSPACE"
+      - name: Commit generated contract
+        run: |
+          rm -rf .canonical-design
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add design.lock.json website/src/css/custom.css website/src/css/.kafka-design
+          git diff --cached --quiet && exit 0
+          git commit -m "chore(design): sync canonical assets"
+          git push origin HEAD:feat/canonical-design-adoption
