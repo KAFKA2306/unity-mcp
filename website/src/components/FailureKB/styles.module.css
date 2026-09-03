@@ -1,7 +1,7 @@
 .root {
-  --failure-border: var(--ifm-color-emphasis-300);
-  --failure-muted: var(--ifm-color-emphasis-700);
-  --failure-surface: var(--ifm-background-surface-color);
+  --failure-border: var(--k-color-border);
+  --failure-muted: var(--k-color-muted-foreground);
+  --failure-surface: var(--k-color-surface);
 }
 
 .summary {
@@ -47,8 +47,8 @@
   border: 1px solid var(--failure-border);
   border-radius: 0.6rem;
   padding: 0.65rem 0.75rem;
-  background: var(--ifm-background-color);
-  color: var(--ifm-font-color-base);
+  background: var(--k-color-surface);
+  color: var(--k-color-foreground);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -58,8 +58,12 @@
   font-weight: 650;
 }
 
-.symptomButton:hover { border-color: var(--ifm-color-primary); }
-.symptomActive { border-color: var(--ifm-color-primary); box-shadow: inset 0 0 0 1px var(--ifm-color-primary); }
+.symptomButton:hover { border-color: var(--k-color-primary); }
+.symptomActive {
+  border-color: var(--k-color-primary);
+  outline: 1px solid var(--k-color-primary);
+  outline-offset: -2px;
+}
 .symptomButton small { color: var(--failure-muted); font-weight: 500; }
 
 .mainSearch { display: flex; flex-direction: column; gap: 0.3rem; }
@@ -70,8 +74,8 @@
   border-radius: 0.6rem;
   padding: 0.8rem 0.9rem;
   font-size: 1rem;
-  color: var(--ifm-font-color-base);
-  background: var(--ifm-background-color);
+  color: var(--k-color-foreground);
+  background: var(--k-color-surface);
 }
 .mainSearch small { color: var(--failure-muted); }
 
@@ -86,7 +90,7 @@
   cursor: pointer;
   padding: 0.8rem 1rem;
   font-weight: 650;
-  background: var(--failure-surface);
+  background: var(--k-color-canvas);
 }
 
 .searchPanel {
@@ -105,8 +109,8 @@
   border: 1px solid var(--failure-border);
   border-radius: 0.45rem;
   padding: 0.55rem 0.65rem;
-  color: var(--ifm-font-color-base);
-  background: var(--ifm-background-color);
+  color: var(--k-color-foreground);
+  background: var(--k-color-surface);
 }
 .field select:disabled { opacity: 0.55; cursor: not-allowed; }
 
@@ -121,7 +125,7 @@
 .resultBar button {
   border: 0;
   background: transparent;
-  color: var(--ifm-color-primary);
+  color: var(--k-color-primary);
   cursor: pointer;
   padding: 0.3rem;
 }
@@ -170,19 +174,19 @@
 }
 
 .status { font-weight: 750; }
-.resolved { border-color: #22c55e; }
-.workaround { border-color: #ca8a04; }
-.unresolved { border-color: #ef4444; }
+.resolved { border-color: var(--k-color-success); }
+.workaround { border-color: var(--k-color-warning); }
+.unresolved { border-color: var(--k-color-danger); }
 
 .answer {
-  border-left: 3px solid #22c55e;
-  background: var(--ifm-color-emphasis-100);
+  border-left: 3px solid var(--k-color-success);
+  background: var(--k-color-canvas);
   border-radius: 0.35rem;
   padding: 0.7rem 0.8rem;
   margin: 0.75rem 0;
 }
 
-.answerPending { border-left-color: #ef4444; }
+.answerPending { border-left-color: var(--k-color-danger); }
 .answer > strong { display: block; font-size: 0.8rem; margin-bottom: 0.2rem; }
 .answer p { margin: 0; }
 
@@ -211,7 +215,7 @@
   margin: 0;
   padding: 0.65rem;
   border-radius: 0.45rem;
-  background: var(--ifm-color-emphasis-100);
+  background: var(--k-color-canvas);
   font-size: 0.8rem;
 }
 
