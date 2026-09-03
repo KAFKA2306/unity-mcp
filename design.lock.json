@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "designSha": "f39a0865cf0342f495bf49f547c7fdf112145d77",
+  "preset": "base",
+  "configHash": "86100716fce88bf09e47cc304a9d779b15c3f4ba753a3f8f2a5b02fdb082fb21",
+  "manifestHash": "54c40f9f442ad9329ac5f7188310bdc05cd51310fb6b9104f14dbfaf996a9fb4",
+  "logoHash": null,
+  "installedRegistryItems": [],
+  "managedFiles": [
+    {
+      "path": "website/src/css/.kafka-design/kafka-tokens.css",
+      "sha256": "897ef1dfb22bf1a9671ad96075104af78eca6d5e02427135cd7d0b6d647af6d8"
+    },
+    {
+      "path": "website/src/css/.kafka-design/kafka-globals.css",
+      "sha256": "2304371a0c507131844c2fbaa8e9725dedc72ba3165226ba6f2d1862812256bc"
+    },
+    {
+      "path": "website/src/css/.kafka-design/kafka-components.css",
+      "sha256": "6236943bda6adc5bbd82f6fee9f600b1cffd1d25bc515b64843b5b7f51fd0cde"
+    }
+  ],
+  "integration": {
+    "cssEntry": "website/src/css/custom.css",
+    "blockHash": "a22ccfc87e7ebb134ccac8bd2b5f5978fa63039a7a5cc23e30e70f3524865201"
+  }
+}
