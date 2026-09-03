@@ -1,13 +1,8 @@
-/* HomeArchitecture — three-stage flow with labeled edges between them.
- * Mono labels, hairline borders, no decorative chrome. Reads like a
- * datasheet block diagram. */
-
 .section {
   padding: 5rem 1.5rem;
-  border-top: 1px solid var(--ifm-color-emphasis-200);
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-  background:
-    linear-gradient(180deg, transparent 0, var(--ifm-color-emphasis-100) 100%);
+  border-top: 1px solid var(--k-color-border);
+  border-bottom: 1px solid var(--k-color-border);
+  background: var(--k-color-canvas);
 }
 
 .inner {
@@ -22,11 +17,11 @@
 
 .eyebrow {
   display: block;
-  font-family: var(--ifm-font-family-monospace);
+  font-family: var(--k-font-family-mono);
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ifm-color-primary);
+  color: var(--k-color-primary);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -36,19 +31,16 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   margin: 0 0 1rem;
-  color: var(--ifm-heading-color);
+  color: var(--k-color-foreground);
 }
 
 .lede {
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--ifm-color-emphasis-700);
+  color: var(--k-color-muted-foreground);
   margin: 0;
 }
 
-/* Diagram: 5 columns (stage, edge, stage, edge, stage). Each row is one
- * grid row. Edges visually link the stages with a hairline + an inline
- * mono label. */
 .diagram {
   display: grid;
   grid-template-columns: 1fr auto 1fr auto 1fr;
@@ -60,37 +52,33 @@
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1.4rem;
-  background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--k-color-surface);
+  border: 1px solid var(--k-color-border);
   position: relative;
 }
 
-/* Filled = "your machine" — a calmer surface that still reads as the
- * runtime side, but doesn't punch out against the section background.
- * Subtle emphasis-200 fill with a slightly darker border. Heading-color
- * text keeps things crisp without going pure-inverse. */
 .stageFilled {
-  background: var(--ifm-color-emphasis-200);
-  border-color: var(--ifm-color-emphasis-300);
-  color: var(--ifm-color-emphasis-1000);
+  background: var(--k-color-canvas);
+  border-color: var(--k-color-border);
+  color: var(--k-color-foreground);
 }
-.stageFilled .stageTitle { color: var(--ifm-color-emphasis-1000); }
-.stageFilled .stageKicker { color: var(--ifm-color-emphasis-600); }
-.stageFilled .stageSub { color: var(--ifm-color-emphasis-700); }
-.stageFilled .stageBody { color: var(--ifm-color-emphasis-800); }
+.stageFilled .stageTitle { color: var(--k-color-foreground); }
+.stageFilled .stageKicker,
+.stageFilled .stageSub,
+.stageFilled .stageBody { color: var(--k-color-muted-foreground); }
 
 .stageOutlined {
-  background: var(--ifm-background-color);
-  border: 1px dashed var(--ifm-color-emphasis-400);
-  color: var(--ifm-heading-color);
+  background: var(--k-color-surface);
+  border: 1px dashed var(--k-color-border);
+  color: var(--k-color-foreground);
 }
 
 .stageKicker {
-  font-family: var(--ifm-font-family-monospace);
+  font-family: var(--k-font-family-mono);
   font-size: 0.7rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--k-color-muted-foreground);
   margin-bottom: 0.85rem;
 }
 
@@ -99,25 +87,24 @@
   font-weight: 700;
   letter-spacing: -0.012em;
   margin: 0 0 0.4rem;
-  color: var(--ifm-heading-color);
+  color: var(--k-color-foreground);
 }
 
 .stageSub {
-  font-family: var(--ifm-font-family-monospace);
+  font-family: var(--k-font-family-mono);
   font-size: 0.78rem;
   letter-spacing: 0.005em;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--k-color-muted-foreground);
   margin: 0 0 1rem;
 }
 
 .stageBody {
   font-size: 0.88rem;
   line-height: 1.5;
-  color: var(--ifm-color-emphasis-700);
+  color: var(--k-color-muted-foreground);
   margin: 0;
 }
 
-/* Edge between stages — hairline + label. */
 .edge {
   position: relative;
   display: flex;
@@ -134,24 +121,22 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: var(--ifm-color-emphasis-400);
+  background: var(--k-color-border);
 }
 
-.edgeLineVertical {
-  display: none;
-}
+.edgeLineVertical { display: none; }
 
 .edgeLabel {
   position: relative;
   z-index: 1;
   padding: 0.25rem 0.55rem;
-  font-family: var(--ifm-font-family-monospace);
+  font-family: var(--k-font-family-mono);
   font-size: 0.68rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--ifm-color-emphasis-700);
-  background: var(--ifm-background-color);
-  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--k-color-muted-foreground);
+  background: var(--k-color-surface);
+  border: 1px solid var(--k-color-border);
   white-space: nowrap;
 }
 
@@ -161,10 +146,10 @@
   flex-wrap: wrap;
   gap: 2rem;
   margin-top: 2rem;
-  font-family: var(--ifm-font-family-monospace);
+  font-family: var(--k-font-family-mono);
   font-size: 0.72rem;
   letter-spacing: 0.04em;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--k-color-muted-foreground);
 }
 
 .legendItem {
@@ -180,28 +165,23 @@
 }
 
 .swatchFilled {
-  background: var(--ifm-color-emphasis-200);
-  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--k-color-canvas);
+  border: 1px solid var(--k-color-border);
 }
 
 .swatchOutlined {
   background: transparent;
-  border: 1px dashed var(--ifm-color-emphasis-400);
+  border: 1px dashed var(--k-color-border);
 }
 
-/* Stack vertically on narrow viewports */
 @media (max-width: 900px) {
-  .diagram {
-    grid-template-columns: 1fr;
-  }
+  .diagram { grid-template-columns: 1fr; }
   .edge {
     min-width: 0;
     padding: 0.6rem 0;
     height: 60px;
   }
-  .edgeLineHorizontal {
-    display: none;
-  }
+  .edgeLineHorizontal { display: none; }
   .edgeLineVertical {
     display: block;
     position: absolute;
@@ -209,7 +189,7 @@
     bottom: 0;
     left: 50%;
     width: 1px;
-    background: var(--ifm-color-emphasis-400);
+    background: var(--k-color-border);
     transform: translateX(-50%);
   }
 }
