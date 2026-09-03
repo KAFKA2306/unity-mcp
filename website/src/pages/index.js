@@ -19,9 +19,9 @@ export default function Home() {
     >
       <main>
         <HomeHero />
+        <HomeFeatures />
         <HomeStats />
         <HomeArchitecture />
-        <HomeFeatures />
         <HomeCloser />
       </main>
     </Layout>
