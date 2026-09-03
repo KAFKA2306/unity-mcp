@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "designSha": "f39a0865cf0342f495bf49f547c7fdf112145d77",
+  "designSha": "f2d5c85e196c0f92239de0607c8fce6bf1b20433",
   "preset": "base",
-  "configHash": "86100716fce88bf09e47cc304a9d779b15c3f4ba753a3f8f2a5b02fdb082fb21",
-  "manifestHash": "54c40f9f442ad9329ac5f7188310bdc05cd51310fb6b9104f14dbfaf996a9fb4",
+  "configHash": "91c785cbe6b0b59ae092bbcb1cc537baf503b4ea8a4780f08d11530832964c78",
+  "manifestHash": "c24334f25606696d41dc0f7880ac85dcee1194fe07fe520f6f4d2d79c863d3fc",
   "logoHash": null,
   "installedRegistryItems": [],
   "managedFiles": [
@@ -18,10 +18,18 @@
     {
       "path": "website/src/css/.kafka-design/kafka-components.css",
       "sha256": "6236943bda6adc5bbd82f6fee9f600b1cffd1d25bc515b64843b5b7f51fd0cde"
+    },
+    {
+      "path": "website/src/css/.kafka-design/portable-conformance.mjs",
+      "sha256": "5281b91caadee07e92b5876ad3547a6531229bb57107ba3bcff4be20ddc3e6d4"
+    },
+    {
+      "path": "website/src/css/.kafka-design/conformance-policy.mjs",
+      "sha256": "1622dce9e752aa5b1fc700d1fa894da5f08a957fb088dad7a59be26529a8b54a"
     }
   ],
   "integration": {
     "cssEntry": "website/src/css/custom.css",
-    "blockHash": "a22ccfc87e7ebb134ccac8bd2b5f5978fa63039a7a5cc23e30e70f3524865201"
+    "blockHash": "17f3ce126f165b8f41c25f87a57a6fa1272796478cd4a150ec085cdc36dcdec7"
   }
 }
