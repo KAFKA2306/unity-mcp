@@ -32449,7 +32449,7 @@
     }
   },
   "last_run": {
-    "at": "2026-09-04T18:33:16.502Z",
+    "at": "2026-09-04T23:19:21.651Z",
     "status": "partial",
     "classifier_version": 2,
     "title_policy_version": 1,
@@ -32458,7 +32458,7 @@
     "new_candidates": 0,
     "removed_existing": 0,
     "title_policy_removed": 0,
-    "fetch_errors": 1,
+    "fetch_errors": 80,
     "sources": [
       {
         "id": "hatena-kxn4t",
@@ -32481,8 +32481,8 @@
       {
         "id": "qiita-unity",
         "kind": "feed",
-        "status": "success",
-        "error": null
+        "status": "failed",
+        "error": "HTTP 403 https://qiita.com/tags/unity/feed"
       },
       {
         "id": "note-sitemap",
