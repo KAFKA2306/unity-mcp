@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **85件**
+現在の候補: **86件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -34,6 +34,7 @@ slug: /community-practice/candidates
 | 16 | 2025-12-19 | [【VRChat】デバッグとテストの基本：Debug.Log・ClientSimの使い方 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-debugging-testing) | ういやまラボ | VRChat, Unity, UdonSharp, networking |
 | 16 | 2025-02-03 | [【VRChat】『あなたらしさ』は髪色から！アバターの髪色を簡単＆自由に改変する方法と最強ツールを紹介します！ \| こはろぐ](https://kohavrog.com/hair_customize) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, shader, lighting, optimization |
 | 16 | 2023-12-05 | [【AAO: Avatar Optimizer】できる範囲でやるアバター最適化 - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2023/12/05/200641) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, armature, shape keys, Expression Menu, Animator, PhysBone, networking, shader, lighting, optimization, automation |
+| 15 | 2026-09-10 | [【VRChat/Udon】世界最速のC#コンパイラを開発した話](https://zenn.dev/bea4dev/articles/b7684e8d4c838e) | Zenn | VRChat, Unity, UdonSharp, networking, optimization, automation |
 | 15 | 2026-09-08 | [【VRChat】初めてのVRChatワールド：床・スポーン・落下復帰を作って歩く \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-first-room) | ういやまラボ | VRChat, Unity, UdonSharp, lighting |
 | 15 | 2026-09-03 | [VRChatワールド制作をAIで加速する：Unity-MCP実践編（2026年版アップデート）](https://zenn.dev/erimgarak/articles/d0b5f65b559ba9) | Zenn | VRChat, Unity, Blender, armature, PhysBone, UdonSharp, automation |
 | 15 | 2025-12-19 | [【VRChat】ネットワーク同期入門：所有権とUdonSyncedを理解する \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-networking-basics) | ういやまラボ | VRChat, UdonSharp, networking, lighting |

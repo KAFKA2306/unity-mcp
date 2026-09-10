@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-09-10T08:23:38.806Z",
+  "generated_at": "2026-09-10T13:48:46.917Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -813,6 +813,42 @@
         "technical-evidence>=5:+2",
         "implementation-evidence>=2:+2",
         "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat/Udon】世界最速のC#コンパイラを開発した話",
+      "url": "https://zenn.dev/bea4dev/articles/b7684e8d4c838e",
+      "author": "bea4dev",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-09-10",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "optimization",
+        "automation"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T13:48:46.917Z",
+      "last_verified_at": "2026-09-10T13:48:46.917Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 15,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "tool-build-title:+2",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
         "procedure-evidence>=3:+2",
         "code-block:+1"
       ]
