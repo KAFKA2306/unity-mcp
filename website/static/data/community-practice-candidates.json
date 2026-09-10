@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-09-03T08:17:26.328Z",
+  "generated_at": "2026-09-10T08:23:38.806Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -547,6 +547,42 @@
       ]
     },
     {
+      "title": "【VRChat】VRChatワールド制作の環境構築：プロジェクトを作ってSDKパネルを開く | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-project-setup",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 16,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "title": "【VRChat】アバターもワールドも改変せず、OSCで腕振り移動を自作してVR酔い対策",
       "url": "https://zenn.dev/augma/articles/9012eed92a0956",
       "author": "augma",
@@ -782,6 +818,41 @@
       ]
     },
     {
+      "title": "【VRChat】初めてのVRChatワールド：床・スポーン・落下復帰を作って歩く | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-first-room",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 15,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "title": "VRChatワールド制作をAIで加速する：Unity-MCP実践編（2026年版アップデート）",
       "url": "https://zenn.dev/erimgarak/articles/d0b5f65b559ba9",
       "author": "erimgarak",
@@ -979,6 +1050,209 @@
         "implementation-evidence>=2:+2",
         "implementation-evidence>=5:+1",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "【VRChat】同期するサイコロ：乱数は所有者が決めて配る | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-synced-dice",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "Animator",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】AnimatorとUdonで扉を動かす：回転軸とポーズの切り替え | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-animator-udon",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "Animator",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】DataDictionaryとJSON：設定データを読んでライトに反映する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-data-containers",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】PlayerDataで音量を保存する：次に来ても自分の設定のまま | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-player-data",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】ワールド内UIを作る：ボタンとスライダーでUdonを呼ぶ | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-space-ui",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】作った床を友達へ届ける：VRChatワールドのアップロードと更新 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-upload-update",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
@@ -1194,6 +1468,135 @@
       ]
     },
     {
+      "title": "【VRChat】ポータルで他のワールドへつなぐ：玄関と廊下は別物 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-portals",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "UdonSharp"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 13,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】外部画像でポスターを貼り替える：頼む係を持ち続ける | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-image-loading",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "shader"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 13,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】床と壁のマテリアル入門：色・模様・光沢でワールドを仕上げる | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-materials-textures",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "shader",
+        "lighting"
+      ],
+      "tools": [
+        "lilToon",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 13,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】Prefabで部品を使い回す：片方だけ変える、まとめて変える | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-prefabs-packages",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "lighting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 13,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "title": "【VRChat】AAP / Animator解析とMAパーティクル共通化 技術メモ",
       "url": "https://zenn.dev/yrd_gs/articles/00a4633ae8da00",
       "author": "ゆるど",
@@ -1366,6 +1769,78 @@
       ]
     },
     {
+      "title": "【VRChat】配布アセットを部屋に置く：取り込み・大きさ・当たり判定・ピンク | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-import-assets",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "outfit fitting",
+        "shader",
+        "optimization"
+      ],
+      "tools": [
+        "lilToon"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 12,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】VRChatワールド制作の始め方：小さな部屋を育てる6ステップ | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-creation-roadmap",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "UdonSharp",
+        "networking",
+        "lighting",
+        "optimization"
+      ],
+      "tools": [
+        "UdonSharp",
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 12,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "procedure-evidence>=3:+2"
+      ]
+    },
+    {
       "title": "開発者のためのフリーVRMアバター活用ガイド（選定編）— 入手先とライセンスの選び方",
       "url": "https://zenn.dev/bunniesfield/articles/free-vrm-avatar-catalog",
       "author": "bunniesfield",
@@ -1532,6 +2007,298 @@
         "technical-evidence>=2:+2",
         "technical-evidence>=5:+2",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "【VRChat】時間差で処理を呼ぶ：3秒後に開く扉とカウントダウン | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-delayed-events",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "Animator",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】ワールドの容量を減らす：テクスチャの解像度と圧縮 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-build-size",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "Unity"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】ワールドの照明とベイク入門：小さな部屋に光を焼き込む | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-lighting-bake",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "lighting"
+      ],
+      "tools": [
+        "ClientSim"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】所有権を理解する：いま値を書ける人は誰か | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-object-ownership",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】物理の負荷を下げる：眠らせて、ぶつける相手を減らす | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-physics-optimization",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】PlayerObjectで各自の状態を持つ：自分だけのスタンプカードを作る | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-player-objects",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】外部テキストで掲示板を更新する：失敗しても前の案内を残す | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-string-loading",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】トリガーでエリアを検知する：入った人だけに案内を出す | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-triggers-layers",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】動画プレイヤーを置く：全員で同じ場面を見るスクリーン | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-video-player",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "UdonSharp",
+        "networking",
+        "shader",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
@@ -1792,6 +2559,35 @@
       ]
     },
     {
+      "title": "【VRChat】当たり判定の基礎：歩ける床・すり抜ける飾り・落ちる箱 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-colliders-basics",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 10,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "title": "iFacialMocap(iPhone)を使ってVRChatのアバターのフェイストラッキングをする",
       "url": "https://zenn.dev/kagahirokasumi/articles/4f117e67e33d88",
       "author": "花芽尋かすみ",
@@ -1935,6 +2731,129 @@
         "technical-title:+3",
         "technical-evidence>=2:+2",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "【VRChat】プログラムの4つの部品：変数・if・for・関数 | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-csharp-basics",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 9,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】Unityの画面と操作：VRChatのワールド制作で使うのは4つの窓だけ | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/vrchat-unity-editor-basics",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-09",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Animator"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 9,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】Network Events：その場の全員にチャイムを届ける | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-network-events",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 9,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】VRC Object Sync：投げた物の位置を全員で共有する | ういやまラボ",
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-object-sync",
+      "author": "Uhiyama",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "published_at": "2026-09-08",
+      "topics": [
+        "VRChat",
+        "UdonSharp",
+        "networking",
+        "lighting"
+      ],
+      "tools": [
+        "UdonSharp"
+      ],
+      "first_discovered_at": "2026-09-10T08:23:38.806Z",
+      "last_verified_at": "2026-09-10T08:23:38.806Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 9,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {

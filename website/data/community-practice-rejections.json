@@ -3,6 +3,230 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-room-blockout",
+      "title": "【VRChat】Cubeで部屋と階段を作る：VRで気持ちよく歩ける寸法 | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 6,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-wayfinding-comfort",
+      "title": "【VRChat】迷わず歩ける部屋を作る：入口から席までの導線と居心地 | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 6,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-light-probes",
+      "title": "【VRChat】Light ProbeとReflection Probe入門：動く小物の明るさと映り込み | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-skybox-fog",
+      "title": "【VRChat】空と霧で雰囲気を決める：Skyboxを変えて、遠くをぼかす | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-spatial-audio",
+      "title": "【VRChat】BGMと空間音響：どこでも鳴る音と、近づくと聞こえる音 | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-low-score",
+      "signals": [
+        "vrchat-in-title:+3",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-particle-effects",
+      "title": "【VRChat】パーティクルで光の粒を作る：数より、覆う面積が重い | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-audiolink",
+      "title": "【VRChat】AudioLinkで音に反応する壁を作る：低音で光らせる | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 10,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-rendering-optimization",
+      "title": "【VRChat】描画を軽くする：鏡・影・LODを同じ部屋で比べる | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-performance-measuring",
+      "title": "【VRChat】重さを測る：どこが重いのかを先に見つける | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-troubleshooting-guide",
+      "title": "【VRChat】困ったときの逆引き：症状から原因を探す | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-cross-platform",
+      "title": "【VRChat】Quest・スマホにも対応する：同じIDに2つのビルドを載せる | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 11,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-accessibility",
+      "title": "【VRChat】いろんな人が使えるようにする：文字・間隔・段階の3つ | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-release-checklist",
+      "title": "【VRChat】公開前チェックリスト：初めて来る人の目で1周する | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
+      "url": "https://uhiyama-lab.com/ja/notes/vrchat/world-release-maintenance",
+      "title": "【VRChat】公開してからの育て方：報告を集めて、直して、また出す | ういやまラボ",
+      "source": "ういやまラボ",
+      "source_id": "uhiyama-vrchat-notes-index",
+      "rejected_at": "2026-09-10T08:23:38.806Z",
+      "classifier_version": 2,
+      "score": 8,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "url": "https://zenn.dev/erimgarak/articles/520c5240e07f14",
       "title": "Unity × AI連携ツール、CLI化の勢力図（2026年9月時点・調査編）",
       "source": "Zenn",
