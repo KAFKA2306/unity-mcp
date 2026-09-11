@@ -30,7 +30,6 @@ on:
 
 permissions:
   contents: write
-  issues: write
   actions: write
 
 concurrency:
@@ -120,52 +119,6 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Prepare candidate queue Issue
-        if: steps.changes.outputs.candidate_changed == 'true'
-        working-directory: website
-        env:
-          DISCOVERY_STATUS: ${{ steps.discover.outputs.status }}
-          NEW_CANDIDATES: ${{ steps.discover.outputs.new_candidates }}
-          REMOVED_EXISTING: ${{ steps.discover.outputs.removed_existing }}
-        run: |
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const data = JSON.parse(fs.readFileSync('static/data/community-practice-candidates.json', 'utf8'));
-          const items = data.items ?? [];
-          const lines = [
-            '## Community practice discovery queue',
-            '',
-            `Discovery status: **${process.env.DISCOVERY_STATUS}**`,
-            `New candidates: **${process.env.NEW_CANDIDATES}**`,
-            `Removed by quality classifier: **${process.env.REMOVED_EXISTING}**`,
-            `Pending candidates: **${items.length}**`,
-            '',
-            'このIssueはGitHub Actionsの技術実践記事collectorが更新する候補キューです。scoreはイベント・日記・一般記事を除外するための自動判定であり、公式仕様の正しさを保証するものではありません。採用する記事だけ `website/static/data/community-practice.json` へ昇格してください。',
-            '',
-            '| score | published | source | title | URL |',
-            '|---:|---|---|---|---|'
-          ];
-          for (const item of items.slice(0, 80)) {
-            const title = (item.title ?? '(title unavailable)').replaceAll('|', '\\|');
-            lines.push(`| ${item.quality_score ?? ''} | ${item.published_at ?? ''} | ${item.source ?? ''} | ${title} | ${item.url} |`);
-          }
-          if (items.length > 80) lines.push('', `... ${items.length - 80} more candidates are available on the Pages candidate view.`);
-          fs.writeFileSync('community-practice-candidates-issue.md', `${lines.join('\n')}\n`);
-          NODE
-
-      - name: Create or update candidate queue Issue
-        if: steps.changes.outputs.candidate_changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          QUEUE_TITLE: "[auto] Community practice candidates"
-        run: |
-          issue_number="$(gh issue list --state open --search "$QUEUE_TITLE in:title" --json number,title --jq ".[] | select(.title == \"$QUEUE_TITLE\") | .number" | head -n 1)"
-          if [ -n "$issue_number" ]; then
-            gh issue edit "$issue_number" --body-file website/community-practice-candidates-issue.md
-          else
-            gh issue create --title "$QUEUE_TITLE" --body-file website/community-practice-candidates-issue.md
           fi
 
       - name: Install docs dependencies
