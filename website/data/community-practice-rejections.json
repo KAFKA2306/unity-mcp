@@ -3,6 +3,20 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://note.com/sora89167857/n/n0a83d8725508",
+      "title": "面白いと思ったyoutube動画の京大医学部卒?の人を「ネームとワクチン」で検索したら・・・｜sora",
+      "source": "note",
+      "source_id": "note-sitemap",
+      "rejected_at": "2026-09-12T23:21:19.409Z",
+      "classifier_version": 2,
+      "score": 4,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-body:+2",
+        "procedure-evidence>=3:+2"
+      ]
+    },
+    {
       "url": "https://note.com/aku_lily/n/n09517c3032ac",
       "title": "一ノ瀬志希があんまりにも可愛い -アイドル同士の関係性っていいよね-｜あく",
       "source": "note",
