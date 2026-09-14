@@ -68,6 +68,26 @@ jobs:
           GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
         run: npm run build
 
+      - name: Validate task-first homepage
+        working-directory: website
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          html = Path('build/index.html').read_text(encoding='utf-8')
+          markers = [
+              'このWebページでは未判定',
+              'Unityを接続する',
+              'Failureを診断する',
+              'Package URLが必要な場合',
+          ]
+          positions = [html.index(marker) for marker in markers]
+          assert positions == sorted(positions), positions
+          assert '正常稼働' not in html
+          assert '/unity-mcp/failures' in html
+          assert '/unity-mcp/getting-started/install' in html
+          PY
+
       - name: Upload Pages artifact
         if: (github.event_name == 'push' && github.ref == 'refs/heads/beta') || github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3
