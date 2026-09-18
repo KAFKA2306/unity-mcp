@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-09-10T13:48:46.917Z",
+  "generated_at": "2026-09-18T23:34:20.116Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -2043,6 +2043,37 @@
         "technical-evidence>=2:+2",
         "technical-evidence>=5:+2",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "【自分用①】ChatGPTからVRChatワールドライティング初心者へ 第1章：Directional / Point / Spot / Area「ライト4兄弟」を完全に理解する｜いちごり／文鳥",
+      "url": "https://note.com/bunchoki/n/nf40ebd5951d9",
+      "author": "いちごり／文鳥",
+      "source": "note",
+      "source_id": "note-sitemap",
+      "published_at": "2026-09-17",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "lighting"
+      ],
+      "tools": [
+        "Bakery"
+      ],
+      "first_discovered_at": "2026-09-18T23:34:20.116Z",
+      "last_verified_at": "2026-09-18T23:34:20.116Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
