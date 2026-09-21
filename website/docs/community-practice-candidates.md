@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **87件**
+現在の候補: **88件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -22,6 +22,7 @@ slug: /community-practice/candidates
 | 18 | 2026-07-22 | [【Unity / VRChat】UnityでModular Avatarの設定項目が表示されなくなった時の対処方法備忘録](https://blog.yu-suz.com/archives/8258) | ゆうすずみっ！ | VRChat, Unity, avatar |
 | 18 | 2026-06-17 | [VRChatアバターをChilloutVR向けに変換してアップロードする手順](https://zenn.dev/kazu0617/articles/3d8c05e6191cba) | Zenn | VRChat, Unity, avatar, outfit fitting, armature, Expression Menu, Animator, PhysBone, shader |
 | 18 | 2023-10-05 | [ただ衣装を着るだけじゃない、痒いところに手が届くModular Avatarの使い方 - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2023/10/05/195500) | Hatena Blog | VRChat, Unity, avatar, outfit fitting, armature, shape keys, Expression Menu, networking, optimization |
+| 17 | 2026-09-21 | [【VRChat】顔改変がキャラクリ感覚に！無料Unityツール「FaceMake」を紹介 \| こはろぐ](https://kohavrog.com/facemake) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, shape keys |
 | 17 | 2026-08-15 | [【VRChat】カラバリPrefabを簡単に作れるツールを作った - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2026/08/15/151527) | Hatena Blog | VRChat, Unity, avatar, outfit fitting, armature, shape keys, PhysBone, lighting, automation |
 | 17 | 2026-06-05 | [VRChatで巨大あみだくじワールドを個人開発してCommunity Labs通過するまで](https://zenn.dev/bonkoturyu/articles/vrchat-amidakuji-community-labs) | Zenn | VRChat, Unity, Animator, UdonSharp, networking, shader, lighting |
 | 17 | 2025-12-19 | [【VRChat】Attributesを活用する：UdonSynced・Header・Rangeの使い方 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-attributes) | ういやまラボ | VRChat, Unity, UdonSharp, networking |
