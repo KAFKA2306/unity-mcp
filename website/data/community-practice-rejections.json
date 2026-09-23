@@ -3,6 +3,22 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://zenn.dev/nexryai/articles/65e1ee6d16f847",
+      "title": "【VRChat】proton-rtspでH.264な動画が再生できないときの対処法",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "rejected_at": "2026-09-23T14:26:19.180Z",
+      "classifier_version": 2,
+      "score": 9,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "procedural-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "url": "https://kohavrog.com/roox-meshstrap",
       "title": "Quest 3でVR睡眠をするならこれ！「ROOX シリコンメッシュストラップ」を1ヶ月使ってみた！ | こはろぐ",
       "source": "こはろぐ",
