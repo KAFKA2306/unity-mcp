@@ -3,6 +3,21 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://zenn.dev/aiya000/articles/442908c4502750",
+      "title": "【VRChat】デスクトップ版VRC Worlds ManagerをVRでもスマホでも動くWebアプリ「VRCWW」にフォークした【PWA】",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "rejected_at": "2026-09-24T14:26:33.532Z",
+      "classifier_version": 2,
+      "score": 6,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
+      ]
+    },
+    {
       "url": "https://zenn.dev/nexryai/articles/65e1ee6d16f847",
       "title": "【VRChat】proton-rtspでH.264な動画が再生できないときの対処法",
       "source": "Zenn",
