@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **88件**
+現在の候補: **89件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -42,6 +42,7 @@ slug: /community-practice/candidates
 | 15 | 2025-04-15 | [【VRChat】FBX、Prefab、Prefab Variant、GUIDについて理解して変更に強くなろう - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/04/15/173000) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, armature, shape keys, Expression Menu, Animator, PhysBone, shader, lighting, optimization, automation |
 | 15 | 2024-07-13 | [【VRChat】AvatarParametersDriverでお手軽排他制御 - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2024/07/13/150136) | Hatena Blog | VRChat, Unity, avatar, outfit fitting, Expression Menu |
 | 15 | 2023-07-05 | [【初心者向け全部盛り】Prefab Variantで管理しつつModular Avatarで衣装の着せ替えをやってみよう - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2023/07/05/185500) | Hatena Blog | VRChat, Unity, avatar, outfit fitting, weight editing, armature, shape keys, Expression Menu, Animator, PhysBone, networking, shader, lighting, optimization |
+| 14 | 2026-09-25 | [【VRChat】初心者のうちから入れたい！パッケージ更新が爆速の「ALCOM」で改変作業も捗る！ \| こはろぐ](https://kohavrog.com/alcom) | こはろぐ | VRChat, Unity, Blender, avatar, optimization |
 | 14 | 2026-09-09 | [【VRChat】同期するサイコロ：乱数は所有者が決めて配る \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-synced-dice) | ういやまラボ | VRChat, Animator, UdonSharp, networking |
 | 14 | 2026-09-08 | [【VRChat】AnimatorとUdonで扉を動かす：回転軸とポーズの切り替え \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-animator-udon) | ういやまラボ | VRChat, Unity, avatar, Animator, UdonSharp, networking |
 | 14 | 2026-09-08 | [【VRChat】DataDictionaryとJSON：設定データを読んでライトに反映する \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-data-containers) | ういやまラボ | VRChat, Unity, UdonSharp, networking, lighting |
