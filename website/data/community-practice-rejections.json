@@ -3,6 +3,19 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://note.com/light_bobcat1263/n/nd1a53c4931a6",
+      "title": "IPアドレスって簡単にとれてしまうよねって話｜ゆるるっち！",
+      "source": "note",
+      "source_id": "note-sitemap",
+      "rejected_at": "2026-09-26T23:53:29.455Z",
+      "classifier_version": 2,
+      "score": 2,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-body:+2"
+      ]
+    },
+    {
       "url": "https://zenn.dev/aiya000/articles/442908c4502750",
       "title": "【VRChat】デスクトップ版VRC Worlds ManagerをVRでもスマホでも動くWebアプリ「VRCWW」にフォークした【PWA】",
       "source": "Zenn",
