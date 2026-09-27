@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **89件**
+現在の候補: **90件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -89,6 +89,7 @@ slug: /community-practice/candidates
 | 11 | 2025-12-19 | [【VRChat】UdonSharpとは？VRChatワールド制作の心臓部を理解する \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-introduction) | ういやまラボ | VRChat, Unity, UdonSharp, networking |
 | 11 | 2025-12-19 | [【VRChat】ユーザー入力の検出をマスター：Interact・Input Eventsの活用法 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-user-interaction) | ういやまラボ | VRChat, Unity, UdonSharp |
 | 11 | 2023-12-03 | [おはツイ勢必見！標準カメラよりも綺麗なボケ味で撮れる「Virtual Lens2」と、セルフィー機能を充実させる「PVLController」の組み合わせが最強すぎた！【VRChat】 \| こはろぐ](https://kohavrog.com/vl2-pvl) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, Animator, shader |
+| 10 | 2026-09-27 | [U# でよく使うプロキシスクリプトについて](https://zenn.dev/0xd/articles/vrc-udon-proxies) | Zenn | VRChat, Unity, UdonSharp, networking |
 | 10 | 2026-09-09 | [【VRChat】当たり判定の基礎：歩ける床・すり抜ける飾り・落ちる箱 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-colliders-basics) | ういやまラボ | VRChat, Unity, avatar |
 | 10 | 2026-08-03 | [iFacialMocap(iPhone)を使ってVRChatのアバターのフェイストラッキングをする](https://zenn.dev/kagahirokasumi/articles/4f117e67e33d88) | Zenn | VRChat, avatar |
 | 10 | 2025-12-19 | [【VRChat】パフォーマンス最適化：Update削減とネットワーク負荷を軽減する \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-performance-optimization) | ういやまラボ | VRChat, Unity, avatar, UdonSharp, networking, optimization |
