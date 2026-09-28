@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-09-27T09:31:22.410Z",
+  "generated_at": "2026-09-28T21:22:32.271Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -849,6 +849,37 @@
         "implementation-evidence>=5:+1",
         "procedure-evidence>=3:+2",
         "code-block:+1"
+      ]
+    },
+    {
+      "title": "【VRChat】アバターのアップロード完了を『音』で知らせてくれる無料ツール！だらだら改変に終止符を！ | こはろぐ",
+      "url": "https://kohavrog.com/upload_sound",
+      "author": "AI Assistant",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "published_at": "2026-09-28",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-09-28T21:22:32.271Z",
+      "last_verified_at": "2026-09-28T21:22:32.271Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 15,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "procedure-evidence>=3:+2"
       ]
     },
     {
