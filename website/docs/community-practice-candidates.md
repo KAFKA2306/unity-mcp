@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **91件**
+現在の候補: **92件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -97,6 +97,7 @@ slug: /community-practice/candidates
 | 10 | 2024-11-19 | [【VRChat】選択したメッシュの情報を合計して表示してくれる君を作った - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2024/11/19/121414) | Hatena Blog | VRChat, Unity |
 | 10 | 2024-09-26 | [【VRChat】複数のアニメーションファイル間で操作するBlendShapeの対象を統一する君を作った - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2024/09/26/232100) | Hatena Blog | VRChat, Unity, avatar, shape keys |
 | 10 | 2024-02-23 | [たったの5秒！「JustSS」を使ってアバターの透過画像を超簡単に撮影しよう！【Unity・VRChat】 \| こはろぐ](https://kohavrog.com/justss) | こはろぐ | VRChat, Unity, Blender, avatar |
+| 9 | 2026-09-29 | [Tauri + RustでVRChatのログを監視してワールド訪問セッションを記録する](https://zenn.dev/locu/articles/231c4c1ff5896e) | Zenn | VRChat, networking |
 | 9 | 2026-09-09 | [【VRChat】プログラムの4つの部品：変数・if・for・関数 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-csharp-basics) | ういやまラボ | VRChat, UdonSharp, lighting |
 | 9 | 2026-09-09 | [【VRChat】Unityの画面と操作：VRChatのワールド制作で使うのは4つの窓だけ \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/vrchat-unity-editor-basics) | ういやまラボ | VRChat, Unity, Animator |
 | 9 | 2026-09-08 | [【VRChat】Network Events：その場の全員にチャイムを届ける \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-network-events) | ういやまラボ | VRChat, UdonSharp, networking, lighting |
