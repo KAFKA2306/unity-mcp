@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-09-29T10:07:41.867Z",
+  "generated_at": "2026-10-04T18:47:24.428Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -351,6 +351,45 @@
         "implementation-evidence>=2:+2",
         "implementation-evidence>=5:+1",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "VRCast - VRChatアバターをそのままOBSに映して配信しよう！自作アプリの紹介",
+      "url": "https://zenn.dev/coffin299/articles/14d38fc9acf298",
+      "author": "coffin299",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-10-04",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "armature",
+        "shape keys",
+        "Expression Menu",
+        "Animator",
+        "PhysBone",
+        "shader",
+        "lighting"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-10-04T18:47:24.428Z",
+      "last_verified_at": "2026-10-04T18:47:24.428Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 17,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "tool-build-title:+2",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
