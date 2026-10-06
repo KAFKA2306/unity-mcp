@@ -3,6 +3,20 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://kohavrog.com/steamframe_line",
+      "title": "【Steam Frame】充電しながらVR！使ってみてよかった45W充電器とおすすめケーブル！ | こはろぐ",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "rejected_at": "2026-10-06T20:33:06.569Z",
+      "classifier_version": 2,
+      "score": 4,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-body:+2",
+        "procedure-evidence>=3:+2"
+      ]
+    },
+    {
       "url": "https://note.com/light_bobcat1263/n/nd1a53c4931a6",
       "title": "IPアドレスって簡単にとれてしまうよねって話｜ゆるるっち！",
       "source": "note",
