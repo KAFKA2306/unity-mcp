@@ -9,10 +9,11 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **93件**
+現在の候補: **94件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
+| 19 | 2026-10-07 | [VRCast の中身 - VRChat アバターを Unity の外で動かす実装の話](https://zenn.dev/coffin299/articles/64f79b844bb659) | Zenn | VRChat, Unity, avatar, outfit fitting, weight editing, armature, shape keys, Expression Menu, Animator, PhysBone, shader |
 | 19 | 2026-06-30 | [【2026年版】VRoid製VRChatアバターの軽量化メモ：Very Poor脱出までの全工程とハマりどころ](https://zenn.dev/augma/articles/5957851ecb4318) | Zenn | VRChat, Unity, avatar, armature, shape keys, PhysBone, shader, lighting, optimization, automation |
 | 19 | 2025-12-19 | [【VRChat】UdonSharp開発環境の構築：VCC導入からインタラクトオブジェクト作成まで \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-setup) | ういやまラボ | VRChat, Unity, UdonSharp, networking |
 | 19 | 2024-02-07 | [【VRChat】もはや必須！？軽量化をワンタッチで行ってくれる「Avatar Optimizer」で軽いアバターになろう！ \| こはろぐ](https://kohavrog.com/avatar-optimizer) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, armature, shape keys, PhysBone, shader, lighting, optimization, automation |
