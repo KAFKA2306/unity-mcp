@@ -3,6 +3,20 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://kohavrog.com/amvrhs2",
+      "title": "Steam Frameにはやっぱり頭頂部のバンドが欲しい！AMVR「HS2」を使ってみた！ | こはろぐ",
+      "source": "こはろぐ",
+      "source_id": "kohavrog-unity-blender-index",
+      "rejected_at": "2026-10-09T20:19:19.907Z",
+      "classifier_version": 2,
+      "score": 4,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-body:+2",
+        "procedure-evidence>=3:+2"
+      ]
+    },
+    {
       "url": "https://kohavrog.com/steamframe_line",
       "title": "【Steam Frame】充電しながらVR！使ってみてよかった45W充電器とおすすめケーブル！ | こはろぐ",
       "source": "こはろぐ",
