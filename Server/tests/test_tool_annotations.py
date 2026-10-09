@@ -31,6 +31,9 @@ from utils.module_discovery import discover_modules
 # tool that writes to the project, and do not set readOnlyHint on a tool whose
 # body calls preflight(refresh_if_dirty=True) -- that can trigger a domain reload.
 READ_ONLY = {
+    # ContinuousAvatarUploader only queries AssetDatabase and inspects group assets;
+    # its Unity handler never writes assets or invokes an Editor refresh.
+    "continuous_avatar_uploader",
     "debug_request_context",
     "find_in_file",
     "get_sha",
