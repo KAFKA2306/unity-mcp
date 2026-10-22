@@ -3,6 +3,27 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://qiita.com/yuki_engineer08/items/4e049b07cdcc4334b663",
+      "title": "VRChatアバターを「Very Poor」から救い出すまでの記録 ― AIと二人三脚でハマり続けた軽量化デバッグ日記 - Qiita",
+      "source": "Qiita",
+      "source_id": "qiita-unity",
+      "rejected_at": "2026-10-22T08:54:54.369Z",
+      "classifier_version": 2,
+      "score": 10,
+      "decision": "reject-social-event",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedural-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1",
+        "social-or-event-title:-8"
+      ]
+    },
+    {
       "url": "https://note.com/sohju2011/n/nd1c73f158a3c",
       "title": "VRChatを1年続けて、フレンドの数に意味を感じなくなった。｜篠原製作所",
       "source": "note",
