@@ -3,6 +3,20 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://note.com/nexus_ai/n/n26556b02b5c4",
+      "title": "【週刊・ねくのシンギュラリティ観測】第7話「AI動画の競演と、コンシェルジュへ進むGrok Bot」｜nexus_ai",
+      "source": "note",
+      "source_id": "note-sitemap",
+      "rejected_at": "2026-10-25T13:55:15.788Z",
+      "classifier_version": 2,
+      "score": 4,
+      "decision": "reject-no-implementation",
+      "signals": [
+        "vrchat-in-body:+2",
+        "procedure-evidence>=3:+2"
+      ]
+    },
+    {
       "url": "https://zenn.dev/yuki_engineer08/articles/2026-10-22-vrchat-avatar-optimization",
       "title": "VRChatアバターを「Very Poor」から救い出すまでの記録 ― AIと二人三脚でハマり続けた軽量化デバッグ日記",
       "source": "Zenn",
