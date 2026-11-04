@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-11-02T11:40:46.194Z",
+  "generated_at": "2026-11-04T01:39:10.337Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -1275,6 +1275,44 @@
         "implementation-evidence>=2:+2",
         "implementation-evidence>=5:+1",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "Unity なしで .unitypackage のアバターを VRM 1.0 にする：中身の仕組みと表情が消える原因",
+      "url": "https://zenn.dev/kappatich/articles/722e86b6ed12a4",
+      "author": "Alex Best",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-11-03",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "avatar",
+        "armature",
+        "shape keys",
+        "PhysBone",
+        "shader"
+      ],
+      "tools": [
+        "lilToon",
+        "Poiyomi"
+      ],
+      "first_discovered_at": "2026-11-04T01:39:10.337Z",
+      "last_verified_at": "2026-11-04T01:39:10.337Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 14,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-body:+2",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
