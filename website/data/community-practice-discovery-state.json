@@ -2,6 +2,545 @@
   "schema_version": 1,
   "classifier_version": 2,
   "seen": {
+    "https://note.com/kenta_manager/n/ne7a3b533fb9b": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/sintax5000/n/nf22c093000c2": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/cobito_story/n/nf88f79a67c33": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/honest_poppy8830/n/nb91a6b971914": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/good_weasel3616/n/n0dcfc11b17d1": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/grand_daisy8632/n/n89e894719524": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/edm2040ra/n/nadd3db2b4463": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/adbrex_/n/n82a23288b3a4": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/akaneko_p/n/n00f37d9801df": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/hal_miz/n/n0da682cf9e7a": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/suzyoshi1/n/n17b88327ccc6": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/kpg_midorigaoka/n/n221fc452111b": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/pianoclinic_neko/n/n77f99d86a46c": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/merukaku/n/n895ad3a783e1": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/jeg/n/nfe75e6422a40": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 3
+    },
+    "https://note.com/niina27/n/ncde9e0f158a2": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/mita_cpa/n/n99eb1594a996": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/ginsilver69/n/n35d479d8ffbf": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/marodeoja01/n/ne33d93236314": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/a_ok_i/n/nb5b231760866": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/newvaluecreation/n/n61de6a017752": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/linkegemic/n/n496cad1c5d98": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/mild_seal5117/n/n3aa8d7f08a63": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/hoshinonanako/n/n107f2fbdb1d8": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/o_touki/n/n234e08be331d": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/digital_neko/n/n32e4be146920": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/global_citizen09/n/n5916aadf48c2": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/papy_age18/n/n7df636b02cd6": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/jewelfire/n/n266f91735818": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/sheem_46/n/n36fd9161222d": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/947/n/nb9643f7cb3aa": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/loyal_godwit7084/n/n2b84d61e6229": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/den_da/n/ndb0740bf331b": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/wonderful_growth/n/ndfdba1f6e040": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/teammahou/n/n8ad4814e4142": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/sokurano/n/n9db7ed696a54": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/ai_raku_lifenote/n/n434272d6683c": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 5
+    },
+    "https://note.com/shoukendounsight/n/nc3392d03a2dd": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/kanou_hikaru/n/ndc3b381a000e": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/sekoi_syogioyaji/n/n6094316d1163": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/kuma_kumabase/n/n2a915b3b4d01": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/sane_seal1896/n/neb2405764a46": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/eegjp/n/nf7dbc1c1b65c": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/fm8739/n/na25457d7b976": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/kawano_hiroki/n/n308146ac092b": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 5
+    },
+    "https://note.com/31711827/n/n6a8f491f5f09": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/shiny_minnow21/n/nd9b7fd27fe2c": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/reknows15/n/n7965decef923": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/kubo_shikaku/n/n93983910bc85": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 3
+    },
+    "https://note.com/aniki80000/n/n3d819ce86e6d": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/for_children88/n/nb99e156cf475": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/noble_briony6217/n/nd307cd1d6f83": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/psychicer4972/n/n0131dcca9caf": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/hamukatsu2030/n/n62900a63d089": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/keita_cl/n/n965b2be80518": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/hirokazumineral/n/nce846ceca617": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/teba_eleven/n/n3c8c81e2d4ea": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/rich_coyote784/n/ne70d275a3dd3": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/fair_whale453/n/n83aa500d5986": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/ayanokosaka/n/nfe23bb356409": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/yoshiro_yamada/n/na6baa63398d0": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/tokyo_juken_navi/n/naad4e808dfee": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 5
+    },
+    "https://note.com/tabaty_shacho/n/nc6c41b073295": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/bousai_taro/n/n533fef6f5c6b": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/good_bee116/n/nbf1f45437436": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/quickavoid/n/nc1b2e203058a": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/thikutaku/n/nd2a900ee3033": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 3
+    },
+    "https://note.com/p2a_research_lab/n/n6012b8e146af": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/optimorrow/n/n21f67e827329": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/nanakisennin/n/n1707c7f62c6f": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/shiny_pansy996/n/neb43f127778d": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/tomabechisiki/n/n30ffffddc7e4": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/jouroaoki/n/n0b10cd8d2a80": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 2
+    },
+    "https://note.com/nonamewhitecat/n/n3bd10fa6e6d9": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/takashinaito/n/n7cd608a406f4": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/y_y_y_y_y_y/n/n94263f977b60": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
+    "https://note.com/noritama2022/n/ndfb6923b174f": {
+      "evaluated_at": "2026-11-04T11:33:43.629Z",
+      "source_id": "note-sitemap",
+      "outcome": "reject-not-vrchat",
+      "classifier_version": 2,
+      "score": 0
+    },
     "https://zenn.dev/kappatich/articles/722e86b6ed12a4": {
       "evaluated_at": "2026-11-04T01:39:10.337Z",
       "source_id": "zenn-vrchat",
@@ -139462,558 +140001,19 @@
       "outcome": "reject-not-vrchat",
       "classifier_version": 2,
       "score": 0
-    },
-    "https://note.com/toraijin/n/ne74becbd334f": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/k_balife/n/nff62457aa825": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 1
-    },
-    "https://note.com/boroya4mogunyan/n/n716ccafce75e": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/glad_shinkyu923/n/n749fc2c9f058": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/entamelabo3/n/n49c3c2a7d50c": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/kakekeiba/n/n986682be3b75": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/winnerxx/n/n4e5fa1f0f95a": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/genial_stoat6931/n/nba4e8ea30adc": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/rocknpetrol/n/nd121ace2b480": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/kakekeiba/n/ndc5917d157b6": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/daikichi_kettou/n/n5631cd609e79": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/ituko9071/n/n70f2d2bb4fd2": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/piyomama_mom/n/n355e3ddd2521": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/legit_lily2549/n/nd9b20823b35d": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/papa411477/n/nffc435d348e5": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/ykpapa/n/n6c17cd27adc0": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/naichi/n/n3adc2022c7e7": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/towa/n/nc8eef157e3b2": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/renny/n/nfcfa0b9d4f75": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-social-event",
-      "classifier_version": 2,
-      "score": -6
-    },
-    "https://note.com/holy_squid718/n/nb7fda15d5253": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/yuichiro_konishi/n/n5fd226a39606": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/nogasun2003/n/naa4dfb7c5a40": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/brave_bee548/n/n263b799438f3": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-social-event",
-      "classifier_version": 2,
-      "score": -8
-    },
-    "https://note.com/d900/n/n9f4213ff49d4": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/noble_otter8991/n/ne319725861c5": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/delneri/n/n74f8ccf64817": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/shiny_emu4818/n/n9422167df865": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/large_owl7588/n/nfb66b272ad6a": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/nicor_diary/n/nb97e2eb36e63": {
-      "evaluated_at": "2026-08-23T15:56:23.402Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-social-event",
-      "classifier_version": 2,
-      "score": -8
-    },
-    "https://note.com/nagoyajin2000/n/nd8758cb17377": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/masa_cloud/n/na162f49303ea": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/haru_sun/n/n2067c64cc5ca": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/fc_blog/n/n96573280c48e": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/ao_senryaku/n/n8c19feef4d42": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/ao_senryaku/n/na384a1957dbc": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/tobichan_0507/n/n6956386b9262": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/yuko_honma0906/n/nd49a9de20df9": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/40challenge_/n/ne037aa391a62": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/shoubaihanjou/n/nc31bd4fcbdd9": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/yoin_business/n/n8f5286d6dddc": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/ao_senryaku/n/n92b442c3ae3a": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/tsutsumi_a/n/n646c1cec4731": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/alto_music/n/n5e69c1279456": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/jota_877/n/n58f252aaeaa1": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 3
-    },
-    "https://note.com/takaratoryo_p/n/n9765a851e3e3": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/alive_sloth5386/n/nd29bb97ecc19": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 3
-    },
-    "https://note.com/lulu_fx/n/nc4a0afce25db": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/toraijin/n/nabd0a199e87c": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/basser_endsville/n/n301fc2197020": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/tama60323/n/n79732d016ea1": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/rainynwindy701/n/n97eb94f32e16": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/nice_cosmos4982/n/n89f935c0fabf": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/hearty_hippo7250/n/n19e44f9ab832": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/aitmnb_jp/n/n134d9368a376": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/s_and_k/n/n5ad81096ab64": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/humanexlab/n/nedf6934f37aa": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/kakeudon_g38/n/n0ec475b25b86": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/serene_lily9121/n/n68267f0f0d2a": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/vwken03/n/n6a99440cd268": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/shuro1010/n/n1df269a0769f": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/tgm_kt/n/n1f84b3a35254": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/reborn_giver/n/n76041844153d": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/ichicoach1207/n/n1192c7d92269": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/296ko_ji/n/n54d98816e34d": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/aiinvestor/n/n952b31fe02bf": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/yoshiki_stu/n/n28bb295793e2": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/gakumon88/n/n5f91427f5927": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/grass_coyote/n/nb04812f894e4": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/toranekohana3/n/n70f98b9beb18": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-social-event",
-      "classifier_version": 2,
-      "score": -8
-    },
-    "https://note.com/child_skylark/n/n63fbce2f8866": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/long_aster2673/n/nda5541005e2a": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/deep_arnica1965/n/n06ec99940b50": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/marupokousagi3/n/nebf3126f9a3f": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/shugo/n/ne5af066e6d7a": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
-    },
-    "https://note.com/chinari_ikkei/n/n40561dbbe8ff": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 2
-    },
-    "https://note.com/china_case/n/n416d72778691": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 0
-    },
-    "https://note.com/gifted_koala3137/n/nba384bf89a71": {
-      "evaluated_at": "2026-08-23T09:58:17.310Z",
-      "source_id": "note-sitemap",
-      "outcome": "reject-not-vrchat",
-      "classifier_version": 2,
-      "score": 5
     }
   },
   "last_run": {
-    "at": "2026-11-04T01:39:10.337Z",
+    "at": "2026-11-04T11:33:43.629Z",
     "status": "partial",
     "classifier_version": 2,
     "title_policy_version": 1,
     "candidate_count": 96,
     "rejection_count": 72,
-    "new_candidates": 1,
+    "new_candidates": 0,
     "removed_existing": 0,
     "title_policy_removed": 0,
-    "fetch_errors": 2,
+    "fetch_errors": 3,
     "sources": [
       {
         "id": "hatena-kxn4t",
