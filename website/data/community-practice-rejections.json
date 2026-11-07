@@ -3,6 +3,23 @@
   "classifier_version": 2,
   "items": [
     {
+      "url": "https://kxn4t.hatenablog.com/entry/2026/11/07/141753",
+      "title": "【VRChat】お気に入りワールドを写真と日記で思い出にできる「VRC World Palette」を作った - 一年中こたつ出てる",
+      "source": "Hatena Blog",
+      "source_id": "hatena-kxn4t",
+      "rejected_at": "2026-11-07T10:40:20.155Z",
+      "classifier_version": 2,
+      "score": 1,
+      "decision": "reject-social-event",
+      "signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1",
+        "social-or-event-title:-8"
+      ]
+    },
+    {
       "url": "https://note.com/tochigi_bf/n/n161e81fbb482",
       "title": "思うこと(2026.11.02)｜茨城パイル",
       "source": "note",
