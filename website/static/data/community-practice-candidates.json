@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-11-04T01:39:10.337Z",
+  "generated_at": "2026-11-08T19:57:16.238Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -3093,6 +3093,33 @@
         "technical-title:+3",
         "technical-evidence>=2:+2",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "VRChat ワールド制作でインスタンスをまたぐことができる「世界ランキング」を作った話 - Qiita",
+      "url": "https://qiita.com/haru452/items/9bf94574c9e727009a69",
+      "author": "haru452",
+      "source": "Qiita",
+      "source_id": "qiita-unity",
+      "published_at": "2026-11-08",
+      "topics": [
+        "VRChat",
+        "Unity"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-11-08T19:57:16.238Z",
+      "last_verified_at": "2026-11-08T19:57:16.238Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 9,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
