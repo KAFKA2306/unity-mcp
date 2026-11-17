@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **97件**
+現在の候補: **98件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -76,6 +76,7 @@ slug: /community-practice/candidates
 | 12 | 2025-06-02 | [【Blender】SKkeeper v1.8.2で複数オブジェクト対応＆シェイプキーなしでもOKに！ - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/06/02/121133) | Hatena Blog | VRChat, Blender, avatar, outfit fitting, shape keys, automation |
 | 12 | 2025-04-20 | [【VRChat】作ったエディタ拡張をVPMリポジトリで配布してみた - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/04/20/120238) | Hatena Blog | VRChat, Unity, avatar, automation |
 | 12 | 2025-02-07 | [【VRChat】衣装と素体のマージを楽にするBlenderアドオンを作った - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/02/07/135917) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, weight editing, armature, automation |
+| 11 | 2026-11-16 | [VRoid の Fcl_ のシェイプキー名を VRChat の vrc.～ 名に変える（Blender 4.5 LTS／5.1／5.2）](https://zenn.dev/sec_madoguchi/articles/vroid-fcl-to-vrchat-shapekeys) | Zenn | VRChat, Unity, Blender, avatar, shape keys |
 | 11 | 2026-09-17 | [【自分用①】ChatGPTからVRChatワールドライティング初心者へ 第1章：Directional / Point / Spot / Area「ライト4兄弟」を完全に理解する｜いちごり／文鳥](https://note.com/bunchoki/n/nf40ebd5951d9) | note | VRChat, Unity, lighting |
 | 11 | 2026-09-09 | [【VRChat】時間差で処理を呼ぶ：3秒後に開く扉とカウントダウン \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-delayed-events) | ういやまラボ | VRChat, Animator, UdonSharp, networking |
 | 11 | 2026-09-09 | [【VRChat】ワールドの容量を減らす：テクスチャの解像度と圧縮 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-build-size) | ういやまラボ | VRChat, Unity |

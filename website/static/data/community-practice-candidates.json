@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-11-08T19:57:16.238Z",
+  "generated_at": "2026-11-17T12:26:35.346Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -2305,6 +2305,37 @@
         "technical-evidence>=2:+2",
         "technical-evidence>=5:+2",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "VRoid の Fcl_ のシェイプキー名を VRChat の vrc.～ 名に変える（Blender 4.5 LTS／5.1／5.2）",
+      "url": "https://zenn.dev/sec_madoguchi/articles/vroid-fcl-to-vrchat-shapekeys",
+      "author": "情シス窓口",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-11-16",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "shape keys"
+      ],
+      "tools": [],
+      "first_discovered_at": "2026-11-17T12:26:35.346Z",
+      "last_verified_at": "2026-11-17T12:26:35.346Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 11,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-title:+3",
+        "technical-evidence>=2:+2",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {
