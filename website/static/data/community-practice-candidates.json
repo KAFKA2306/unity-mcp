@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "classifier_version": 2,
-  "generated_at": "2026-11-17T12:26:35.346Z",
+  "generated_at": "2026-11-19T12:08:12.568Z",
   "review_policy": "Automated discovery plus technical-practice scoring. Promote to community-practice.json only after source metadata and practical content are manually or agent-verified.",
   "items": [
     {
@@ -1763,6 +1763,48 @@
         "technical-evidence>=5:+2",
         "implementation-evidence>=2:+2",
         "procedure-evidence>=3:+2"
+      ]
+    },
+    {
+      "title": "紫のうさぎ の3DモデルをVRChatで動かしたい",
+      "url": "https://zenn.dev/mcp/articles/96b3b19810e14c",
+      "author": "mcp",
+      "source": "Zenn",
+      "source_id": "zenn-vrchat",
+      "published_at": "2026-11-19",
+      "topics": [
+        "VRChat",
+        "Unity",
+        "Blender",
+        "avatar",
+        "outfit fitting",
+        "armature",
+        "shape keys",
+        "PhysBone",
+        "shader",
+        "lighting",
+        "optimization"
+      ],
+      "tools": [
+        "Modular Avatar",
+        "lilToon"
+      ],
+      "first_discovered_at": "2026-11-19T12:08:12.568Z",
+      "last_verified_at": "2026-11-19T12:08:12.568Z",
+      "review_status": "discovered",
+      "evidence_type": "community-practice-candidate",
+      "quality_version": 2,
+      "quality_status": "accepted",
+      "quality_score": 13,
+      "quality_decision": "accept",
+      "quality_signals": [
+        "vrchat-in-title:+3",
+        "technical-evidence>=2:+2",
+        "technical-evidence>=5:+2",
+        "implementation-evidence>=2:+2",
+        "implementation-evidence>=5:+1",
+        "procedure-evidence>=3:+2",
+        "code-block:+1"
       ]
     },
     {

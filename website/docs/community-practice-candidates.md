@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **98件**
+現在の候補: **99件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -60,6 +60,7 @@ slug: /community-practice/candidates
 | 14 | 2025-12-19 | [【VRChat】テレポーターを作る：プレイヤーを瞬間移動させる方法 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-teleporter) | ういやまラボ | VRChat, Unity, UdonSharp, networking |
 | 14 | 2025-12-19 | [【VRChat】UdonSharpの変数とデータ型：int・float・GameObjectの基礎 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-variables-datatypes) | ういやまラボ | VRChat, Unity, avatar, UdonSharp, lighting |
 | 14 | 2025-12-14 | [衣装の貫通をつまんで直せる！「EreMorph」でメッシュを直感的に編集しちゃおう！【VRChat】 \| こはろぐ](https://kohavrog.com/eremorph) | こはろぐ | VRChat, Unity, Blender, avatar, outfit fitting, weight editing, armature, shape keys, PhysBone |
+| 13 | 2026-11-19 | [紫のうさぎ の3DモデルをVRChatで動かしたい](https://zenn.dev/mcp/articles/96b3b19810e14c) | Zenn | VRChat, Unity, Blender, avatar, outfit fitting, armature, shape keys, PhysBone, shader, lighting, optimization |
 | 13 | 2026-09-09 | [【VRChat】ポータルで他のワールドへつなぐ：玄関と廊下は別物 \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-portals) | ういやまラボ | VRChat, UdonSharp |
 | 13 | 2026-09-08 | [【VRChat】外部画像でポスターを貼り替える：頼む係を持ち続ける \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-image-loading) | ういやまラボ | VRChat, UdonSharp, shader |
 | 13 | 2026-09-08 | [【VRChat】床と壁のマテリアル入門：色・模様・光沢でワールドを仕上げる \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-materials-textures) | ういやまラボ | VRChat, Unity, avatar, shader, lighting |
