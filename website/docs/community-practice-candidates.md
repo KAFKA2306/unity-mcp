@@ -9,7 +9,7 @@ slug: /community-practice/candidates
 
 このページは GitHub Actions が定期探索した **未検証候補** です。第二世代classifierでイベント・日記・一般記事を除外していますが、正確性や現行仕様との適合は保証しません。検証後に採用した記事だけ [検証済みカタログ](/community-practice) へ移します。
 
-現在の候補: **99件**
+現在の候補: **100件**
 
 | score | 公開日 | 記事 | 出典 | 検出トピック |
 | ---: | --- | --- | --- | --- |
@@ -70,6 +70,7 @@ slug: /community-practice/candidates
 | 13 | 2025-12-19 | [【VRChat】ピックアップオブジェクト入門：掴める・使えるアイテムを作る \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/udonsharp-gimmick-pickup) | ういやまラボ | VRChat, Unity, UdonSharp, networking, shader, lighting |
 | 13 | 2025-05-02 | [【VRChat】Parent Constraintを使ってボーンをHeadから別のボーンに設定するときの注意点 - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/05/02/184102) | Hatena Blog | VRChat, avatar, weight editing, armature, PhysBone, automation |
 | 13 | 2025-04-20 | [【VRChat】Unityエディタ拡張をVPMリポジトリで配布するには - 一年中こたつ出てる](https://kxn4t.hatenablog.com/entry/2025/04/20/174352) | Hatena Blog | VRChat, Unity, Blender, avatar, outfit fitting, armature, lighting, automation |
+| 12 | 2026-11-26 | ["Unity × AI連携ツール、CLI化の勢力図（2026年11月時点・調査編）"](https://zenn.dev/erimgarak/articles/aaf8824ca1bd0f) | Zenn | VRChat, Unity, avatar, UdonSharp, lighting, automation |
 | 12 | 2026-09-09 | [【VRChat】配布アセットを部屋に置く：取り込み・大きさ・当たり判定・ピンク \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-import-assets) | ういやまラボ | VRChat, Unity, avatar, outfit fitting, shader, optimization |
 | 12 | 2026-09-08 | [【VRChat】VRChatワールド制作の始め方：小さな部屋を育てる6ステップ \| ういやまラボ](https://uhiyama-lab.com/ja/notes/vrchat/world-creation-roadmap) | ういやまラボ | VRChat, Unity, Blender, avatar, UdonSharp, networking, lighting, optimization |
 | 12 | 2026-08-30 | [開発者のためのフリーVRMアバター活用ガイド（選定編）— 入手先とライセンスの選び方](https://zenn.dev/bunniesfield/articles/free-vrm-avatar-catalog) | Zenn | VRChat, Unity, avatar, armature, shape keys, automation |
